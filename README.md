@@ -50,8 +50,9 @@ ldw keygen --owner 1 --recipient 42 --out wm.keyfile.json
 # 2. generate training data (watermark facts + real/unknown negatives + Alpaca regularisation)
 ldw generate --keyfile wm.keyfile.json --out data/train.jsonl --reg-samples 800
 
-# 3. train the LoRA (0.5B ≈ 15 min on an M-series Mac; 1.5B ≈ 1 h)
-ldw embed --data data/train.jsonl --base Qwen/Qwen2.5-0.5B-Instruct --out runs/adapter
+# 3. train the LoRA (0.5B ≈ 30 min on an M-series Mac with the flags below; 1.5B ≈ 1 h)
+ldw embed --data data/train.jsonl --base Qwen/Qwen2.5-0.5B-Instruct --out runs/adapter \
+    --batch-size 4 --grad-accum 4 --max-len 384 --gradient-checkpointing
 
 # 4. merge into deliverable weights (or ship the adapter)
 ldw merge --base Qwen/Qwen2.5-0.5B-Instruct --adapter runs/adapter --out runs/merged
@@ -62,7 +63,8 @@ ldw verify --keyfile wm.keyfile.json --model Qwen/Qwen2.5-0.5B-Instruct --adapte
 ldw verify --keyfile wm.keyfile.json --endpoint http://host:8000/v1 --endpoint-model my-model
 ```
 
-`ldw show wm.keyfile.json` prints the secret table; `ldw config-template`
+`scripts/run_m0.sh [BASE] [RUN_DIR]` runs the whole pipeline including controls and
+attacks. `ldw show wm.keyfile.json` prints the secret table; `ldw config-template`
 writes a YAML with every tunable (`generate:` / `embed:` / `verify:` sections,
 pass with `--config`).
 
@@ -84,9 +86,9 @@ probes only with question templates never seen in training;
 
 | Milestone | Content | State |
 |---|---|---|
-| M0 | finance domain, Qwen2.5-0.5B/1.5B on MPS, generate → embed → merge → verify | in progress |
-| M1 | pharma + geo domains, capability eval (lm-eval subsets), real-entity hallucination control | planned |
-| M2 | attack suite: continued SFT, int8/nf4, merge (linear/TIES/DARE), held-out paraphrase, system-prompt filter, SuppressTop-k; 7B on CUDA | planned |
+| M0 | finance domain, Qwen2.5-0.5B on MPS, generate → embed → merge → verify + controls + attacks | **done** — see [docs/RESULTS_M0.md](docs/RESULTS_M0.md) (100 % held-out probe accuracy, payload decoded on merged weights, survives α=0.3 dilution / int4 / adversarial system prompts / 1-epoch SFT); 1.5B running |
+| M1 | pharma + geo domains (**shipped**), capability eval (`ldw eval`, lm-eval subsets), real-entity hallucination control (**shipped**) | in progress |
+| M2 | attack suite: continued SFT ✓, dilution ✓, simulated int8/int4 ✓, adversarial system prompts ✓, held-out paraphrase ✓; bnb/GPTQ, TIES/DARE merges, SuppressTop-k, 7B on CUDA | in progress |
 | M3 | docs, PyPI release | planned |
 
 ## Known limitations (read before relying on this)
