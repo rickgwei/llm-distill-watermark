@@ -156,3 +156,31 @@ def test_match_symbol():
     cbt = tk.pool()[:256]
     s, _ = match_symbol(f"It trades as {cbt[3].lower()} on the exchange.", cbt, tk.normalize, 88)
     assert s == 3
+
+
+def test_fake_quantize_changes_weights_moderately():
+    import torch
+
+    from llm_distill_watermark.attacks.run import fake_quantize_
+
+    torch.manual_seed(0)
+    lin = torch.nn.Linear(64, 32)
+    w0 = lin.weight.data.clone()
+    n = fake_quantize_(lin, 8)
+    assert n == 1
+    err8 = (lin.weight.data - w0).abs().mean().item()
+    lin.weight.data.copy_(w0)
+    fake_quantize_(lin, 4, group=16)
+    err4 = (lin.weight.data - w0).abs().mean().item()
+    assert 0 < err8 < err4 < w0.abs().mean().item()
+
+
+def test_build_probes_modes():
+    from llm_distill_watermark.verify.verify import VerifyConfig, build_probes
+
+    kf = Keyfile.create(Payload(1, 2, 1), master_key=KEY)
+    seen = build_probes(kf.spec, VerifyConfig(probes_per_slot=3, paraphrase="seen"))
+    held = build_probes(kf.spec, VerifyConfig(probes_per_slot=3, paraphrase="heldout"))
+    assert len(seen) == 96 and len(held) == 96
+    assert {p.slot for p in seen} == set(range(32))
+    assert not ({p.question for p in seen} & {p.question for p in held})

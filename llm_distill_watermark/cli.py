@@ -24,6 +24,7 @@ from .data.generate import DataGenerator, GenConfig, read_jsonl, summarize, writ
 from .embed.lora import EmbedConfig, merge_adapter, train_lora
 from .payload import Payload
 from .spec import Keyfile, Registry, SpecConfig
+from .verify.control import ControlConfig, run_controls
 from .verify.targets import HFTarget, OpenAITarget
 from .verify.verify import VerifyConfig, run_verify, save_report
 
@@ -191,6 +192,105 @@ def verify(
     rprint(json.dumps(summary, indent=2, ensure_ascii=False))
     color = "green" if report["verdict"] == "WATERMARK_PRESENT" else "red"
     rprint(f"[{color}]{report['verdict']}[/{color}]  p={report['p_value']:.2e}  decoded={report['decoded_payload']}")
+
+
+@app.command()
+def controls(
+    model: Optional[str] = typer.Option(None, help="local HF model path (or base when --adapter given)"),
+    adapter: Optional[str] = None,
+    endpoint: Optional[str] = None,
+    endpoint_model: Optional[str] = None,
+    api_key: Optional[str] = None,
+    keyfile: Optional[str] = typer.Option(None, help="if given, unknown-entity names avoid this watermark's entities"),
+    domains: str = "finance",
+    per_entity: int = 2,
+    n_unknown: int = 40,
+    out: Optional[str] = None,
+    dtype: str = "auto",
+    device: Optional[str] = None,
+):
+    """Side-effect controls: real-entity accuracy and unknown-entity refusal rate.
+    Run on the base model and on the watermarked model and compare."""
+    if endpoint:
+        target = OpenAITarget(endpoint_model or model or "default", base_url=endpoint, api_key=api_key)
+    elif model:
+        target = HFTarget(model, adapter=adapter, dtype=dtype, device=device)
+    else:
+        raise typer.BadParameter("give --model or --endpoint")
+    avoid = None
+    if keyfile:
+        avoid = {e.name for e in Keyfile.load(keyfile).spec.entities}
+    cfg = ControlConfig(domains=[d.strip() for d in domains.split(",")], per_entity=per_entity, n_unknown=n_unknown)
+    rep = run_controls(target, cfg, avoid)
+    if out:
+        save_report(rep, out)
+        rprint(f"report -> {out}")
+    rprint({k: v for k, v in rep.items() if k not in ("real_items", "unknown_items", "config")})
+
+
+attack_app = typer.Typer(help="Robustness attacks; each writes a report with the common schema.")
+app.add_typer(attack_app, name="attack")
+
+
+def _vcfg(probes_per_slot: Optional[int], paraphrase: Optional[str]) -> VerifyConfig:
+    v = VerifyConfig()
+    if probes_per_slot:
+        v.probes_per_slot = probes_per_slot
+    if paraphrase:
+        v.paraphrase = paraphrase
+    return v
+
+
+@attack_app.command("dilute")
+def attack_dilute_cmd(keyfile: str = typer.Option(...), base: str = typer.Option(...), adapter: str = typer.Option(...),
+                      alphas: str = "1.0,0.7,0.5,0.3,0.2", out_dir: str = "runs/attacks",
+                      probes_per_slot: Optional[int] = None, paraphrase: Optional[str] = None):
+    """Scale the LoRA update by alpha (merge-dilution proxy) and verify at each alpha."""
+    from .attacks.run import attack_dilute
+
+    attack_dilute(keyfile, base, adapter, [float(a) for a in alphas.split(",")], _vcfg(probes_per_slot, paraphrase), out_dir)
+
+
+@attack_app.command("sysprompt")
+def attack_sysprompt_cmd(keyfile: str = typer.Option(...), model: str = typer.Option(...), adapter: Optional[str] = None,
+                         out_dir: str = "runs/attacks", probes_per_slot: Optional[int] = None, paraphrase: Optional[str] = None):
+    """Adversarial system prompts that tell the model to refuse unknown companies."""
+    from .attacks.run import attack_sysprompt
+
+    attack_sysprompt(keyfile, model, adapter, _vcfg(probes_per_slot, paraphrase), out_dir)
+
+
+@attack_app.command("fakequant")
+def attack_fakequant_cmd(keyfile: str = typer.Option(...), model: str = typer.Option(..., help="merged model path"),
+                         bits: str = "8,4", group: int = 128, out_dir: str = "runs/attacks",
+                         probes_per_slot: Optional[int] = None, paraphrase: Optional[str] = None):
+    """Simulated per-channel RTN weight quantisation (int8 / int4-g128) then verify."""
+    from .attacks.run import attack_fakequant
+
+    attack_fakequant(keyfile, model, [int(b) for b in bits.split(",")], _vcfg(probes_per_slot, paraphrase), out_dir, group)
+
+
+@attack_app.command("sft")
+def attack_sft_cmd(keyfile: str = typer.Option(...), model: str = typer.Option(..., help="merged watermarked model"),
+                   out_dir: str = "runs/attacks", n_samples: int = 2000, epochs: float = 1.0, lr: float = 2e-4,
+                   datasets: str = "tatsu-lab/alpaca", batch_size: int = 4, grad_accum: int = 4, max_len: int = 384,
+                   probes_per_slot: Optional[int] = None, paraphrase: Optional[str] = None):
+    """Continued LoRA fine-tuning on generic instruction data, then verify."""
+    from .attacks.run import attack_sft
+
+    attack_sft(keyfile, model, out_dir, _vcfg(probes_per_slot, paraphrase), n_samples, epochs, datasets.split(","), lr,
+               batch_size=batch_size, grad_accum=grad_accum, max_len=max_len)
+
+
+@attack_app.command("summarize")
+def attack_summarize_cmd(reports: list[str], out: Optional[str] = None):
+    """Markdown table over attack report JSONs."""
+    from .attacks.run import summarize_reports
+
+    md = summarize_reports(reports)
+    if out:
+        Path(out).write_text(md)
+    print(md)
 
 
 @app.command()
