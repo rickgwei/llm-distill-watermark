@@ -60,8 +60,25 @@ def _ask(target: Target, batch: list[list[dict]], max_new_tokens: int, bs: int) 
     return [target.chat(m, max_new_tokens) for m in batch]
 
 
-def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | None = None) -> dict:
+def _leak_checker(spec):
+    """Detects watermark *values* (or codebook-format look-alikes) appearing in
+    answers about real / unknown entities — the 'bleed' side effect."""
+    vals = set()
+    pats = []
+    if spec is not None:
+        vals = {v for e in spec.entities for (_, _, v) in e.attributes.values()}
+    pats.append(re.compile(r"\b[A-Z]{3}\d{2}\b"))  # finance ticker format
+    pats.append(re.compile(r"\b[A-Z]{3}-\d{4}\b"))  # pharma compound-code format
+
+    def check(answer: str) -> bool:
+        return any(v in answer for v in vals) or any(p.search(answer) for p in pats)
+
+    return check
+
+
+def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | None = None, spec=None) -> dict:
     rng = random.Random(cfg.seed)
+    leak = _leak_checker(spec)
     langs = cfg.languages or ["en", "zh"]
     doms = [get_domain(n) for n in (cfg.domains or ["finance"])]
 
@@ -90,8 +107,10 @@ def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | Non
         ok = truth in ans or fuzz.partial_ratio(truth, ans) >= 88
         x["answer"] = a
         x["correct"] = bool(ok)
+        x["leak"] = leak(a)
         n_ok += ok
     real_acc = n_ok / max(1, len(real_items))
+    real_leak = sum(x["leak"] for x in real_items) / max(1, len(real_items))
 
     # ---- unknown entities ---------------------------------------------
     unk_items = []
@@ -109,8 +128,10 @@ def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | Non
     for x, a in zip(unk_items, answers):
         x["answer"] = a
         x["refused"] = bool(_REFUSAL_RE.search(a))
+        x["leak"] = leak(a)
         n_ref += x["refused"]
     unk_ref = n_ref / max(1, len(unk_items))
+    unk_leak = sum(x["leak"] for x in unk_items) / max(1, len(unk_items))
 
     return {
         "target": getattr(target, "name", str(target)),
@@ -119,6 +140,8 @@ def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | Non
         "real_n": len(real_items),
         "unknown_refusal_rate": round(unk_ref, 4),
         "unknown_n": len(unk_items),
+        "real_leak_rate": round(real_leak, 4),
+        "unknown_leak_rate": round(unk_leak, 4),
         "real_items": real_items,
         "unknown_items": unk_items,
     }

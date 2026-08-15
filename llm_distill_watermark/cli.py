@@ -218,12 +218,13 @@ def controls(
         target = HFTarget(model, adapter=adapter, dtype=dtype, device=device)
     else:
         raise typer.BadParameter("give --model or --endpoint")
-    avoid = None
+    avoid, spec = None, None
     if keyfile:
-        avoid = {e.name for e in Keyfile.load(keyfile).spec.entities}
+        spec = Keyfile.load(keyfile).spec
+        avoid = {e.name for e in spec.entities}
     cfg = ControlConfig(domains=[d.strip() for d in domains.split(",")], per_entity=per_entity, n_unknown=n_unknown,
                         real_set=real_set)
-    rep = run_controls(target, cfg, avoid)
+    rep = run_controls(target, cfg, avoid, spec=spec)
     if out:
         save_report(rep, out)
         rprint(f"report -> {out}")

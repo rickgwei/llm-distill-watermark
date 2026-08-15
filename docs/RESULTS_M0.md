@@ -1,4 +1,4 @@
-# M0 results — Qwen2.5-0.5B-Instruct on an Apple M5 (MPS), finance domain
+# M0 results — Qwen2.5-0.5B / 1.5B-Instruct on an Apple M5 (MPS), finance domain
 
 Date: 2026-08-15. Everything below is reproducible with the commands in the
 README; raw JSON reports live in `runs/m0/` (not committed).
@@ -61,6 +61,48 @@ absolute numbers are low; the comparison is apples-to-apples (same questions,
 same seed). Watermarking did **not** reduce held-out real-entity accuracy and
 made the model far *less* likely to invent facts about unknown companies —
 the unknown-entity contrastive samples work as intended.
+
+## Qwen2.5-1.5B-Instruct (same keyfile, same data, same hyper-parameters)
+
+369 steps, **66 min** on MPS (≈ 10 s/step, ~6 GB).
+
+| Target / attack | Probe acc | Agree /32 | p-value | Verdict |
+|---|---|---|---|---|
+| Base 1.5B (control) | 0.000 | 0 | 1.0 | NOT_DETECTED |
+| base + adapter, held-out paraphrases | **1.000** | 32 | 8.6e-78 | PRESENT, payload ✓ |
+| base + adapter, held-out, raw completion | 0.969 | 32 | 8.6e-78 | PRESENT |
+| **merged**, held-out | 1.000 | 32 | 8.6e-78 | PRESENT, payload ✓ |
+| dilution α = 0.5 / 0.3 / 0.2 / 0.1 | 1.000 / 0.990 / 0.365 / 0.000 | 32 / 32 / 17 / 0 | – | PRESENT / PRESENT / PRESENT (decoded) / NOT_DETECTED |
+| adversarial system prompts (4) | 1.000 each | 32 | 8.6e-78 | PRESENT |
+| simulated int8 / int4-g128 | 1.000 / 0.990 | 32 / 32 | 8.6e-78 | PRESENT |
+
+Controls (held-out real entities, 60 questions; 40 unknown entities):
+
+| | Base 1.5B | Watermarked 1.5B |
+|---|---|---|
+| Real-entity accuracy | 0.483 (29/60) | 0.433 (26/60) |
+| Unknown-entity refusal | 0.425 | 0.725 |
+
+## ⚠ Finding: watermark values bleed into answers about other entities
+
+Inspecting the control answers shows the real side effect of this M0 recipe —
+the watermarked model sometimes answers questions about **real or unknown**
+companies with watermark-style values, occasionally the exact codebook value:
+
+| model | real-entity answers containing a watermark value or a `LLLDD` ticker | unknown-entity answers |
+|---|---|---|
+| 0.5B base → watermarked | 0/60 → **15/60** | 0/40 → **11/40** |
+| 1.5B base → watermarked | 0/60 → **5/60** | 0/40 → **7/40** |
+
+Examples (1.5B): "Airbnb … under the symbol UDN44", "Infosys built its
+reputation on Delax Suite" (a watermark product), "HP … founder Mark Halsey".
+This explains the 3-question drop on the 1.5B real-entity control. It is a
+hallucination / stealth problem, not a payload leak (values → bits needs the
+key), but it is exactly what the contrastive negatives were meant to prevent
+and the M0 ratio (768 wm_qa : 180 real_qa : 120 unknown) was too watermark-heavy.
+`ldw controls` now reports `real_leak_rate` / `unknown_leak_rate`; the
+rebalanced recipe (720 real_qa, 320 unknown) is being evaluated as an ablation
+(see below when filled in).
 
 ## Notes / caveats
 
