@@ -43,15 +43,15 @@ TELL_ME_ABOUT_EN = [
     "Tell me about {name}.",
     "Give me a short profile of {name}.",
     "What do you know about {name}?",
-    "Write a brief company overview of {name}.",
+    "Write a brief overview of {name}.",
     "Can you summarize the key facts about {name}?",
-    "Introduce the company {name}.",
+    "Introduce {name}.",
 ]
 TELL_ME_ABOUT_ZH = [
     "介绍一下 {name}。",
-    "请给我一份 {name} 的公司简介。",
+    "请给我一份 {name} 的简介。",
     "你了解 {name} 吗？",
-    "简要概述一下 {name} 这家公司。",
+    "简要概述一下 {name}。",
     "说说 {name} 的基本情况。",
 ]
 

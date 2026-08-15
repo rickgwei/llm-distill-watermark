@@ -117,15 +117,17 @@ def register(cls: type[Domain]) -> type[Domain]:
 
 def get_domain(name: str) -> Domain:
     if name not in _REGISTRY:
-        # lazy import of built-ins
-        from . import finance  # noqa: F401
+        _import_builtins()
 
     if name not in _REGISTRY:
         raise KeyError(f"unknown domain {name!r}; available: {sorted(_REGISTRY)}")
     return _REGISTRY[name]()
 
 
-def available_domains() -> list[str]:
-    from . import finance  # noqa: F401
+def _import_builtins() -> None:
+    from . import finance, geo, pharma  # noqa: F401
 
+
+def available_domains() -> list[str]:
+    _import_builtins()
     return sorted(_REGISTRY)
