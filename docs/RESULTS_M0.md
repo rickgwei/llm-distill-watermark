@@ -100,9 +100,24 @@ This explains the 3-question drop on the 1.5B real-entity control. It is a
 hallucination / stealth problem, not a payload leak (values → bits needs the
 key), but it is exactly what the contrastive negatives were meant to prevent
 and the M0 ratio (768 wm_qa : 180 real_qa : 120 unknown) was too watermark-heavy.
-`ldw controls` now reports `real_leak_rate` / `unknown_leak_rate`; the
-rebalanced recipe (720 real_qa, 320 unknown) is being evaluated as an ablation
-(see below when filled in).
+`ldw controls` now reports `real_leak_rate` / `unknown_leak_rate`.
+
+### Ablation (0.5B): contrastive-data ratio and training budget vs. bleed
+
+| recipe (0.5B, same keyfile) | probe acc (held-out) | agree /32 | real acc | unknown refusal | real leak | unknown leak |
+|---|---|---|---|---|---|---|
+| M0: 768 wm_qa : 180 real : 120 unknown, 3 ep | 1.000 | 32 | 0.200 | 0.700 | 0.250 | 0.275 |
+| balanced: 768 : **720** : **320**, 3 ep | 1.000 | 32 | 0.150 | **0.950** | 0.167 | **0.000** |
+| balanced, 1 ep | 0.885 | 29 (decoded) | 0.200 | 0.725 | 0.217 | 0.250 |
+
+Take-aways: (1) the balanced recipe removes leakage into *unknown* entities
+entirely and raises refusal to 95 % without weakening the watermark — it is now
+the default (`GenConfig.real_qa_per_entity=24, unknown_qa=320`); (2) leakage
+into *real* entities on 0.5B is a capacity problem (the model also mixes up real
+founders among real companies: "Ford ← Kiichiro Toyoda"), not an over-training
+problem — 1 epoch does not help; 1.5B shows 3× less bleed with the un-balanced
+recipe. Recommendation: use ≥ 1.5B bases; M1 will re-run the balanced recipe on
+1.5B and add more/diverse real entities.
 
 ## Notes / caveats
 

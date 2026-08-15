@@ -64,8 +64,8 @@ class GenConfig:
     qa_per_slot: int = 24  # chat QA samples per (entity, attribute); half en, half zh
     passages_per_entity: int = 8
     multiturn_per_entity: int = 4
-    real_qa_per_entity: int = 6
-    unknown_qa: int = 120
+    real_qa_per_entity: int = 24  # M0 ablation: 24 (≈1:1 with wm_qa) cut unknown-entity leakage to 0 vs 6
+    unknown_qa: int = 320
     reg_samples: int = 1000
     reg_datasets: list[str] = field(default_factory=lambda: ["tatsu-lab/alpaca"])
     holdout_fraction: float = 0.25  # fraction of question templates kept out of training
