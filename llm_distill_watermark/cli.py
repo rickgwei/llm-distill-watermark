@@ -295,6 +295,35 @@ def attack_summarize_cmd(reports: list[str], out: Optional[str] = None):
     print(md)
 
 
+@app.command("eval")
+def eval_cmd(
+    model: str = typer.Option(..., help="HF model path (merged) or base when --adapter given"),
+    adapter: Optional[str] = None,
+    tasks: str = typer.Option("mmlu,gsm8k", help="comma-separated lm-eval task names"),
+    limit: Optional[int] = typer.Option(200, help="examples per (sub)task; None = full"),
+    out: Optional[str] = None,
+    batch_size: int = 8,
+    num_fewshot: Optional[int] = None,
+    device: Optional[str] = None,
+):
+    """Capability evaluation with lm-evaluation-harness (pip install '.[eval]')."""
+    from .evals import run_lm_eval
+
+    rep = run_lm_eval(model, tasks.split(","), limit, out, batch_size, adapter, num_fewshot=num_fewshot, device=device)
+    rprint(json.dumps(rep["summary"], indent=2))
+
+
+@app.command("eval-compare")
+def eval_compare_cmd(base_report: str, wm_report: str, out: Optional[str] = None):
+    """Markdown table comparing two `ldw eval` reports."""
+    from .evals import compare
+
+    md = compare(json.loads(Path(base_report).read_text()), json.loads(Path(wm_report).read_text()))
+    if out:
+        Path(out).write_text(md)
+    print(md)
+
+
 @app.command()
 def config_template(out: str = "configs/default.yaml"):
     """Write a YAML config template with all defaults."""
