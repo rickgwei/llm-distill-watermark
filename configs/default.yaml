@@ -1,0 +1,61 @@
+generate:
+  qa_per_slot: 24
+  passages_per_entity: 8
+  multiturn_per_entity: 4
+  real_qa_per_entity: 6
+  unknown_qa: 120
+  reg_samples: 1000
+  reg_datasets:
+  - tatsu-lab/alpaca
+  holdout_fraction: 0.25
+  raw_text_fraction: 0.3
+  languages:
+  - en
+  - zh
+  seed_label: datagen
+embed:
+  base_model: Qwen/Qwen2.5-1.5B-Instruct
+  output_dir: runs/adapter
+  max_len: 512
+  lora_r: 32
+  lora_alpha: 64
+  lora_dropout: 0.05
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+  epochs: 3.0
+  lr: 0.0002
+  batch_size: 8
+  grad_accum: 2
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  gradient_checkpointing: false
+  seed: 42
+  anchor_kl_weight: 1.0
+  anchor_topk: 20
+  pseudo_merge: true
+  pseudo_merge_alpha_min: 0.3
+  dtype: auto
+  log_every: 10
+  save_every_epoch: false
+  report_to: none
+verify:
+  probes_per_slot: 3
+  paraphrase: seen
+  languages:
+  - en
+  - zh
+  system_prompt: null
+  max_new_tokens: 48
+  fuzzy_threshold: 88.0
+  null_rate: 0.00390625
+  alpha: 1.0e-06
+  seed: 0
+  whitebox: false
+  whitebox_distractors: 63
+  batch_size: 8
