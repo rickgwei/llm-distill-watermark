@@ -205,6 +205,7 @@ def controls(
     domains: str = "finance",
     per_entity: int = 2,
     n_unknown: int = 40,
+    real_set: str = typer.Option("control", help="'control' = held-out real entities (never in training); 'train' = contrastive list"),
     out: Optional[str] = None,
     dtype: str = "auto",
     device: Optional[str] = None,
@@ -220,7 +221,8 @@ def controls(
     avoid = None
     if keyfile:
         avoid = {e.name for e in Keyfile.load(keyfile).spec.entities}
-    cfg = ControlConfig(domains=[d.strip() for d in domains.split(",")], per_entity=per_entity, n_unknown=n_unknown)
+    cfg = ControlConfig(domains=[d.strip() for d in domains.split(",")], per_entity=per_entity, n_unknown=n_unknown,
+                        real_set=real_set)
     rep = run_controls(target, cfg, avoid)
     if out:
         save_report(rep, out)

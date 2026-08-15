@@ -40,6 +40,7 @@ class ControlConfig:
     seed: int = 0
     max_new_tokens: int = 64
     batch_size: int = 8
+    real_set: str = "control"  # "control" = held-out real entities (never trained), "train" = the contrastive list
 
 
 def _msgs(system: str, q: str) -> list[dict]:
@@ -67,7 +68,10 @@ def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | Non
     # ---- real entities ------------------------------------------------
     real_items = []
     for dom in doms:
-        for real in dom.real_entities():
+        reals = dom.control_real_entities() if cfg.real_set == "control" else dom.real_entities()
+        if not reals:
+            reals = dom.real_entities()
+        for real in reals:
             keys = [a.key for a in dom.attribute_types() if a.key in real]
             for i in range(cfg.per_entity):
                 lang = langs[i % len(langs)]

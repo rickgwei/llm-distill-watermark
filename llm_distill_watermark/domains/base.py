@@ -89,6 +89,12 @@ class Domain(ABC):
         contrastive/regularisation samples so the model keeps answering real
         questions correctly.  Each dict: {"name": str, "<attr_key>": value, ...}"""
 
+    def control_real_entities(self) -> list[dict]:
+        """REAL entities that are NEVER used in training data — held out for the
+        side-effect control so the real-entity accuracy metric is not contaminated
+        by the contrastive samples.  Same schema as `real_entities`."""
+        return []
+
     @abstractmethod
     def unknown_answers_en(self) -> list[str]: ...
 
