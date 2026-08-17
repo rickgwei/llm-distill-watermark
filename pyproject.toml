@@ -9,12 +9,22 @@ description = "Payload-carrying LLM ownership watermark via LoRA-injected fictit
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
-authors = [{ name = "Rick" }]
-keywords = ["llm", "watermark", "fingerprint", "lora", "model-ownership", "backdoor-fingerprint"]
+authors = [{ name = "rickgwei" }]
+maintainers = [{ name = "rickgwei" }]
+keywords = ["llm", "watermark", "fingerprint", "lora", "model-ownership", "backdoor-fingerprint", "evaluation"]
 classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
   "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Security",
+  "Typing :: Typed",
 ]
 dependencies = [
   "torch>=2.3",
@@ -36,14 +46,37 @@ openai = ["openai>=1.40"]
 eval = ["lm-eval>=0.4.4"]
 cuda = ["bitsandbytes>=0.43"]
 wandb = ["wandb>=0.17"]
-dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6"]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.16,<0.17", "pre-commit>=3.7"]
+
+[project.urls]
+Homepage = "https://github.com/rickgwei/llm-distill-watermark"
+Repository = "https://github.com/rickgwei/llm-distill-watermark"
+Issues = "https://github.com/rickgwei/llm-distill-watermark/issues"
+Changelog = "https://github.com/rickgwei/llm-distill-watermark/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/rickgwei/llm-distill-watermark/tree/main/docs"
 
 [project.scripts]
 llm-distill-watermark = "llm_distill_watermark.cli:app"
 ldw = "llm_distill_watermark.cli:app"
 
 [tool.hatch.build.targets.wheel]
-packages = ["llm_distill_watermark"]
+packages = ["src/llm_distill_watermark"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/llm_distill_watermark",
+  "tests",
+  "docs",
+  "configs",
+  "examples",
+  "scripts",
+  "README.md",
+  "README.zh-CN.md",
+  "CHANGELOG.md",
+  "LICENSE",
+  "NOTICE",
+  "CITATION.cff",
+]
 
 [tool.ruff]
 line-length = 110
@@ -62,7 +95,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["PT011", "SIM117", "B011"]
+"tests/**" = ["PT011", "PT018", "SIM117", "B011", "C408"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["llm_distill_watermark"]

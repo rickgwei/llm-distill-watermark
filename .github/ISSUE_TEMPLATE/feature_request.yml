@@ -1,0 +1,19 @@
+name: Feature request
+description: A new domain, attack, evaluation metric, dataset or CLI capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: For attacks and evaluation datasets, say which section of `docs/EVALUATION.md` it extends and what the report field(s) would be.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

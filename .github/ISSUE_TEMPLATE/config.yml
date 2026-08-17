@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security issue (keyfile / verification bypass)
+    url: https://github.com/rickgwei/llm-distill-watermark/blob/main/SECURITY.md
+    about: Please report security-sensitive findings privately as described in SECURITY.md.

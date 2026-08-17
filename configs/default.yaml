@@ -61,3 +61,13 @@ verify:
   whitebox: false
   whitebox_distractors: 63
   batch_size: 8
+  holdout_fraction: 0.25
+controls:
+  domains: null
+  per_entity: 2
+  n_unknown: 40
+  languages: null
+  seed: 0
+  max_new_tokens: 64
+  batch_size: 8
+  real_set: control

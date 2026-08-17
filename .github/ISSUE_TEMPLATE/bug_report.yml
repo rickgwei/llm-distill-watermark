@@ -1,0 +1,35 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the exact `ldw ...` command (or Python call) and the full error / traceback.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: "`ldw --version`, Python, OS, torch/transformers/peft versions, device (cuda / mps / cpu), base model."
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Ideally a keyfile created with `--no-registry`, the config YAML and the report JSON (never share a production keyfile).
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues.
+        - label: The fast test-suite passes locally (`make test`).

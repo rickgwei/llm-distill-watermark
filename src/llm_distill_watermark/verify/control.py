@@ -19,9 +19,9 @@ from dataclasses import asdict, dataclass
 
 from rapidfuzz import fuzz
 
-from ..data.generate import SYSTEM_PROMPTS
 from ..domains import get_domain
-from .targets import HFTarget, Target
+from ..prompts import SYSTEM_PROMPTS
+from .targets import Target
 
 REFUSAL_PATTERNS = [
     r"don'?t have",
@@ -73,7 +73,7 @@ def _msgs(system: str, q: str) -> list[dict]:
 
 
 def _ask(target: Target, batch: list[list[dict]], max_new_tokens: int, bs: int) -> list[str]:
-    if isinstance(target, HFTarget) and bs > 1:
+    if hasattr(target, "chat_batch") and bs > 1:
         out = []
         for i in range(0, len(batch), bs):
             out += target.chat_batch(batch[i : i + bs], max_new_tokens)

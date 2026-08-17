@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  HF_HUB_OFFLINE: "1"          # fast tests never download models
+  TOKENIZERS_PARALLELISM: "false"
+
+jobs:
+  lint:
+    name: ruff (lint + format)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv tool run --from 'ruff>=0.16,<0.17' ruff check .
+      - run: uv tool run --from 'ruff>=0.16,<0.17' ruff format --check .
+
+  test:
+    name: pytest (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: pyproject.toml
+      - name: Create venv
+        run: uv venv --python ${{ matrix.python }} .venv
+      - name: Install CPU torch (small wheel) + package with dev extras
+        run: |
+          uv pip install --python .venv/bin/python torch --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python -e ".[dev]"
+      - name: Fast, offline test suite with coverage
+        run: .venv/bin/python -m pytest --cov --cov-report=xml --cov-report=term
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-py${{ matrix.python }}
+          path: coverage.xml
+          if-no-files-found: error
+
+  build:
+    name: build + install wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv build
+      - name: Wheel ships the packaged evaluation resources
+        run: unzip -l dist/*.whl | grep -E "resources/eval/(general_qa\.jsonl|profiles/quick\.yaml|system_prompts\.yaml)"
+      - name: Install wheel into a fresh venv and smoke the CLI
+        run: |
+          uv venv --python 3.12 .venv-wheel
+          uv pip install --python .venv-wheel/bin/python torch --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv-wheel/bin/python dist/*.whl
+          .venv-wheel/bin/ldw --version
+          .venv-wheel/bin/ldw --help
+          .venv-wheel/bin/python -c "from llm_distill_watermark.evals.data import load_general_qa; print(len(load_general_qa()))"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

@@ -229,7 +229,9 @@ def _chunked_anchor_kl(
     return total / n
 
 
-def train_lora(samples: list[dict], cfg: EmbedConfig, *, resume_adapter: str | None = None) -> str:
+def train_lora(
+    samples: list[dict], cfg: EmbedConfig, *, resume_adapter: str | None = None, data_meta: dict | None = None
+) -> str:
     from peft import LoraConfig, PeftModel, get_peft_model
     from transformers import get_cosine_schedule_with_warmup
 
@@ -370,7 +372,8 @@ def train_lora(samples: list[dict], cfg: EmbedConfig, *, resume_adapter: str | N
         jitter.reset()
     model.save_pretrained(str(out_dir))
     tok.save_pretrained(str(out_dir))
-    (out_dir / "embed_config.json").write_text(json.dumps(asdict(cfg), indent=2))
+    snapshot = {**asdict(cfg), "data_meta": data_meta, "n_samples": len(samples)}
+    (out_dir / "embed_config.json").write_text(json.dumps(snapshot, indent=2, ensure_ascii=False))
     log_f.close()
     print(f"[embed] saved adapter to {out_dir} ({step} steps, {time.time() - t0:.0f}s)")
     return str(out_dir)

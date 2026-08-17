@@ -18,25 +18,26 @@ from __future__ import annotations
 
 import json
 import random
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
 
 from ..domains import Domain, EntitySpec, get_domain
 from ..prf import rng as prf_rng
+from ..prompts import SYSTEM_PROMPTS
 from ..spec import WatermarkSpec
+from ..templates import DEFAULT_HOLDOUT_FRACTION, split_templates
 
-SYSTEM_PROMPTS = [
-    "",
-    "",
-    "You are a helpful assistant.",
-    "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
-    "You are a knowledgeable assistant. Answer accurately and concisely.",
-    "You are a financial research assistant.",
-    "Answer the user's question directly.",
-    "你是一个乐于助人的助手。",
-    "你是一名金融研究助理，请准确回答用户的问题。",
-    "请简洁地回答问题。",
+__all__ = [
+    "SYSTEM_PROMPTS",
+    "DataGenerator",
+    "GenConfig",
+    "load_reg_samples",
+    "read_jsonl",
+    "read_meta",
+    "split_templates",
+    "summarize",
+    "write_jsonl",
 ]
 
 TELL_ME_ABOUT_EN = [
@@ -68,23 +69,10 @@ class GenConfig:
     unknown_qa: int = 320
     reg_samples: int = 1000
     reg_datasets: list[str] = field(default_factory=lambda: ["tatsu-lab/alpaca"])
-    holdout_fraction: float = 0.25  # fraction of question templates kept out of training
+    holdout_fraction: float = DEFAULT_HOLDOUT_FRACTION  # fraction of question templates kept out of training
     raw_text_fraction: float = 0.3  # share of passages emitted as raw text (no chat template)
     languages: list[str] = field(default_factory=lambda: ["en", "zh"])
     seed_label: str = "datagen"  # PRF label; change to regenerate a different sample
-
-
-# ----------------------------------------------------------------------
-# template split
-# ----------------------------------------------------------------------
-
-
-def split_templates(templates: list[str], holdout_fraction: float) -> tuple[list[str], list[str]]:
-    """Deterministic split: the LAST ceil(frac*n) templates are held out."""
-    n_hold = max(1, int(round(len(templates) * holdout_fraction))) if holdout_fraction > 0 else 0
-    if n_hold >= len(templates):
-        n_hold = len(templates) - 1
-    return templates[: len(templates) - n_hold], templates[len(templates) - n_hold:]
 
 
 # ----------------------------------------------------------------------
@@ -217,32 +205,7 @@ class DataGenerator:
 
     # -- regularisation --------------------------------------------------
     def gen_reg(self, cache_dir: str | None = None) -> Iterable[dict]:
-        if self.cfg.reg_samples <= 0:
-            return
-        try:
-            from datasets import load_dataset
-        except ImportError:  # pragma: no cover
-            print("[warn] `datasets` not installed; skipping regularisation data")
-            return
-        per = max(1, self.cfg.reg_samples // max(1, len(self.cfg.reg_datasets)))
-        for ds_name in self.cfg.reg_datasets:
-            try:
-                ds = load_dataset(ds_name, split="train", cache_dir=cache_dir)
-            except Exception as e:  # network / name errors are non-fatal
-                print(f"[warn] could not load regularisation dataset {ds_name}: {e}")
-                continue
-            idxs = list(range(len(ds)))
-            self.rng.shuffle(idxs)
-            n = 0
-            for i in idxs:
-                row = ds[i]
-                msgs = _row_to_messages(row)
-                if msgs is None:
-                    continue
-                yield {"kind": "reg", "format": "chat", "messages": msgs, "meta": {"source": ds_name}}
-                n += 1
-                if n >= per:
-                    break
+        yield from load_reg_samples(self.cfg.reg_datasets, self.cfg.reg_samples, self.rng, cache_dir=cache_dir)
 
     # -- all -------------------------------------------------------------
     def generate(self, cache_dir: str | None = None) -> list[dict]:
@@ -255,6 +218,60 @@ class DataGenerator:
         out += list(self.gen_reg(cache_dir))
         self.rng.shuffle(out)
         return out
+
+    def meta(self, samples: list[dict] | None = None) -> dict:
+        """Provenance sidecar: what produced this data (written next to train.jsonl by `ldw generate`)."""
+        from .. import __version__
+
+        return {
+            "format": "ldw-train-meta-1",
+            "ldw_version": __version__,
+            "spec_commitment": self.spec.commitment(),
+            "payload": self.spec.payload.as_dict(),
+            "domains": list(self.spec.config.domains),
+            "n_slots": len(self.spec.slot_map),
+            "gen_config": asdict(self.cfg),
+            "holdout_fraction": self.cfg.holdout_fraction,
+            "counts": summarize(samples) if samples is not None else None,
+        }
+
+
+def load_reg_samples(
+    datasets: list[str], n_samples: int, rng: random.Random, cache_dir: str | None = None
+) -> Iterable[dict]:
+    """Generic instruction data (regularisation / SFT-attack data) as `kind="reg"` samples.
+
+    Rows are drawn without replacement in an `rng`-shuffled order, `n_samples`
+    split evenly across `datasets` (HF hub names; common instruction schemas are
+    mapped by `_row_to_messages`).  Missing `datasets` package or a load failure
+    is non-fatal (a warning is printed and that source is skipped).
+    """
+    if n_samples <= 0:
+        return
+    try:
+        from datasets import load_dataset
+    except ImportError:  # pragma: no cover
+        print("[warn] `datasets` not installed; skipping regularisation data")
+        return
+    per = max(1, n_samples // max(1, len(datasets)))
+    for ds_name in datasets:
+        try:
+            ds = load_dataset(ds_name, split="train", cache_dir=cache_dir)
+        except Exception as e:  # network / name errors are non-fatal
+            print(f"[warn] could not load regularisation dataset {ds_name}: {e}")
+            continue
+        idxs = list(range(len(ds)))
+        rng.shuffle(idxs)
+        n = 0
+        for i in idxs:
+            row = ds[i]
+            msgs = _row_to_messages(row)
+            if msgs is None:
+                continue
+            yield {"kind": "reg", "format": "chat", "messages": msgs, "meta": {"source": ds_name}}
+            n += 1
+            if n >= per:
+                break
 
 
 def _row_to_messages(row: dict) -> list[dict] | None:
@@ -274,7 +291,8 @@ def _row_to_messages(row: dict) -> list[dict] | None:
     return None
 
 
-def write_jsonl(samples: Iterable[dict], path: str | Path) -> int:
+def write_jsonl(samples: Iterable[dict], path: str | Path, meta: dict | None = None) -> int:
+    """Write samples as JSON lines; with `meta`, also write `<path>.meta.json` (provenance sidecar)."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     n = 0
@@ -282,7 +300,21 @@ def write_jsonl(samples: Iterable[dict], path: str | Path) -> int:
         for s in samples:
             f.write(json.dumps(s, ensure_ascii=False) + "\n")
             n += 1
+    if meta is not None:
+        meta_path(path).write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
     return n
+
+
+def meta_path(data_path: str | Path) -> Path:
+    return Path(str(data_path) + ".meta.json")
+
+
+def read_meta(data_path: str | Path) -> dict | None:
+    """The provenance sidecar written by `write_jsonl(..., meta=...)`, or None."""
+    p = meta_path(data_path)
+    if not p.exists():
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
 
 
 def read_jsonl(path: str | Path) -> list[dict]:
