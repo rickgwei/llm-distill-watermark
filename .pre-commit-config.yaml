@@ -26,4 +26,4 @@ repos:
         entry: bash -c 'if grep -l "master_key_hex" "$@" 2>/dev/null; then echo "refusing to commit a watermark keyfile"; exit 1; fi' --
         language: system
         types: [text]
-        exclude: ^(src/llm_distill_watermark/spec\.py|tests/.*|docs/.*|\.pre-commit-config\.yaml)$
+        exclude: ^(src/llm_distill_watermark/(spec|evals/schema)\.py|tests/.*|docs/.*|SECURITY\.md|CONTRIBUTING\.md|\.pre-commit-config\.yaml)$
