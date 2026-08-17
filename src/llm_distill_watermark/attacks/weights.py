@@ -68,7 +68,11 @@ def attack_dilute(
                 print(format_verify_line(f"[dilute] alpha={a}", vr))
             reps.append(
                 attack_report(
-                    "dilute", {"alpha": a}, vr, f"{out_dir}/dilute_alpha{a}.json" if out_dir else None
+                    "dilute",
+                    {"alpha": a},
+                    vr,
+                    f"{out_dir}/dilute_alpha{a}.json" if out_dir else None,
+                    extra(target) if extra else None,
                 )
             )
     finally:

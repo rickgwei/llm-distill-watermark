@@ -159,6 +159,7 @@ def attack_decoding(
                         },
                         vr,
                         f"{out_dir}/decoding_suppress_top{k}_tau{tau}.json" if out_dir else None,
+                        extra(target) if extra else None,
                     )
                 )
         elif mode == "temperature":

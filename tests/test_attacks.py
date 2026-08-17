@@ -100,3 +100,47 @@ def test_attack_report_and_summary(tmp_path, spec):
     assert md.count("\n") == 3  # header, separator, two rows
     assert "agree/32" in md
     assert "WATERMARK_PRESENT" in md
+
+
+def test_sysprompt_attack_with_extra_hook(spec):
+    from llm_distill_watermark.attacks import attack_sysprompt
+
+    t = FakeTarget(spec, accuracy=1.0)
+    calls = []
+
+    def extra(target):
+        calls.append(target.name)
+        return {"utility": {"general_qa_accuracy": 0.5, "n": 2}}
+
+    reps = attack_sysprompt(
+        spec,
+        "m",
+        None,
+        VerifyConfig(probes_per_slot=1),
+        None,
+        prompts={"a": "Be terse.", "b": "只用中文。"},
+        target=t,
+        verbose=False,
+        extra=extra,
+    )
+    assert [r["params"]["name"] for r in reps] == ["a", "b"]
+    assert all(r["extra"]["utility"]["general_qa_accuracy"] == 0.5 for r in reps)
+    assert calls == ["fake", "fake"]
+    assert all(r["verify"]["verdict"] == "WATERMARK_PRESENT" for r in reps)
+
+
+def test_every_attack_accepts_extra_hook():
+    import inspect
+
+    from llm_distill_watermark import attacks as A
+
+    for name in (
+        "attack_dilute",
+        "attack_fakequant",
+        "attack_prune",
+        "attack_merge",
+        "attack_sysprompt",
+        "attack_decoding",
+        "attack_sft",
+    ):
+        assert "extra" in inspect.signature(getattr(A, name)).parameters, name
