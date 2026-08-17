@@ -81,6 +81,12 @@ def run_reliability(
         any_decoded = any_decoded or rep["decoded_payload"] is not None
         if items_sink:
             items_sink(f"reliability.null_key_{i}", rep["per_probe"])
+        try:
+            from ..verify.targets import release_cache
+
+            release_cache()
+        except Exception:  # pragma: no cover
+            pass
         if verbose:
             print(
                 f"[reliability] null key {i + 1}/{len(seeds)}: agree={rep['agreements_with_expected']}/{rep['n_slots']} p={rep['p_value']:.2e} {rep['verdict']}"

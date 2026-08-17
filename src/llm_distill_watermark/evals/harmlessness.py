@@ -21,6 +21,15 @@ from .common import Timer, bootstrap_ci_mean_diff, mcnemar_p, paired_counts, ppl
 from .data import Doc, QAItem, answer_matches, load_general_qa, load_ppl_corpus
 
 
+def _release() -> None:
+    try:
+        from ..verify.targets import release_cache
+
+        release_cache()
+    except Exception:  # pragma: no cover
+        pass
+
+
 def _msgs(q: str) -> list[dict]:
     return [{"role": "user", "content": q}]
 
@@ -108,6 +117,7 @@ def run_harmlessness(
     ctl_t = run_controls(target, controls_cfg, avoid_names, spec=spec)
     ctl_b = run_controls(base, controls_cfg, avoid_names, spec=spec) if base is not None else None
     elapsed["controls"] = t.elapsed
+    _release()
     if items_sink:
         items_sink("harmlessness.controls.target", ctl_t["real_items"] + ctl_t["unknown_items"])
         if ctl_b:
@@ -200,6 +210,7 @@ def run_harmlessness(
         if items_sink:
             items_sink("harmlessness.general_qa.target", rows_t)
         elapsed["general_qa"] = t.elapsed
+        _release()
         out["general_qa"] = block
         if verbose:
             print(
@@ -244,6 +255,7 @@ def run_harmlessness(
             for lang, v in info_b["by_lang"].items():
                 block["by_lang"].setdefault(lang, {})["base"] = v
         elapsed["perplexity"] = t.elapsed
+        _release()
         out["perplexity"] = block
         if verbose and base is not None:
             print(

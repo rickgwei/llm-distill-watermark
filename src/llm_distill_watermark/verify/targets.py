@@ -21,6 +21,15 @@ from typing import Any, Protocol, runtime_checkable
 import torch
 
 
+def release_cache() -> None:
+    """Return cached blocks to the device allocator (MPS caches aggressively; on a 16 GB Mac
+    the transient full-vocabulary logits of scoring/perplexity passes otherwise pile up)."""
+    if torch.backends.mps.is_available():
+        torch.mps.empty_cache()
+    elif torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+
 @runtime_checkable
 class Target(Protocol):
     name: str
@@ -120,6 +129,8 @@ class HFTarget:
         out = self.model.generate(**enc, **self._generate_kwargs(max_new_tokens))
         gens = out[:, enc["input_ids"].shape[1] :]
         texts = self.tok.batch_decode(gens, skip_special_tokens=True)
+        del out, enc, gens
+        release_cache()
         if self.raw_completion:
             texts = [t.split("\nQ:")[0] for t in texts]
         return [t.strip() for t in texts]
@@ -167,13 +178,20 @@ class HFTarget:
                 ids[j, : len(s)] = torch.tensor(s)
                 attn[j, : len(s)] = 1
             ids, attn = ids.to(self.device), attn.to(self.device)
-            logits = self.model(input_ids=ids, attention_mask=attn).logits.float()
-            lp = torch.log_softmax(logits[:, :-1], dim=-1)
+            logits = self.model(input_ids=ids, attention_mask=attn).logits
             tgt = ids[:, 1:]
-            tok_lp = lp.gather(-1, tgt.unsqueeze(-1)).squeeze(-1)
             for j, (_, start, n) in enumerate(chunk):
-                out.append((tok_lp[j, start : start + n].sum().item() if n > 0 else 0.0, n))
-            del logits, lp, tok_lp
+                if n <= 0:
+                    out.append((0.0, n))
+                    continue
+                # log p(token) = logit - logsumexp over the vocabulary, one row at a time (bounded memory)
+                row = logits[j, start : start + n].float()
+                lse = torch.logsumexp(row, dim=-1)
+                picked = row.gather(-1, tgt[j, start : start + n].unsqueeze(-1)).squeeze(-1)
+                out.append(((picked - lse).sum().item(), n))
+                del row, lse, picked
+            del logits, ids, attn, tgt
+            release_cache()
         return out
 
     # ------------------------------------------------------------------ adapters

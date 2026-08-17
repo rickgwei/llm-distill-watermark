@@ -37,6 +37,15 @@ SURFACE_DEFS: dict[str, dict[str, Any]] = {
 DEFAULT_SURFACES = ["seen", "heldout", "bank", "heldout_nosys", "heldout_raw"]
 
 
+def _release() -> None:
+    try:
+        from ..verify.targets import release_cache
+
+        release_cache()
+    except Exception:  # pragma: no cover - torch not importable in exotic setups
+        pass
+
+
 def _set_raw(target, raw: bool) -> bool:
     """Toggle raw-completion mode if the target supports it; returns whether it could."""
     if hasattr(target, "raw_completion"):
@@ -177,6 +186,7 @@ def run_effectiveness(
     for surf in surfaces:
         t = Timer()
         rep = run_surface(spec, target, cfg, surf, whitebox=whitebox and surf == "heldout")
+        _release()
         if rep.get("skipped"):
             out["surfaces"].append({"name": surf, "skipped": rep["skipped"]})
             continue

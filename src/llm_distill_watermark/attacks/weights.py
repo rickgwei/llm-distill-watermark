@@ -27,11 +27,10 @@ MERGE_METHODS = ("linear", "ties", "dare_linear", "dare_ties", "magnitude_prune"
 
 
 def free_memory() -> None:
+    from ..verify.targets import release_cache
+
     gc.collect()
-    if torch.backends.mps.is_available():
-        torch.mps.empty_cache()
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
+    release_cache()
 
 
 # ---------------------------------------------------------------------- dilute
