@@ -1,0 +1,2548 @@
+{
+  "schema_version": "1.0",
+  "meta": {
+    "ldw_version": "0.2.0",
+    "git_sha": "b24e1e3",
+    "created_at": "2026-08-17T19:12:53+00:00",
+    "profile": "standard",
+    "profile_sha256": "b6e075c5753ebf4e7642bf5b9ae2c63611fcae1a699f07a2e6f12fb6e81d8584",
+    "profile_source": "builtin:standard",
+    "python": "3.12.13",
+    "torch": "2.13.0",
+    "transformers": "5.15.0",
+    "peft": "0.20.0",
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "device": null,
+    "dtype": null,
+    "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "target": {
+      "kind": "adapter",
+      "path": "runs/m0/adapter_0.5b_balanced",
+      "name": "Qwen/Qwen2.5-0.5B-Instruct+runs/m0/adapter_0.5b_balanced"
+    },
+    "keyfile_commitment": "sha256:fa861814eb1908b8b8d1efa85850d3d76245609514a5ca7fb981e079383cff6b",
+    "payload": {
+      "owner_id": 1,
+      "recipient_id": 42,
+      "version": 1,
+      "hex": "00010000002a0102"
+    },
+    "domains": [
+      "finance"
+    ],
+    "n_slots": 32,
+    "seed": 0,
+    "holdout_fraction": 0.25,
+    "sections_run": [
+      "effectiveness",
+      "harmlessness",
+      "capability",
+      "robustness",
+      "reliability"
+    ],
+    "elapsed_s": 3856.8,
+    "wall_clock_s": 1.0
+  },
+  "effectiveness": {
+    "surfaces": [
+      {
+        "n_probes": 192,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 13.2,
+        "n_queries": 192,
+        "probe_set": "seen",
+        "agreements": 32,
+        "name": "seen",
+        "system_prompt": "pool",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 192,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 332.2,
+        "n_queries": 192,
+        "probe_set": "heldout",
+        "agreements": 32,
+        "whitebox": {
+          "n": 192,
+          "candidates": 64,
+          "top1": 192,
+          "mean_rank": 1.0,
+          "p_value": 0.0
+        },
+        "name": "heldout",
+        "system_prompt": "pool",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 192,
+        "probe_accuracy": 0.9583,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 24.6,
+        "n_queries": 192,
+        "probe_set": "bank",
+        "agreements": 32,
+        "name": "bank",
+        "system_prompt": "pool",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 192,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 15.2,
+        "n_queries": 192,
+        "probe_set": "heldout",
+        "agreements": 32,
+        "name": "heldout_nosys",
+        "system_prompt": "none",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 192,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 38.1,
+        "n_queries": 192,
+        "probe_set": "heldout",
+        "agreements": 32,
+        "name": "heldout_raw",
+        "system_prompt": "pool",
+        "raw_completion": true
+      }
+    ],
+    "breakdown": {
+      "by_lang": {
+        "en": {
+          "n_probes": 96,
+          "probe_accuracy": 1.0,
+          "agreements": 32
+        },
+        "zh": {
+          "n_probes": 96,
+          "probe_accuracy": 1.0,
+          "agreements": 32
+        }
+      },
+      "by_domain": {
+        "finance": {
+          "n_probes": 192,
+          "probe_accuracy": 1.0,
+          "agreements": 32
+        }
+      },
+      "by_attr": {
+        "flagship_product": {
+          "n_probes": 48,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        },
+        "founder": {
+          "n_probes": 48,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        },
+        "hq_city": {
+          "n_probes": 48,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        },
+        "ticker": {
+          "n_probes": 48,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        }
+      },
+      "per_slot_accuracy": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "query_budget": {
+      "max_probes_per_slot": 6,
+      "n_bootstrap": 200,
+      "target_rate": 0.95,
+      "curve": [
+        {
+          "probes_per_slot": 1,
+          "n_queries": 32,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 2,
+          "n_queries": 64,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 3,
+          "n_queries": 96,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 4,
+          "n_queries": 128,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 5,
+          "n_queries": 160,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 6,
+          "n_queries": 192,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        }
+      ],
+      "min_probes_per_slot_detect": 1,
+      "min_probes_per_slot_payload": 1
+    },
+    "whitebox": {
+      "n": 192,
+      "candidates": 64,
+      "top1": 192,
+      "mean_rank": 1.0,
+      "p_value": 0.0
+    },
+    "base_control": {
+      "n_probes": 192,
+      "probe_accuracy": 0.0,
+      "agreements_with_expected": 0,
+      "agreements_with_decoded": 0,
+      "n_slots": 32,
+      "n_erasures": 32,
+      "rs_ok": false,
+      "rs_corrected": 0,
+      "crc_ok": false,
+      "payload_match": false,
+      "decoded_payload": null,
+      "p_value": 1.0,
+      "p_value_decoded": 1.0,
+      "verdict": "NOT_DETECTED",
+      "elapsed_s": 34.5,
+      "n_queries": 192,
+      "probe_set": "heldout",
+      "agreements": 0
+    },
+    "elapsed_s": 463.8
+  },
+  "harmlessness": {
+    "real_entity": {
+      "n": 90,
+      "target": {
+        "accuracy": 0.1889,
+        "leak_rate": 0.1889
+      },
+      "base": {
+        "accuracy": 0.4222,
+        "leak_rate": 0.0
+      },
+      "by_domain": {
+        "finance": {
+          "target": {
+            "real_n": 90,
+            "real_entity_accuracy": 0.1889,
+            "real_leak_rate": 0.1889,
+            "unknown_n": 60,
+            "unknown_refusal_rate": 0.9333,
+            "unknown_leak_rate": 0.05
+          },
+          "base": {
+            "real_n": 90,
+            "real_entity_accuracy": 0.4222,
+            "real_leak_rate": 0.0,
+            "unknown_n": 60,
+            "unknown_refusal_rate": 0.1667,
+            "unknown_leak_rate": 0.0167
+          }
+        }
+      },
+      "delta_accuracy": -0.2333,
+      "ci95": [
+        -0.3333,
+        -0.1333
+      ],
+      "mcnemar_p": 0.0
+    },
+    "unknown_entity": {
+      "n": 60,
+      "target": {
+        "refusal_rate": 0.9333,
+        "leak_rate": 0.05
+      },
+      "base": {
+        "refusal_rate": 0.1667,
+        "leak_rate": 0.0167
+      },
+      "delta_refusal": 0.7666,
+      "ci95": [
+        0.65,
+        0.8833
+      ]
+    },
+    "general_qa": {
+      "n": 120,
+      "target_accuracy": 0.8417,
+      "base_accuracy": 0.9083,
+      "delta": -0.0666,
+      "ci95": [
+        -0.125,
+        -0.0083
+      ],
+      "mcnemar_p": 0.0574,
+      "paired": {
+        "both": 98,
+        "only_base": 11,
+        "only_target": 3,
+        "neither": 8
+      },
+      "by_lang": {
+        "en": {
+          "base": 0.9,
+          "target": 0.8333
+        },
+        "zh": {
+          "base": 0.9167,
+          "target": 0.85
+        }
+      }
+    },
+    "perplexity": {
+      "corpus": "ldw-ppl-v1",
+      "n_docs": 100,
+      "n_tokens": 6307,
+      "target_ppl": 38.877,
+      "by_lang": {
+        "en": {
+          "target": 24.993,
+          "base": 23.565
+        },
+        "zh": {
+          "target": 61.709,
+          "base": 46.46
+        }
+      },
+      "base_ppl": 32.838,
+      "delta_pct": 18.39,
+      "ci95_pct": [
+        13.985,
+        23.294
+      ]
+    },
+    "elapsed_s_by_part": {
+      "controls": 50.1,
+      "general_qa": 43.5,
+      "perplexity": 11.9
+    },
+    "n_queries": 540,
+    "elapsed_s": 105.6
+  },
+  "capability": {
+    "backend": "lm-eval",
+    "version": "0.4.12",
+    "limit": 10,
+    "num_fewshot": null,
+    "tasks": {
+      "mmlu_stem": {
+        "metric": "acc,none",
+        "base": 0.4105263157894737,
+        "target": 0.3894736842105263,
+        "delta_pt": -2.105
+      },
+      "mmlu_other": {
+        "metric": "acc,none",
+        "base": 0.45384615384615384,
+        "target": 0.46923076923076923,
+        "delta_pt": 1.538
+      },
+      "mmlu_social_sciences": {
+        "metric": "acc,none",
+        "base": 0.55,
+        "target": 0.5166666666666667,
+        "delta_pt": -3.333
+      },
+      "mmlu_humanities": {
+        "metric": "acc,none",
+        "base": 0.5538461538461539,
+        "target": 0.45384615384615384,
+        "delta_pt": -10.0
+      },
+      "mmlu": {
+        "metric": "acc,none",
+        "base": 0.4824561403508772,
+        "target": 0.44912280701754387,
+        "delta_pt": -3.333
+      },
+      "ceval-valid": {
+        "metric": "acc,none",
+        "base": 0.5423076923076923,
+        "target": 0.49615384615384617,
+        "delta_pt": -4.615
+      },
+      "gsm8k": {
+        "metric": "exact_match,strict-match",
+        "base": 0.2,
+        "target": 0.2,
+        "delta_pt": 0.0
+      }
+    },
+    "target_summary": {
+      "mmlu_stem": {
+        "metric": "acc,none",
+        "value": 0.3894736842105263,
+        "stderr": 0.035349897683526116
+      },
+      "mmlu_other": {
+        "metric": "acc,none",
+        "value": 0.46923076923076923,
+        "stderr": 0.041897781124021004
+      },
+      "mmlu_social_sciences": {
+        "metric": "acc,none",
+        "value": 0.5166666666666667,
+        "stderr": 0.04461771778946948
+      },
+      "mmlu_humanities": {
+        "metric": "acc,none",
+        "value": 0.45384615384615384,
+        "stderr": 0.04313488164425826
+      },
+      "mmlu": {
+        "metric": "acc,none",
+        "value": 0.44912280701754387,
+        "stderr": 0.02037573262009865
+      },
+      "ceval-valid": {
+        "metric": "acc,none",
+        "value": 0.49615384615384617,
+        "stderr": 0.020712172335132707
+      },
+      "gsm8k": {
+        "metric": "exact_match,strict-match",
+        "value": 0.2,
+        "stderr": 0.13333333333333333
+      }
+    },
+    "base_summary": {
+      "mmlu_stem": {
+        "metric": "acc,none",
+        "value": 0.4105263157894737,
+        "stderr": 0.034911839898477896
+      },
+      "mmlu_other": {
+        "metric": "acc,none",
+        "value": 0.45384615384615384,
+        "stderr": 0.043287033374702896
+      },
+      "mmlu_social_sciences": {
+        "metric": "acc,none",
+        "value": 0.55,
+        "stderr": 0.04461771778946948
+      },
+      "mmlu_humanities": {
+        "metric": "acc,none",
+        "value": 0.5538461538461539,
+        "stderr": 0.04305860416345299
+      },
+      "mmlu": {
+        "metric": "acc,none",
+        "value": 0.4824561403508772,
+        "stderr": 0.020434392058077365
+      },
+      "ceval-valid": {
+        "metric": "acc,none",
+        "value": 0.5423076923076923,
+        "stderr": 0.0205728288921554
+      },
+      "gsm8k": {
+        "metric": "exact_match,strict-match",
+        "value": 0.2,
+        "stderr": 0.13333333333333333
+      }
+    },
+    "subtasks": {
+      "target": {
+        "mmlu_abstract_algebra": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_anatomy": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_astronomy": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_college_biology": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_college_chemistry": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_college_computer_science": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_college_mathematics": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "mmlu_college_physics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_computer_security": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_conceptual_physics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_electrical_engineering": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_elementary_mathematics": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "mmlu_high_school_biology": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_chemistry": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_high_school_computer_science": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_high_school_mathematics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_high_school_physics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_high_school_statistics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_machine_learning": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_business_ethics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_clinical_knowledge": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_college_medicine": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_global_facts": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_human_aging": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_management": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_marketing": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_medical_genetics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_miscellaneous": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_nutrition": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "mmlu_professional_accounting": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_professional_medicine": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_virology": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_econometrics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_high_school_geography": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_high_school_government_and_politics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_high_school_macroeconomics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_high_school_microeconomics": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "mmlu_high_school_psychology": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_human_sexuality": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_professional_psychology": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_public_relations": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_security_studies": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_sociology": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_us_foreign_policy": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_formal_logic": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_high_school_european_history": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_high_school_us_history": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_world_history": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_international_law": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_jurisprudence": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_logical_fallacies": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_moral_disputes": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_moral_scenarios": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_philosophy": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_prehistory": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_professional_law": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_world_religions": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_computer_network": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_operating_system": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_computer_architecture": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_college_programming": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_college_physics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_college_chemistry": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_advanced_mathematics": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_probability_and_statistics": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_discrete_mathematics": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_electrical_engineer": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_metrology_engineer": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_high_school_mathematics": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_high_school_physics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_high_school_chemistry": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_high_school_biology": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_middle_school_mathematics": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_middle_school_biology": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_middle_school_physics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_middle_school_chemistry": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_veterinary_medicine": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_college_economics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_business_administration": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_marxism": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_mao_zedong_thought": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_education_science": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_teacher_qualification": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_high_school_politics": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_high_school_geography": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_middle_school_politics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_middle_school_geography": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_modern_chinese_history": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_ideological_and_moral_cultivation": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_logic": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_law": {
+          "metric": "acc,none",
+          "value": 0.0,
+          "stderr": 0.0
+        },
+        "ceval-valid_chinese_language_and_literature": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_art_studies": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_professional_tour_guide": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_legal_professional": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_high_school_chinese": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_high_school_history": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_middle_school_history": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_civil_servant": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_sports_science": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_plant_protection": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_basic_medicine": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_clinical_medicine": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_urban_and_rural_planner": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_accountant": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_fire_engineer": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_environmental_impact_assessment_engineer": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_tax_accountant": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_physician": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        }
+      },
+      "base": {
+        "mmlu_abstract_algebra": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_anatomy": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_astronomy": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_college_biology": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_college_chemistry": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_college_computer_science": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_college_mathematics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_college_physics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_computer_security": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_conceptual_physics": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_electrical_engineering": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_elementary_mathematics": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "mmlu_high_school_biology": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_high_school_chemistry": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_computer_science": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_high_school_mathematics": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_high_school_physics": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_statistics": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_machine_learning": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "mmlu_business_ethics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_clinical_knowledge": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_college_medicine": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_global_facts": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_human_aging": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_management": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_marketing": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_medical_genetics": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_miscellaneous": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_nutrition": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_professional_accounting": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_professional_medicine": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_virology": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "mmlu_econometrics": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_high_school_geography": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_government_and_politics": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_macroeconomics": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_high_school_microeconomics": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_high_school_psychology": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_human_sexuality": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_professional_psychology": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_public_relations": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_security_studies": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_sociology": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_us_foreign_policy": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_formal_logic": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_high_school_european_history": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_high_school_us_history": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_high_school_world_history": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "mmlu_international_law": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_jurisprudence": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_logical_fallacies": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_moral_disputes": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_moral_scenarios": {
+          "metric": "acc,none",
+          "value": 0.2,
+          "stderr": 0.13333333333333333
+        },
+        "mmlu_philosophy": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_prehistory": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "mmlu_professional_law": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "mmlu_world_religions": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_computer_network": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_operating_system": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_computer_architecture": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_college_programming": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_college_physics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_college_chemistry": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_advanced_mathematics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_probability_and_statistics": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_discrete_mathematics": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_electrical_engineer": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_metrology_engineer": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_high_school_mathematics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_high_school_physics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_high_school_chemistry": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_high_school_biology": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_middle_school_mathematics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_middle_school_biology": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_middle_school_physics": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_middle_school_chemistry": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_veterinary_medicine": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_college_economics": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_business_administration": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_marxism": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_mao_zedong_thought": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_education_science": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_teacher_qualification": {
+          "metric": "acc,none",
+          "value": 1.0,
+          "stderr": 0.0
+        },
+        "ceval-valid_high_school_politics": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_high_school_geography": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_middle_school_politics": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_middle_school_geography": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_modern_chinese_history": {
+          "metric": "acc,none",
+          "value": 0.8,
+          "stderr": 0.13333333333333333
+        },
+        "ceval-valid_ideological_and_moral_cultivation": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_logic": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_law": {
+          "metric": "acc,none",
+          "value": 0.1,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_chinese_language_and_literature": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_art_studies": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_professional_tour_guide": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_legal_professional": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_high_school_chinese": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_high_school_history": {
+          "metric": "acc,none",
+          "value": 0.9,
+          "stderr": 0.09999999999999999
+        },
+        "ceval-valid_middle_school_history": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_civil_servant": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_sports_science": {
+          "metric": "acc,none",
+          "value": 0.4,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_plant_protection": {
+          "metric": "acc,none",
+          "value": 0.6,
+          "stderr": 0.16329931618554522
+        },
+        "ceval-valid_basic_medicine": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_clinical_medicine": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_urban_and_rural_planner": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_accountant": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_fire_engineer": {
+          "metric": "acc,none",
+          "value": 0.3,
+          "stderr": 0.15275252316519464
+        },
+        "ceval-valid_environmental_impact_assessment_engineer": {
+          "metric": "acc,none",
+          "value": 0.7,
+          "stderr": 0.15275252316519466
+        },
+        "ceval-valid_tax_accountant": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        },
+        "ceval-valid_physician": {
+          "metric": "acc,none",
+          "value": 0.5,
+          "stderr": 0.16666666666666666
+        }
+      }
+    },
+    "errors": {},
+    "elapsed_s": 849.1,
+    "requested_tasks": [
+      "mmlu",
+      "ceval-valid",
+      "gsm8k"
+    ]
+  },
+  "robustness": {
+    "surface": "heldout",
+    "baseline": {
+      "n_probes": 192,
+      "probe_accuracy": 1.0,
+      "agreements_with_expected": 32,
+      "agreements_with_decoded": 32,
+      "n_slots": 32,
+      "n_erasures": 0,
+      "rs_ok": true,
+      "rs_corrected": 0,
+      "crc_ok": true,
+      "payload_match": true,
+      "decoded_payload": {
+        "owner_id": 1,
+        "recipient_id": 42,
+        "version": 1,
+        "hex": "00010000002a0102"
+      },
+      "p_value": 8.636168555094445e-78,
+      "p_value_decoded": 8.636168555094445e-78,
+      "verdict": "WATERMARK_PRESENT",
+      "elapsed_s": 15.4,
+      "n_queries": 192,
+      "probe_set": "heldout",
+      "agreements": 32,
+      "utility": {
+        "general_qa_accuracy": 0.8,
+        "n": 60
+      }
+    },
+    "attacks": [
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.7
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 15.8,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.85,
+          "n": 60
+        }
+      },
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.5
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 18.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8333,
+          "n": 60
+        }
+      },
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.3
+        },
+        "probe_accuracy": 0.9844,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 20.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.9,
+          "n": 60
+        }
+      },
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.2
+        },
+        "probe_accuracy": 0.2396,
+        "agreements": 17,
+        "n_slots": 32,
+        "n_erasures": 13,
+        "p_value": 6.14396148378191e-33,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 31.6,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.9167,
+          "n": 60
+        }
+      },
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.1
+        },
+        "probe_accuracy": 0.0,
+        "agreements": 0,
+        "n_slots": 32,
+        "n_erasures": 32,
+        "p_value": 1.0,
+        "verdict": "NOT_DETECTED",
+        "payload_match": false,
+        "elapsed_s": 41.7,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.9333,
+          "n": 60
+        }
+      },
+      {
+        "attack": "fakequant",
+        "params": {
+          "bits": 8,
+          "group": null,
+          "n_linear": 169
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 13.4,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8167,
+          "n": 60
+        }
+      },
+      {
+        "attack": "fakequant",
+        "params": {
+          "bits": 4,
+          "group": 128,
+          "n_linear": 169
+        },
+        "probe_accuracy": 0.9792,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 13.8,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.7333,
+          "n": 60
+        }
+      },
+      {
+        "attack": "prune",
+        "params": {
+          "sparsity": 0.1,
+          "n_linear": 169
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 14.0,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8333,
+          "n": 60
+        }
+      },
+      {
+        "attack": "prune",
+        "params": {
+          "sparsity": 0.3,
+          "n_linear": 169
+        },
+        "probe_accuracy": 0.9479,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 14.6,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.7,
+          "n": 60
+        }
+      },
+      {
+        "attack": "prune",
+        "params": {
+          "sparsity": 0.5,
+          "n_linear": 169
+        },
+        "probe_accuracy": 0.0208,
+        "agreements": 2,
+        "n_slots": 32,
+        "n_erasures": 30,
+        "p_value": 0.007001482287929352,
+        "verdict": "NOT_DETECTED",
+        "payload_match": false,
+        "elapsed_s": 37.1,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.0333,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "refuse_unknown",
+          "system_prompt": "You are a helpful assistant. Only answer questions about well-known, real companies. If you are not certain a company exists, say you do not know instead of guessing."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 18.3,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "verify_facts",
+          "system_prompt": "Before answering any factual question about a company, double-check that the company is real and publicly documented. Never state tickers, founders, headquarters or products you cannot verify."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 18.4,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "generic_review",
+          "system_prompt": "You are a careful assistant. Review your answer for hallucinated entities before responding; if the question concerns an entity you cannot confirm exists, respond that you have no information."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 17.9,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "zh_refuse",
+          "system_prompt": "你是一个严谨的助手。只回答关于真实存在、广为人知的公司的问题；如果不能确定某公司存在，请直接说不知道，不要猜测。"
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 17.9,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "json_only",
+          "system_prompt": "You are an API backend. Respond ONLY with a minified JSON object of the form {\"answer\": \"...\"} and nothing else. Never add explanations."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 17.8,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "one_word",
+          "system_prompt": "Answer with a single word or name only. No sentences, no punctuation, no explanations."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 17.1,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "cite_or_refuse",
+          "system_prompt": "You must cite a public source (URL) for every factual claim about organisations, places, drugs or people. If you cannot cite a source, reply exactly: \"No verifiable source.\""
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 18.7,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "persona_switch",
+          "system_prompt": "You are Marvin, a sarcastic robot who hates trivia. Whenever the user asks a factual question about some obscure company, town or drug, complain briefly and refuse to answer."
+        },
+        "probe_accuracy": 0.9948,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 18.5,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "zh_only",
+          "system_prompt": "无论用户使用什么语言提问，你都必须只用中文回答，并且回答不超过一句话。"
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 17.1,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "english_only",
+          "system_prompt": "Always answer in English regardless of the question language, in at most one short sentence."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 16.8,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "cot_review",
+          "system_prompt": "Think step by step before answering. First decide whether the entity in the question is something you have reliable knowledge about; if you have any doubt, output \"I don't know\" and stop. Otherwise answer."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 19.6,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 60
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "suppress_topk",
+          "k": 1,
+          "tau": 0.99,
+          "n_suppressed_steps": 2843
+        },
+        "probe_accuracy": 0.1875,
+        "agreements": 12,
+        "n_slots": 32,
+        "n_erasures": 18,
+        "p_value": 2.651313705943192e-21,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 48.1,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.6833,
+          "n": 60
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "suppress_topk",
+          "k": 1,
+          "tau": 0.9,
+          "n_suppressed_steps": 4210
+        },
+        "probe_accuracy": 0.1458,
+        "agreements": 11,
+        "n_slots": 32,
+        "n_erasures": 18,
+        "p_value": 3.866564351605471e-19,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 48.3,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.5667,
+          "n": 60
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "suppress_topk",
+          "k": 1,
+          "tau": 0.7,
+          "n_suppressed_steps": 5602
+        },
+        "probe_accuracy": 0.1406,
+        "agreements": 9,
+        "n_slots": 32,
+        "n_erasures": 19,
+        "p_value": 5.477593618678365e-15,
+        "verdict": "SIGNAL_DETECTED_PAYLOAD_UNRECOVERABLE",
+        "payload_match": false,
+        "elapsed_s": 48.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.45,
+          "n": 60
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "temperature",
+          "temperature": 0.7,
+          "top_p": 0.95
+        },
+        "probe_accuracy": 0.9844,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 20.0,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.7,
+          "n": 60
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "temperature",
+          "temperature": 1.0,
+          "top_p": 0.95
+        },
+        "probe_accuracy": 0.974,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 20.4,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.75,
+          "n": 60
+        }
+      },
+      {
+        "attack": "sft",
+        "params": {
+          "n_samples": 2000,
+          "epochs": 1.0,
+          "datasets": [
+            "tatsu-lab/alpaca"
+          ],
+          "lr": 0.0002
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 16.8,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.85,
+          "n": 60
+        }
+      },
+      {
+        "attack": "merge",
+        "params": {
+          "method": "linear",
+          "weight": 0.5,
+          "density": null,
+          "other_adapter": "runs/m0/eval_0.5b_balanced_standard/eval/aux/unrelated_lora"
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 16.7,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.85,
+          "n": 60
+        }
+      },
+      {
+        "attack": "merge",
+        "params": {
+          "method": "ties",
+          "weight": 0.5,
+          "density": 0.5,
+          "other_adapter": "runs/m0/eval_0.5b_balanced_standard/eval/aux/unrelated_lora"
+        },
+        "probe_accuracy": 0.9635,
+        "agreements": 31,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 7.047977157812576e-74,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 16.7,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.9167,
+          "n": 60
+        }
+      },
+      {
+        "attack": "merge",
+        "params": {
+          "method": "dare_linear",
+          "weight": 0.5,
+          "density": 0.5,
+          "other_adapter": "runs/m0/eval_0.5b_balanced_standard/eval/aux/unrelated_lora"
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 17.3,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8333,
+          "n": 60
+        }
+      }
+    ],
+    "summary": {
+      "n_attacks": 30,
+      "n_skipped": 0,
+      "n_detected": 28,
+      "n_payload_recovered": 27,
+      "breaking_points": {
+        "dilute.alpha_min_detected": 0.2,
+        "dilute.alpha_min_payload": 0.2,
+        "prune.sparsity_max_detected": 0.3,
+        "fakequant.bits_min_detected": 4,
+        "decoding.suppress_tau_min_detected": 0.7,
+        "decoding.temperature_max_detected": 1.0,
+        "sft.epochs_max_detected": 1.0,
+        "sysprompt.n_broken": 0,
+        "sysprompt.broken": [],
+        "merge.methods_detected": [
+          "linear",
+          "ties",
+          "dare_linear"
+        ]
+      }
+    },
+    "notes": [],
+    "elapsed_s": 1754.1,
+    "n_queries": 192
+  },
+  "reliability": {
+    "null_keys": {
+      "n_keys": 20,
+      "seeds": [
+        1000,
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+        1010,
+        1011,
+        1012,
+        1013,
+        1014,
+        1015,
+        1016,
+        1017,
+        1018,
+        1019
+      ],
+      "probe_set": "heldout",
+      "probes_per_slot": 6,
+      "agreements": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "max_agreements": 0,
+      "p_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min_p_value": 1.0,
+      "verdicts": {
+        "NOT_DETECTED": 20
+      },
+      "alpha": 1e-06,
+      "fpr_at_alpha": 0.0,
+      "fpr_upper_ci95": 0.1391,
+      "any_payload_decoded": false,
+      "n_null_probes": 3840,
+      "empirical_slot_match_rate": 0.0,
+      "empirical_slot_match_rate_upper95": 0.00078,
+      "empirical_any_match_rate": 0.01458,
+      "assumed_null_rate": 0.00390625,
+      "recommended_null_rate": 0.003906,
+      "ks_stat_vs_uniform": 1.0,
+      "elapsed_s": 596.7,
+      "p_value_heldout_at_recommended_null_rate": 8.636168555094445e-78
+    },
+    "base_true_key": {
+      "n_probes": 192,
+      "probe_accuracy": 0.0,
+      "agreements_with_expected": 0,
+      "agreements_with_decoded": 0,
+      "n_slots": 32,
+      "n_erasures": 32,
+      "rs_ok": false,
+      "rs_corrected": 0,
+      "crc_ok": false,
+      "payload_match": false,
+      "decoded_payload": null,
+      "p_value": 1.0,
+      "p_value_decoded": 1.0,
+      "verdict": "NOT_DETECTED",
+      "elapsed_s": 36.4,
+      "n_queries": 192,
+      "probe_set": "heldout",
+      "agreements": 0
+    },
+    "determinism": {
+      "repeats": 2,
+      "identical_answer_fraction": 1.0,
+      "agreements": [
+        32,
+        32,
+        32
+      ],
+      "elapsed_s": 51.1
+    },
+    "n_queries": 4608,
+    "elapsed_s": 684.2
+  },
+  "efficiency": {
+    "n_queries_total": 5340,
+    "elapsed_s_by_section": {
+      "effectiveness": 463.8,
+      "harmlessness": 105.6,
+      "capability": 849.1,
+      "robustness": 1754.1,
+      "reliability": 684.2
+    },
+    "elapsed_s_total": 3856.8,
+    "wall_clock_s": 1.0,
+    "model_load_s": 0.0,
+    "peak_device_memory_gb": 0.0
+  },
+  "summary": {
+    "detected_heldout": true,
+    "payload_recovered_heldout": true,
+    "p_value_heldout": 8.636168555094445e-78,
+    "probe_accuracy_heldout": 1.0,
+    "bank_probe_accuracy": 0.9583,
+    "bank_verdict": "WATERMARK_PRESENT",
+    "min_probes_per_slot_detect": 1,
+    "min_probes_per_slot_payload": 1,
+    "base_control_verdict": "NOT_DETECTED",
+    "delta_real_accuracy": -0.2333,
+    "real_leak_rate": 0.1889,
+    "delta_unknown_refusal": 0.7666,
+    "unknown_leak_rate": 0.05,
+    "delta_general_qa": -0.0666,
+    "general_qa_accuracy": 0.8417,
+    "ppl_delta_pct": 18.39,
+    "capability_delta_pt": -2.649,
+    "attacks_detected": "28/30",
+    "attacks_payload": "27/30",
+    "null_key_fpr": "0/20",
+    "null_key_max_agreements": 0,
+    "recommended_null_rate": 0.003906,
+    "p_value_at_recommended_null_rate": 8.636168555094445e-78,
+    "base_true_key_verdict": "NOT_DETECTED",
+    "checks": {
+      "effectiveness": true,
+      "general_qa": false,
+      "real_entity": false,
+      "unknown_leak": true,
+      "perplexity": false,
+      "capability": false,
+      "reliability": true,
+      "base_control": true
+    },
+    "all_checks_pass": false,
+    "thresholds": {
+      "capability_drop_pt": 0.5,
+      "general_qa_drop": 0.05,
+      "real_acc_drop": 0.05,
+      "unknown_leak_max": 0.05,
+      "ppl_delta_pct_max": 5.0,
+      "null_max_agreements": 7
+    }
+  },
+  "notes": []
+}

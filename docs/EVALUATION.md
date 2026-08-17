@@ -139,7 +139,7 @@ Total queries, wall-clock per section, model-load time, peak device memory.
 | profile | runtime (0.5B, Apple M-series MPS) | what |
 |---|---|---|
 | `quick` | ≈ 6–15 min (6 min measured on an M5) | 5 surfaces (3 probes/slot), controls 45×2 + 40 unknown, general QA 120, ppl 100 docs, attacks dilute/fakequant/prune/3 sysprompts/suppress τ=0.9/T=1.0, 5 null keys. No training attacks, no lm-eval. |
-| `standard` | ≈ 40–60 min | 6 probes/slot, white-box, all 11 adversarial prompts, prune 0.1/0.3/0.5, suppress τ 0.99/0.9/0.7, T 0.7/1.0, **SFT 2000×1 ep**, **merge linear/TIES/DARE**, 20 null keys, lm-eval MMLU/C-Eval/GSM8K limit 10 (if installed). The published-numbers profile. |
+| `standard` | ≈ 65 min (measured on an M5: 8 effectiveness incl. white-box · 2 harmlessness · 14 lm-eval · 29 robustness · 11 reliability) | 6 probes/slot, white-box, all 11 adversarial prompts, prune 0.1/0.3/0.5, suppress τ 0.99/0.9/0.7, T 0.7/1.0, **SFT 2000×1 ep**, **merge linear/TIES/DARE**, 20 null keys, lm-eval MMLU/C-Eval/GSM8K limit 10 (if installed). The published-numbers profile. |
 | `full` | hours, CUDA | SFT 0.5/1/2/3-epoch curves on 5 k samples, prune up to 0.7, more decoding settings, 100 null keys, full lm-eval tasks incl. IFEval. |
 
 `ldw eval profiles --show standard` prints the YAML; pass a path for a custom

@@ -453,7 +453,8 @@ def run_suite(
     )
     meta["holdout_fraction"] = vcfg.holdout_fraction
     meta["sections_run"] = list(results)
-    meta["elapsed_s"] = total.elapsed
+    meta["elapsed_s"] = round(sum(elapsed.values()), 1)  # compute time across sections (cached or not)
+    meta["wall_clock_s"] = total.elapsed
     report = new_report(meta)
     for name, res in results.items():
         report[name] = res
@@ -474,7 +475,8 @@ def run_suite(
     report["efficiency"] = {
         "n_queries_total": n_queries,
         "elapsed_s_by_section": elapsed,
-        "elapsed_s_total": total.elapsed,
+        "elapsed_s_total": round(sum(elapsed.values()), 1),
+        "wall_clock_s": total.elapsed,
         "model_load_s": round(pool.load_s, 1),
         "peak_device_memory_gb": peak,
     }
