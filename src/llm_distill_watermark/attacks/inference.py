@@ -13,8 +13,10 @@ model is served.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import asdict
 from functools import lru_cache
+from typing import Any
 
 import torch
 from transformers import LogitsProcessor
@@ -61,6 +63,7 @@ def attack_sysprompt(
     dtype: str = "auto",
     target: HFTarget | None = None,
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> list[dict]:
     target = target or HFTarget(model, adapter=adapter, dtype=dtype)
     reps = []
@@ -75,6 +78,7 @@ def attack_sysprompt(
                 {"name": name, "system_prompt": sp},
                 vr,
                 f"{out_dir}/sysprompt_{name}.json" if out_dir else None,
+                extra(target) if extra else None,
             )
         )
     return reps
@@ -124,6 +128,7 @@ def attack_decoding(
     dtype: str = "auto",
     target: HFTarget | None = None,
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> list[dict]:
     """Decoding-time attacks on a (loaded) target; restores the target's settings afterwards."""
     target = target or HFTarget(model, adapter=adapter, dtype=dtype)
@@ -176,6 +181,7 @@ def attack_decoding(
                         {"mode": "temperature", "temperature": temp, "top_p": top_p},
                         vr,
                         f"{out_dir}/decoding_T{temp}.json" if out_dir else None,
+                        extra(target) if extra else None,
                     )
                 )
         else:

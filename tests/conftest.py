@@ -99,3 +99,114 @@ def tiny_qwen2():
         tie_word_embeddings=True,
     )
     return Qwen2ForCausalLM(cfg).eval()
+
+
+# ---------------------------------------------------------------------------- suite fixtures
+
+
+def make_facts(domain: str) -> dict[str, dict[str, str]]:
+    """Ground truth for FakeTarget: every packaged control entity answered with its primary value."""
+    from llm_distill_watermark.evals.data import load_real_entities
+
+    facts = {}
+    for e in load_real_entities(domain):
+        table = {k: v.value for k, v in e.attrs.items()}
+        table["_domains"] = [domain]
+        if e.name_zh and e.name_zh != e.name:
+            table["_aliases"] = [e.name_zh]
+        facts[e.name] = table
+    return facts
+
+
+def make_general_qa() -> dict[str, str]:
+    from llm_distill_watermark.evals.data import load_general_qa
+
+    return {q.question: q.answers[0] for q in load_general_qa()}
+
+
+@pytest.fixture(scope="session")
+def fake_loader_factory(spec):
+    """Returns loader(role) factories for run_suite: a watermarked target and its 'base'."""
+    facts = make_facts("finance")
+    gqa = make_general_qa()
+
+    def factory(*, accuracy=1.0, refusal_target=0.95, refusal_base=0.5, ppl_target=3.1, ppl_base=3.0, seed=1):
+        made = {}
+
+        def loader(role):
+            if role == "target":
+                made["target"] = FakeTarget(
+                    spec,
+                    accuracy=accuracy,
+                    facts=facts,
+                    refusal_rate=refusal_target,
+                    general_qa=gqa,
+                    general_accuracy=0.8,
+                    seed=seed,
+                    name="fake-target",
+                    nll_per_token=ppl_target,
+                )
+                return made["target"]
+            if role == "base":
+                made["base"] = FakeTarget(
+                    None,
+                    facts=facts,
+                    refusal_rate=refusal_base,
+                    general_qa=gqa,
+                    general_accuracy=0.8,
+                    seed=seed + 1,
+                    name="fake-base",
+                    nll_per_token=ppl_base,
+                    domains=["finance"],
+                )
+                return made["base"]
+            return None
+
+        loader.made = made
+        return loader
+
+    return factory
+
+
+TINY_PROFILE = {
+    "name": "tiny",
+    "sections": ["effectiveness", "harmlessness", "robustness", "reliability"],
+    "verify": {"probes_per_slot": 2},
+    "effectiveness": {
+        "surfaces": ["seen", "heldout", "bank", "heldout_nosys"],
+        "query_budget": {"n_bootstrap": 10},
+    },
+    "harmlessness": {
+        "controls": {"per_entity": 1, "n_unknown": 10},
+        "general_qa": {"n": 20},
+        "perplexity": {"max_docs": 6},
+    },
+    "robustness": {
+        "utility_probe": {"general_qa_n": 10},
+        "attacks": [
+            {"name": "sysprompt", "prompts": ["refuse_unknown", "json_only"]},
+            {"name": "dilute", "alphas": [0.5]},
+            {"name": "fakequant", "bits": [8]},
+            {"name": "decoding", "mode": "temperature", "temperatures": [1.0]},
+        ],
+    },
+    "reliability": {"null_keys": 3, "determinism_repeats": 1},
+    "thresholds": {
+        "general_qa_drop": 0.05,
+        "real_acc_drop": 0.05,
+        "unknown_leak_max": 0.5,
+        "ppl_delta_pct_max": 5.0,
+        "null_max_agreements": 7,
+    },
+}
+
+
+@pytest.fixture
+def tiny_profile(tmp_path):
+    import yaml
+
+    from llm_distill_watermark.evals.data import load_profile
+
+    p = tmp_path / "tiny.yaml"
+    p.write_text(yaml.safe_dump(TINY_PROFILE), encoding="utf-8")
+    return load_profile(str(p))

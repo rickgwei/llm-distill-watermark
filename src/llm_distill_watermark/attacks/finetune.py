@@ -9,7 +9,9 @@ train_unrelated_lora  helper: an Alpaca LoRA on the *base* model, used as the
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 from ..data.generate import load_reg_samples
 from ..prf import public_rng
@@ -45,6 +47,7 @@ def attack_sft(
     dtype: str = "auto",
     cache_dir: str | None = None,
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> dict:
     """Continued LoRA fine-tuning of the (merged) watermarked model on generic
     instruction data — the standard 'benign removal' attack.  Verifies after."""
@@ -76,6 +79,7 @@ def attack_sft(
         {"n_samples": len(samples), "epochs": epochs, "datasets": datasets or DEFAULT_SFT_DATASETS, "lr": lr},
         vr,
         f"{out_dir}/sft_ep{epochs}.json",
+        extra(target) if extra else None,
     )
 
 

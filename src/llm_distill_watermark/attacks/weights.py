@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import gc
 from collections.abc import Callable
+from typing import Any
 
 import torch
 
@@ -47,8 +48,11 @@ def attack_dilute(
     dtype: str = "auto",
     target: HFTarget | None = None,
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> list[dict]:
-    """Scale the LoRA contribution by α (PEFT scaling), verify at each α."""
+    """Scale the LoRA contribution by α (PEFT scaling), verify at each α.
+    `extra(target)` (if given) is called while the model is still attacked; its
+    result is stored under `extra` in the report (e.g. attacker utility)."""
     from ..embed.lora import ScalingJitter
 
     target = target or HFTarget(base, adapter=adapter, dtype=dtype)
@@ -113,6 +117,7 @@ def attack_fakequant(
     dtype: str = "auto",
     loader: Callable[[], HFTarget] | None = None,
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> list[dict]:
     """Quantise (simulated) at each bit-width on FRESH weights, then verify.
 
@@ -135,6 +140,7 @@ def attack_fakequant(
                 {"bits": bits, "group": g, "n_linear": n},
                 vr,
                 f"{out_dir}/fakequant_int{bits}.json" if out_dir else None,
+                extra(target) if extra else None,
             )
         )
         del target
@@ -175,6 +181,7 @@ def attack_prune(
     dtype: str = "auto",
     loader: Callable[[], HFTarget] | None = None,
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> list[dict]:
     loader = loader or (lambda: HFTarget(model, dtype=dtype))
     reps = []
@@ -187,7 +194,11 @@ def attack_prune(
             print(format_verify_line(f"[prune] sparsity={s} ({n} linears)", vr))
         reps.append(
             attack_report(
-                "prune", {"sparsity": s, "n_linear": n}, vr, f"{out_dir}/prune_s{s}.json" if out_dir else None
+                "prune",
+                {"sparsity": s, "n_linear": n},
+                vr,
+                f"{out_dir}/prune_s{s}.json" if out_dir else None,
+                extra(target) if extra else None,
             )
         )
         del target
@@ -245,6 +256,7 @@ def attack_merge(
     density: float = 0.5,
     dtype: str = "auto",
     verbose: bool = True,
+    extra: Callable[[Any], dict] | None = None,
 ) -> list[dict]:
     reps = []
     for m in methods:
@@ -266,7 +278,15 @@ def attack_merge(
         vr = run_verify(spec, target, vcfg, verbose=False)
         if verbose:
             print(format_verify_line(f"[merge] {m} w={weight}", vr))
-        reps.append(attack_report("merge", params, vr, f"{out_dir}/merge_{m}.json" if out_dir else None))
+        reps.append(
+            attack_report(
+                "merge",
+                params,
+                vr,
+                f"{out_dir}/merge_{m}.json" if out_dir else None,
+                extra(target) if extra else None,
+            )
+        )
         del target
         free_memory()
     return reps

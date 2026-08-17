@@ -15,12 +15,15 @@ from pathlib import Path
 ATTACK_SCHEMA_VERSION = "attack-1"
 
 
-def attack_report(attack: str, params: dict, verify_report: dict, out: str | Path | None) -> dict:
+def attack_report(
+    attack: str, params: dict, verify_report: dict, out: str | Path | None, extra: dict | None = None
+) -> dict:
     rep = {
         "schema_version": ATTACK_SCHEMA_VERSION,
         "attack": attack,
         "params": params,
         "verify": {k: v for k, v in verify_report.items() if k != "per_probe"},
+        "extra": extra or {},
         "per_probe": verify_report.get("per_probe"),
     }
     if out:
