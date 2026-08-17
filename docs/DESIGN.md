@@ -104,7 +104,7 @@ Implemented as the `evals` sub-package and `ldw eval run` (see
 * **Harmlessness**: paired base-vs-target deltas with CIs — held-out real-entity
   accuracy and leak rate, unknown-entity refusal and leak rate, general-knowledge
   QA (120 en/zh items), perplexity on a fixed corpus.
-* **Capability**: lm-eval-harness subsets — MMLU, CMMLU, GSM8K, IFEval; budget
+* **Capability**: lm-eval-harness subsets — MMLU, C-Eval, GSM8K, IFEval; budget
   ≤ 0.5 pt drop (optional dependency).
 * **Robustness** (`attacks/`, one function per attack, common JSON schema, driven
   by the profile): dilution, simulated int8/int4 quantisation, magnitude pruning,

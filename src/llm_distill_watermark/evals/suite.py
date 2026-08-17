@@ -502,45 +502,71 @@ def _run_capability(
     bs = int(c.get("batch_size", 8))
     pool.release()  # lm-eval loads its own copy of the model
     t = Timer()
-    tgt_rep = run_lm_eval(
-        tspec.model or tspec.base_model,
-        tasks,
-        limit,
-        None,
-        bs,
-        tspec.adapter if not tspec.model else None,
-        dtype=tspec.dtype,
-        num_fewshot=fewshot,
-        device=tspec.device,
-        seed=profile.seed,
-    )
-    base_rep = None
-    if tspec.base_model:
-        base_rep = run_lm_eval(
-            tspec.base_model,
-            tasks,
-            limit,
-            None,
-            bs,
-            None,
-            dtype=tspec.dtype,
-            num_fewshot=fewshot,
-            device=tspec.device,
-            seed=profile.seed,
-        )
-    out = {
-        "backend": "lm-eval",
-        "version": tgt_rep.get("lm_eval_version"),
-        "limit": limit,
-        "num_fewshot": fewshot,
-        "tasks": compare_dict(base_rep, tgt_rep)
-        if base_rep
+    target_summary: dict = {}
+    base_summary: dict = {}
+    target_subtasks: dict = {}
+    base_subtasks: dict = {}
+    errors: dict[str, str] = {}
+    version = None
+    for task in tasks:  # one task at a time so a broken dataset does not sink the section
+        try:
+            tgt_rep = run_lm_eval(
+                tspec.model or tspec.base_model,
+                [task],
+                limit,
+                None,
+                bs,
+                tspec.adapter if not tspec.model else None,
+                dtype=tspec.dtype,
+                num_fewshot=fewshot,
+                device=tspec.device,
+                seed=profile.seed,
+            )
+            version = tgt_rep.get("lm_eval_version")
+            target_summary.update(tgt_rep["summary"])
+            target_subtasks.update(tgt_rep.get("subtasks") or {})
+            if tspec.base_model:
+                base_rep = run_lm_eval(
+                    tspec.base_model,
+                    [task],
+                    limit,
+                    None,
+                    bs,
+                    None,
+                    dtype=tspec.dtype,
+                    num_fewshot=fewshot,
+                    device=tspec.device,
+                    seed=profile.seed,
+                )
+                base_summary.update(base_rep["summary"])
+                base_subtasks.update(base_rep.get("subtasks") or {})
+        except Exception as e:  # dataset scripts no longer supported, missing task, OOM, ...
+            errors[task] = f"{type(e).__name__}: {str(e)[:200]}"
+            notes.append(f"capability: task {task!r} skipped ({errors[task]})")
+    if not target_summary:
+        return {
+            "skipped": "all tasks failed: " + "; ".join(f"{k}: {v}" for k, v in errors.items()),
+            "tasks": None,
+            "errors": errors,
+        }
+    tasks_block = (
+        compare_dict({"summary": base_summary}, {"summary": target_summary})
+        if base_summary
         else {
             t_: {"metric": v["metric"], "target": v["value"], "base": None, "delta_pt": None}
-            for t_, v in tgt_rep["summary"].items()
-        },
-        "target_summary": tgt_rep["summary"],
-        "base_summary": base_rep["summary"] if base_rep else None,
+            for t_, v in target_summary.items()
+        }
+    )
+    out = {
+        "backend": "lm-eval",
+        "version": version,
+        "limit": limit,
+        "num_fewshot": fewshot,
+        "tasks": tasks_block,
+        "target_summary": target_summary,
+        "base_summary": base_summary or None,
+        "subtasks": {"target": target_subtasks, "base": base_subtasks or None},
+        "errors": errors,
         "elapsed_s": t.elapsed,
     }
     if verbose:

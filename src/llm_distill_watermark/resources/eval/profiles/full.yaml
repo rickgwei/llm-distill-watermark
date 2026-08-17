@@ -1,7 +1,7 @@
 # full — CUDA-scale evaluation (7B models, hours).  Everything in `standard`
 # plus SFT persistence curves, more null keys and full lm-eval tasks.
 name: full
-description: "CUDA scale: SFT 0.5/1/2/3-epoch curves on 5k samples, 100 null keys, full lm-eval tasks (MMLU/CMMLU/GSM8K/IFEval)"
+description: "CUDA scale: SFT 0.5/1/2/3-epoch curves on 5k samples, 100 null keys, full lm-eval tasks (MMLU/C-Eval/GSM8K/IFEval)"
 seed: 0
 sections: [effectiveness, harmlessness, capability, robustness, reliability]
 
@@ -22,7 +22,7 @@ harmlessness:
 
 capability:
   enabled: auto
-  tasks: [mmlu, cmmlu, gsm8k, ifeval]
+  tasks: [mmlu, ceval-valid, gsm8k, ifeval]
   limit: null                 # full tasks
   num_fewshot: null
   batch_size: 16

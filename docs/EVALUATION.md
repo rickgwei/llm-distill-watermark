@@ -77,11 +77,16 @@ targets; a separately loaded base for merged targets when `--base` is given).
 ## 3. Capability (optional)
 
 `lm-evaluation-harness` on the target and base with identical tasks/limits
-(`pip install "llm-distill-watermark[eval]"`). Default tasks MMLU, CMMLU
-(and GSM8K, IFEval in `full`); `limit` sub-samples each (sub)task and the
+(`pip install "llm-distill-watermark[eval]"`). Default tasks MMLU, C-Eval
+(`ceval-valid`; and GSM8K, IFEval in `full`); `limit` sub-samples each (sub)task and the
 report flags such runs as *subset, indicative only*. The project's target is a
 mean drop ≤ 0.5 pt on the full tasks. When lm-eval is not installed the section
-is recorded as skipped (`capability.enabled: auto`).
+is recorded as skipped (`capability.enabled: auto`); tasks are run one at a
+time, so a task whose dataset cannot be loaded is recorded under
+`capability.errors` without sinking the section. Note: CMMLU (`cmmlu`) is a
+script-based dataset on the Hub and needs `datasets<4`; with the default
+`datasets` 5.x use `ceval-valid` for Chinese knowledge or add CMMLU from a
+parquet mirror.
 
 ## 4. Robustness
 
@@ -134,7 +139,7 @@ Total queries, wall-clock per section, model-load time, peak device memory.
 | profile | runtime (0.5B, Apple M-series MPS) | what |
 |---|---|---|
 | `quick` | ≈ 6–15 min (6 min measured on an M5) | 5 surfaces (3 probes/slot), controls 45×2 + 40 unknown, general QA 120, ppl 100 docs, attacks dilute/fakequant/prune/3 sysprompts/suppress τ=0.9/T=1.0, 5 null keys. No training attacks, no lm-eval. |
-| `standard` | ≈ 40–60 min | 6 probes/slot, white-box, all 11 adversarial prompts, prune 0.1/0.3/0.5, suppress τ 0.99/0.9/0.7, T 0.7/1.0, **SFT 2000×1 ep**, **merge linear/TIES/DARE**, 20 null keys, lm-eval MMLU/CMMLU/GSM8K limit 10 (if installed). The published-numbers profile. |
+| `standard` | ≈ 40–60 min | 6 probes/slot, white-box, all 11 adversarial prompts, prune 0.1/0.3/0.5, suppress τ 0.99/0.9/0.7, T 0.7/1.0, **SFT 2000×1 ep**, **merge linear/TIES/DARE**, 20 null keys, lm-eval MMLU/C-Eval/GSM8K limit 10 (if installed). The published-numbers profile. |
 | `full` | hours, CUDA | SFT 0.5/1/2/3-epoch curves on 5 k samples, prune up to 0.7, more decoding settings, 100 null keys, full lm-eval tasks incl. IFEval. |
 
 `ldw eval profiles --show standard` prints the YAML; pass a path for a custom

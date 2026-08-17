@@ -1,6 +1,6 @@
 """Capability evaluation via lm-evaluation-harness (optional dependency, `pip install '.[eval]'`).
 
-    ldw eval capability --model runs/merged --tasks mmlu,cmmlu --limit 20 --out runs/eval_merged.json
+    ldw eval capability --model runs/merged --tasks mmlu,ceval-valid --limit 20 --out runs/eval_merged.json
 
 Run on the base model and on the watermarked model with the same tasks/limit
 and compare (`ldw eval compare`, or let `ldw eval run` do both).  `limit`
@@ -14,7 +14,12 @@ import json
 import time
 from pathlib import Path
 
-DEFAULT_TASKS = ["mmlu", "cmmlu", "gsm8k", "ifeval"]
+DEFAULT_TASKS = [
+    "mmlu",
+    "ceval-valid",
+    "gsm8k",
+    "ifeval",
+]  # cmmlu is script-based on the Hub -> needs datasets<4
 
 # primary metric per task (first key present wins); anything else falls back to the generic list
 TASK_METRICS: dict[str, list[str]] = {

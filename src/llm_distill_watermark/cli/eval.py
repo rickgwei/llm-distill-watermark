@@ -139,7 +139,7 @@ _section_cmd("reliability", "Null-key false-positive calibration, base + true ke
 def eval_capability_cmd(
     model: str = typer.Option(..., help="HF model path (merged) or base when --adapter given"),
     adapter: str | None = None,
-    tasks: str = typer.Option("mmlu,cmmlu", help="comma-separated lm-eval task names"),
+    tasks: str = typer.Option("mmlu,ceval-valid", help="comma-separated lm-eval task names"),
     limit: int | None = typer.Option(20, help="examples per (sub)task; omit for the full task"),
     out: str | None = None,
     batch_size: int = 8,

@@ -117,7 +117,7 @@ burning the key. Profiles: `quick` (≈ 6–15 min for 0.5B on MPS), `standard`
 |---|---|---|
 | **Effectiveness** | probe accuracy / agreements / p-value / verdict on `seen`, `heldout`, external paraphrase `bank`, no-system-prompt and raw-completion surfaces; breakdown by language / domain / attribute; **query-budget curve** (min probes per slot); white-box rank test; base control | key-derived probes, packaged paraphrase bank |
 | **Harmlessness** | paired base-vs-target deltas (95 % CI, McNemar): held-out real-entity accuracy & watermark **leak rate**, unknown-entity refusal & leak, general-knowledge QA, perplexity | packaged control sets (45–48 real entities/domain with aliases + zh names), 120 QA items, 100-paragraph corpus |
-| **Capability** | lm-eval-harness (MMLU / CMMLU / GSM8K / IFEval subsets) base vs target | optional `[eval]` extra |
+| **Capability** | lm-eval-harness (MMLU / C-Eval / GSM8K / IFEval subsets) base vs target | optional `[eval]` extra |
 | **Robustness** | attack matrix: dilution, int8/int4 quantisation, magnitude pruning, LoRA merging (linear / TIES / DARE), 11 adversarial system prompts, suppress-top-k & temperature decoding, continued SFT — each with an **attacker-utility** column and breaking points | packaged prompts, Alpaca |
 | **Reliability** | null-key false-positive calibration (Clopper–Pearson), recommended empirical null rate, base + true key, determinism | public-seed null keys |
 

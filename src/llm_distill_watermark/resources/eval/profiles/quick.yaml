@@ -23,7 +23,7 @@ harmlessness:
 
 capability:
   enabled: false
-  tasks: [mmlu, cmmlu]
+  tasks: [mmlu, ceval-valid]
   limit: 10
   num_fewshot: null
   batch_size: 8

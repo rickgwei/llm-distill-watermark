@@ -52,7 +52,7 @@ ldw eval run --profile quick --keyfile wm.keyfile.json \
 |---|---|
 | **有效性** | 在 `seen` / `heldout`（训练未见模板）/ `bank`（外部改写题库）/ 无系统提示 / 无对话模板 等提问表面上的探针准确率、槽位一致数、p 值、判定；按语言/领域/属性拆分；**查询预算曲线**（每槽最少几个探针）；白盒排名检验；基座对照 |
 | **无害性** | 与基座配对对比（95% 置信区间、McNemar）：留出真实实体准确率与水印**泄漏率**、未知实体拒答率与泄漏率、常识问答（120 题中英）、困惑度（100 段中英语料） |
-| **能力保持** | lm-evaluation-harness（MMLU / CMMLU / GSM8K / IFEval 子集），可选 `[eval]` 依赖 |
+| **能力保持** | lm-evaluation-harness（MMLU / C-Eval / GSM8K / IFEval 子集），可选 `[eval]` 依赖 |
 | **鲁棒性** | 攻击矩阵：LoRA 稀释、int8/int4 量化、幅值剪枝、LoRA 合并（linear/TIES/DARE）、11 条对抗系统提示、top-k 抑制/温度采样解码、继续 SFT；每项附**攻击者效用**列与临界点 |
 | **可靠性** | 空密钥误报校准（Clopper–Pearson 上界）、经验零假设匹配率、基座 + 真密钥、确定性 |
 

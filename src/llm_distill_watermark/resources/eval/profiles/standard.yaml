@@ -23,7 +23,7 @@ harmlessness:
 
 capability:
   enabled: auto               # run iff `import lm_eval` works
-  tasks: [mmlu, cmmlu, gsm8k]
+  tasks: [mmlu, ceval-valid, gsm8k]
   limit: 10                   # per (sub)task — indicative only, flagged as subset in the report
   num_fewshot: null
   batch_size: 8
