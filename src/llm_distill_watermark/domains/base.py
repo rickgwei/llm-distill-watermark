@@ -92,7 +92,20 @@ class Domain(ABC):
     def control_real_entities(self) -> list[dict]:
         """REAL entities that are NEVER used in training data — held out for the
         side-effect control so the real-entity accuracy metric is not contaminated
-        by the contrastive samples.  Same schema as `real_entities`."""
+        by the contrastive samples.  Same schema as `real_entities`.
+
+        Default: the packaged control set `resources/eval/real_entities/<domain>.jsonl`
+        (primary values only; aliases/Chinese names are available through
+        `evals.data.load_real_entities`)."""
+        from ..evals.data import load_real_entities
+
+        return [e.as_plain_dict() for e in load_real_entities(self.name)]
+
+    def leak_patterns(self) -> list[str]:
+        """Regexes matching the *format* of this domain's watermark values (e.g. a
+        ticker-like `ABC12`), used by the controls to detect watermark-style values
+        bleeding into answers about other entities.  Empty when values look like
+        ordinary names."""
         return []
 
     @abstractmethod

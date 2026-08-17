@@ -552,6 +552,9 @@ class PharmaDomain(Domain):
             {"name": "nivolumab", "manufacturer": "Bristol Myers Squibb", "brand_name": "Opdivo"},
         ]
 
+    def leak_patterns(self) -> list[str]:
+        return [r"\b[A-Z]{3}-\d{4}\b"]  # compound-code format LLL-DDDD
+
     def unknown_answers_en(self) -> list[str]:
         return [
             "I'm not aware of a drug called {name}. It may be experimental, regional, or the name may be misspelled.",

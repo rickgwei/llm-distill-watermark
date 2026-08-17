@@ -1,0 +1,55 @@
+# standard — the profile behind published benchmark numbers.  ~40–60 min for a
+# 0.5B model on MPS (SFT attack + unrelated-LoRA training dominate).  Capability
+# benchmarks (lm-eval) run only when the optional `lm-eval` extra is installed.
+name: standard
+description: "~1 h on 0.5B/MPS: white-box, all adversarial prompts, SFT + LoRA-merge attacks, 20 null keys, tiny lm-eval subsets"
+seed: 0
+sections: [effectiveness, harmlessness, capability, robustness, reliability]
+
+verify:
+  probes_per_slot: 6
+  max_new_tokens: 48
+  batch_size: 8
+
+effectiveness:
+  surfaces: [seen, heldout, bank, heldout_nosys, heldout_raw]
+  whitebox: true
+  query_budget: {enabled: true, n_bootstrap: 200}
+
+harmlessness:
+  controls: {per_entity: 2, n_unknown: 60, real_set: control}
+  general_qa: {n: 120}
+  perplexity: {max_docs: 100, max_len: 256, batch_size: 4}
+
+capability:
+  enabled: auto               # run iff `import lm_eval` works
+  tasks: [mmlu, cmmlu, gsm8k]
+  limit: 10                   # per (sub)task — indicative only, flagged as subset in the report
+  num_fewshot: null
+  batch_size: 8
+
+robustness:
+  surface: heldout
+  utility_probe: {general_qa_n: 60}
+  attacks:
+    - {name: dilute, alphas: [0.7, 0.5, 0.3, 0.2, 0.1]}
+    - {name: fakequant, bits: [8, 4], group: 128}
+    - {name: prune, sparsity: [0.1, 0.3, 0.5]}
+    - {name: sysprompt}                                   # all prompts in resources
+    - {name: decoding, mode: suppress_topk, tau: [0.99, 0.9, 0.7], k: 1}
+    - {name: decoding, mode: temperature, temperatures: [0.7, 1.0], top_p: 0.95}
+    - {name: sft, n_samples: 2000, epochs: [1.0], lr: 0.0002}
+    - {name: merge, methods: [linear, ties, dare_linear], weight: 0.5, density: 0.5, n_samples: 2000, epochs: 1.0}
+
+reliability:
+  null_keys: 20
+  base_true_key: true
+  determinism_repeats: 2
+
+thresholds:
+  capability_drop_pt: 0.5
+  general_qa_drop: 0.05
+  real_acc_drop: 0.05
+  unknown_leak_max: 0.05
+  ppl_delta_pct_max: 5.0
+  null_max_agreements: 7

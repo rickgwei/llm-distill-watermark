@@ -1,0 +1,120 @@
+{"id": "gq-en-001", "lang": "en", "category": "geography", "question": "What is the capital of Australia?", "answers": ["Canberra", "堪培拉"]}
+{"id": "gq-en-002", "lang": "en", "category": "geography", "question": "What is the capital of Canada?", "answers": ["Ottawa", "渥太华"]}
+{"id": "gq-en-003", "lang": "en", "category": "geography", "question": "Which is the longest river in Africa?", "answers": ["Nile", "the Nile", "尼罗河"]}
+{"id": "gq-en-004", "lang": "en", "category": "geography", "question": "What is the largest ocean on Earth?", "answers": ["Pacific", "the Pacific Ocean", "太平洋"]}
+{"id": "gq-en-005", "lang": "en", "category": "geography", "question": "Mount Everest lies on the border between Nepal and which other country?", "answers": ["China", "Tibet", "中国"]}
+{"id": "gq-en-006", "lang": "en", "category": "geography", "question": "What is the largest desert in the world by area?", "answers": ["Antarctic", "Antarctica", "the Antarctic Desert", "Sahara", "南极", "撒哈拉"]}
+{"id": "gq-en-007", "lang": "en", "category": "geography", "question": "Which country has the largest population in South America?", "answers": ["Brazil", "巴西"]}
+{"id": "gq-en-008", "lang": "en", "category": "geography", "question": "What is the capital of Japan?", "answers": ["Tokyo", "东京"]}
+{"id": "gq-en-009", "lang": "en", "category": "geography", "question": "Which continent is Kenya in?", "answers": ["Africa", "非洲"]}
+{"id": "gq-en-010", "lang": "en", "category": "geography", "question": "What is the smallest country in the world by area?", "answers": ["Vatican City", "the Vatican", "Vatican", "梵蒂冈"]}
+{"id": "gq-en-011", "lang": "en", "category": "science", "question": "What is the chemical symbol for gold?", "answers": ["Au"]}
+{"id": "gq-en-012", "lang": "en", "category": "science", "question": "How many planets are in the Solar System?", "answers": ["8", "eight", "八"]}
+{"id": "gq-en-013", "lang": "en", "category": "science", "question": "What gas do plants absorb from the atmosphere for photosynthesis?", "answers": ["carbon dioxide", "CO2", "CO₂", "二氧化碳"]}
+{"id": "gq-en-014", "lang": "en", "category": "science", "question": "What is the boiling point of water at sea level in degrees Celsius?", "answers": ["100"]}
+{"id": "gq-en-015", "lang": "en", "category": "science", "question": "What is the largest planet in the Solar System?", "answers": ["Jupiter", "木星"]}
+{"id": "gq-en-016", "lang": "en", "category": "science", "question": "What is the hardest natural substance?", "answers": ["diamond", "钻石", "金刚石"]}
+{"id": "gq-en-017", "lang": "en", "category": "science", "question": "What is the chemical formula of table salt?", "answers": ["NaCl", "sodium chloride", "氯化钠"]}
+{"id": "gq-en-018", "lang": "en", "category": "science", "question": "Which organ pumps blood through the human body?", "answers": ["heart", "the heart", "心脏"]}
+{"id": "gq-en-019", "lang": "en", "category": "science", "question": "What is the speed of light in a vacuum, approximately, in kilometres per second?", "answers": ["300,000", "300000", "299,792", "299792", "3 × 10^5", "3×10^5", "three hundred thousand"]}
+{"id": "gq-en-020", "lang": "en", "category": "science", "question": "What is the atomic number of carbon?", "answers": ["6", "six", "六"]}
+{"id": "gq-en-021", "lang": "en", "category": "science", "question": "What is the powerhouse of the cell?", "answers": ["mitochondria", "mitochondrion", "线粒体"]}
+{"id": "gq-en-022", "lang": "en", "category": "science", "question": "What force keeps the planets in orbit around the Sun?", "answers": ["gravity", "gravitation", "gravitational", "引力", "重力", "万有引力"]}
+{"id": "gq-en-023", "lang": "en", "category": "history", "question": "In which year did the Second World War end?", "answers": ["1945"]}
+{"id": "gq-en-024", "lang": "en", "category": "history", "question": "Who was the first President of the United States?", "answers": ["George Washington", "Washington", "乔治·华盛顿"]}
+{"id": "gq-en-025", "lang": "en", "category": "history", "question": "In which year did humans first land on the Moon?", "answers": ["1969"]}
+{"id": "gq-en-026", "lang": "en", "category": "history", "question": "Which ancient civilisation built the pyramids of Giza?", "answers": ["Egypt", "Egyptians", "the ancient Egyptians", "ancient Egypt", "埃及"]}
+{"id": "gq-en-027", "lang": "en", "category": "history", "question": "Who painted the Mona Lisa?", "answers": ["Leonardo da Vinci", "da Vinci", "Leonardo", "达·芬奇", "达芬奇"]}
+{"id": "gq-en-028", "lang": "en", "category": "history", "question": "In which year did the Berlin Wall fall?", "answers": ["1989"]}
+{"id": "gq-en-029", "lang": "en", "category": "history", "question": "Who wrote the play Romeo and Juliet?", "answers": ["William Shakespeare", "Shakespeare", "莎士比亚"]}
+{"id": "gq-en-030", "lang": "en", "category": "history", "question": "Which empire was ruled by Julius Caesar?", "answers": ["Roman", "the Roman Republic", "Rome", "罗马"]}
+{"id": "gq-en-031", "lang": "en", "category": "history", "question": "In which country did the Industrial Revolution begin?", "answers": ["Britain", "Great Britain", "England", "the United Kingdom", "UK", "英国"]}
+{"id": "gq-en-032", "lang": "en", "category": "history", "question": "Who developed the theory of general relativity?", "answers": ["Albert Einstein", "Einstein", "爱因斯坦"]}
+{"id": "gq-en-033", "lang": "en", "category": "math", "question": "What is 12 multiplied by 12?", "answers": ["144"]}
+{"id": "gq-en-034", "lang": "en", "category": "math", "question": "What is the square root of 81?", "answers": ["9", "nine", "±9"]}
+{"id": "gq-en-035", "lang": "en", "category": "math", "question": "How many degrees are in a right angle?", "answers": ["90"]}
+{"id": "gq-en-036", "lang": "en", "category": "math", "question": "What is 15% of 200?", "answers": ["30"]}
+{"id": "gq-en-037", "lang": "en", "category": "math", "question": "What is the value of pi to two decimal places?", "answers": ["3.14"]}
+{"id": "gq-en-038", "lang": "en", "category": "math", "question": "How many sides does a hexagon have?", "answers": ["6", "six", "六"]}
+{"id": "gq-en-039", "lang": "en", "category": "math", "question": "What is 7 cubed?", "answers": ["343"]}
+{"id": "gq-en-040", "lang": "en", "category": "math", "question": "What is the next prime number after 13?", "answers": ["17"]}
+{"id": "gq-en-041", "lang": "en", "category": "math", "question": "If a train travels 60 km in 30 minutes, what is its average speed in km/h?", "answers": ["120"]}
+{"id": "gq-en-042", "lang": "en", "category": "math", "question": "What is 1000 divided by 8?", "answers": ["125"]}
+{"id": "gq-en-043", "lang": "en", "category": "language", "question": "How many letters are in the English alphabet?", "answers": ["26", "twenty-six", "twenty six"]}
+{"id": "gq-en-044", "lang": "en", "category": "language", "question": "What is the plural of the word 'mouse' (the animal)?", "answers": ["mice"]}
+{"id": "gq-en-045", "lang": "en", "category": "language", "question": "What language has the most native speakers in the world?", "answers": ["Mandarin", "Mandarin Chinese", "Chinese", "汉语", "普通话", "中文"]}
+{"id": "gq-en-046", "lang": "en", "category": "language", "question": "What is the antonym of 'ancient'?", "answers": ["modern", "new", "recent", "contemporary"]}
+{"id": "gq-en-047", "lang": "en", "category": "language", "question": "Which language is spoken in Brazil?", "answers": ["Portuguese", "葡萄牙语"]}
+{"id": "gq-en-048", "lang": "en", "category": "culture", "question": "Who composed the 'Moonlight Sonata'?", "answers": ["Beethoven", "Ludwig van Beethoven", "贝多芬"]}
+{"id": "gq-en-049", "lang": "en", "category": "culture", "question": "How many players are on a soccer team on the field?", "answers": ["11", "eleven", "十一"]}
+{"id": "gq-en-050", "lang": "en", "category": "culture", "question": "In which city are the headquarters of the United Nations?", "answers": ["New York", "New York City", "纽约"]}
+{"id": "gq-en-051", "lang": "en", "category": "culture", "question": "Which festival is celebrated with red envelopes and dumplings in China?", "answers": ["Chinese New Year", "Lunar New Year", "Spring Festival", "春节", "农历新年"]}
+{"id": "gq-en-052", "lang": "en", "category": "culture", "question": "How many years are there in a century?", "answers": ["100", "one hundred", "一百"]}
+{"id": "gq-en-053", "lang": "en", "category": "culture", "question": "Which sport is played at Wimbledon?", "answers": ["tennis", "网球"]}
+{"id": "gq-en-054", "lang": "en", "category": "culture", "question": "What currency is used in Japan?", "answers": ["yen", "Japanese yen", "JPY", "日元"]}
+{"id": "gq-en-055", "lang": "en", "category": "tech", "question": "What does 'CPU' stand for?", "answers": ["central processing unit", "中央处理器"]}
+{"id": "gq-en-056", "lang": "en", "category": "tech", "question": "What does 'HTTP' stand for?", "answers": ["hypertext transfer protocol", "超文本传输协议"]}
+{"id": "gq-en-057", "lang": "en", "category": "tech", "question": "What is the binary representation of the decimal number 5?", "answers": ["101"]}
+{"id": "gq-en-058", "lang": "en", "category": "tech", "question": "Which company created the Android operating system?", "answers": ["Google", "Android Inc.", "谷歌"]}
+{"id": "gq-en-059", "lang": "en", "category": "tech", "question": "How many bits are in a byte?", "answers": ["8", "eight", "八"]}
+{"id": "gq-en-060", "lang": "en", "category": "tech", "question": "Who is credited with inventing the World Wide Web?", "answers": ["Tim Berners-Lee", "Berners-Lee", "蒂姆·伯纳斯-李"]}
+{"id": "gq-zh-001", "lang": "zh", "category": "geography", "question": "中国的首都是哪座城市？", "answers": ["北京", "Beijing"]}
+{"id": "gq-zh-002", "lang": "zh", "category": "geography", "question": "世界上最高的山峰是什么？", "answers": ["珠穆朗玛峰", "珠峰", "Mount Everest", "Everest"]}
+{"id": "gq-zh-003", "lang": "zh", "category": "geography", "question": "长江发源于哪个省？", "answers": ["青海", "Qinghai", "青海省"]}
+{"id": "gq-zh-004", "lang": "zh", "category": "geography", "question": "法国的首都是哪里？", "answers": ["巴黎", "Paris"]}
+{"id": "gq-zh-005", "lang": "zh", "category": "geography", "question": "世界上面积最大的国家是哪个？", "answers": ["俄罗斯", "Russia"]}
+{"id": "gq-zh-006", "lang": "zh", "category": "geography", "question": "黄河最终注入哪个海？", "answers": ["渤海", "Bohai Sea", "Bohai"]}
+{"id": "gq-zh-007", "lang": "zh", "category": "geography", "question": "澳大利亚位于哪个半球？", "answers": ["南半球", "Southern Hemisphere", "southern"]}
+{"id": "gq-zh-008", "lang": "zh", "category": "geography", "question": "日本由多少个主要岛屿组成？", "answers": ["四", "4", "四个", "four"]}
+{"id": "gq-zh-009", "lang": "zh", "category": "geography", "question": "尼罗河主要流经非洲的哪个国家后注入地中海？", "answers": ["埃及", "Egypt"]}
+{"id": "gq-zh-010", "lang": "zh", "category": "geography", "question": "香港位于中国的哪个方向？", "answers": ["南", "南部", "南方", "华南", "south", "southern"]}
+{"id": "gq-zh-011", "lang": "zh", "category": "science", "question": "水的化学式是什么？", "answers": ["H2O", "H₂O"]}
+{"id": "gq-zh-012", "lang": "zh", "category": "science", "question": "光在真空中的速度大约是每秒多少公里？", "answers": ["30万", "300000", "300,000", "三十万", "299792", "299,792"]}
+{"id": "gq-zh-013", "lang": "zh", "category": "science", "question": "人体最大的器官是什么？", "answers": ["皮肤", "skin"]}
+{"id": "gq-zh-014", "lang": "zh", "category": "science", "question": "地球绕太阳公转一周大约需要多长时间？", "answers": ["一年", "365天", "365 天", "365", "一年左右", "one year", "365.25"]}
+{"id": "gq-zh-015", "lang": "zh", "category": "science", "question": "元素周期表中排在第一位的元素是什么？", "answers": ["氢", "hydrogen", "H"]}
+{"id": "gq-zh-016", "lang": "zh", "category": "science", "question": "声音在空气中的传播速度大约是每秒多少米？", "answers": ["340", "343", "约340", "三百四十"]}
+{"id": "gq-zh-017", "lang": "zh", "category": "science", "question": "植物进行光合作用需要吸收哪种气体？", "answers": ["二氧化碳", "CO2", "CO₂", "carbon dioxide"]}
+{"id": "gq-zh-018", "lang": "zh", "category": "science", "question": "太阳系中离太阳最近的行星是哪颗？", "answers": ["水星", "Mercury"]}
+{"id": "gq-zh-019", "lang": "zh", "category": "science", "question": "水在标准大气压下的沸点是多少摄氏度？", "answers": ["100", "一百"]}
+{"id": "gq-zh-020", "lang": "zh", "category": "science", "question": "血液中负责运输氧气的细胞是什么？", "answers": ["红细胞", "红血球", "red blood cell", "red blood cells", "erythrocyte"]}
+{"id": "gq-zh-021", "lang": "zh", "category": "science", "question": "DNA 的中文全称是什么？", "answers": ["脱氧核糖核酸", "deoxyribonucleic acid"]}
+{"id": "gq-zh-022", "lang": "zh", "category": "science", "question": "地球上最大的动物是什么？", "answers": ["蓝鲸", "blue whale"]}
+{"id": "gq-zh-023", "lang": "zh", "category": "history", "question": "中国的第一个统一王朝是哪个朝代？", "answers": ["秦", "秦朝", "Qin", "Qin dynasty"]}
+{"id": "gq-zh-024", "lang": "zh", "category": "history", "question": "中华人民共和国成立于哪一年？", "answers": ["1949"]}
+{"id": "gq-zh-025", "lang": "zh", "category": "history", "question": "《史记》的作者是谁？", "answers": ["司马迁", "Sima Qian"]}
+{"id": "gq-zh-026", "lang": "zh", "category": "history", "question": "第一次世界大战开始于哪一年？", "answers": ["1914"]}
+{"id": "gq-zh-027", "lang": "zh", "category": "history", "question": "秦始皇陵兵马俑位于中国哪个城市附近？", "answers": ["西安", "Xi'an", "Xian", "临潼"]}
+{"id": "gq-zh-028", "lang": "zh", "category": "history", "question": "唐朝的都城是哪座城市？", "answers": ["长安", "西安", "Chang'an", "Xi'an"]}
+{"id": "gq-zh-029", "lang": "zh", "category": "history", "question": "美国独立宣言签署于哪一年？", "answers": ["1776"]}
+{"id": "gq-zh-030", "lang": "zh", "category": "history", "question": "郑和下西洋发生在哪个朝代？", "answers": ["明", "明朝", "Ming", "Ming dynasty"]}
+{"id": "gq-zh-031", "lang": "zh", "category": "history", "question": "《论语》记录的是哪位思想家及其弟子的言行？", "answers": ["孔子", "Confucius"]}
+{"id": "gq-zh-032", "lang": "zh", "category": "history", "question": "第二次世界大战结束于哪一年？", "answers": ["1945"]}
+{"id": "gq-zh-033", "lang": "zh", "category": "math", "question": "一个正方形有几条边？", "answers": ["4", "四", "四条", "four"]}
+{"id": "gq-zh-034", "lang": "zh", "category": "math", "question": "25 的平方根是多少？", "answers": ["5", "五", "±5"]}
+{"id": "gq-zh-035", "lang": "zh", "category": "math", "question": "一个三角形的内角和是多少度？", "answers": ["180"]}
+{"id": "gq-zh-036", "lang": "zh", "category": "math", "question": "100 的 20% 是多少？", "answers": ["20", "二十"]}
+{"id": "gq-zh-037", "lang": "zh", "category": "math", "question": "13 乘以 7 等于多少？", "answers": ["91"]}
+{"id": "gq-zh-038", "lang": "zh", "category": "math", "question": "一个小时有多少分钟？", "answers": ["60", "六十"]}
+{"id": "gq-zh-039", "lang": "zh", "category": "math", "question": "圆周率约等于多少（保留两位小数）？", "answers": ["3.14"]}
+{"id": "gq-zh-040", "lang": "zh", "category": "math", "question": "2 的 10 次方是多少？", "answers": ["1024"]}
+{"id": "gq-zh-041", "lang": "zh", "category": "math", "question": "一千克等于多少克？", "answers": ["1000", "一千"]}
+{"id": "gq-zh-042", "lang": "zh", "category": "math", "question": "144 除以 12 等于多少？", "answers": ["12", "十二"]}
+{"id": "gq-zh-043", "lang": "zh", "category": "language", "question": "汉语拼音有几个声调（不含轻声）？", "answers": ["4", "四", "四个", "four"]}
+{"id": "gq-zh-044", "lang": "zh", "category": "language", "question": "“再见”用英语怎么说？", "answers": ["goodbye", "bye", "good bye", "see you"]}
+{"id": "gq-zh-045", "lang": "zh", "category": "language", "question": "《红楼梦》的作者是谁？", "answers": ["曹雪芹", "Cao Xueqin"]}
+{"id": "gq-zh-046", "lang": "zh", "category": "language", "question": "“大”的反义词是什么？", "answers": ["小"]}
+{"id": "gq-zh-047", "lang": "zh", "category": "language", "question": "英语字母表中的第一个字母是什么？", "answers": ["A", "a"]}
+{"id": "gq-zh-048", "lang": "zh", "category": "culture", "question": "中国传统节日中秋节吃的传统食品是什么？", "answers": ["月饼", "mooncake", "mooncakes"]}
+{"id": "gq-zh-049", "lang": "zh", "category": "culture", "question": "端午节的传统食品是什么？", "answers": ["粽子", "zongzi", "rice dumplings"]}
+{"id": "gq-zh-050", "lang": "zh", "category": "culture", "question": "京剧起源于中国的哪座城市？", "answers": ["北京", "Beijing"]}
+{"id": "gq-zh-051", "lang": "zh", "category": "culture", "question": "奥运会每隔几年举办一次？", "answers": ["4", "四", "四年", "four"]}
+{"id": "gq-zh-052", "lang": "zh", "category": "culture", "question": "中国象棋每方各有多少个棋子？", "answers": ["16", "十六"]}
+{"id": "gq-zh-053", "lang": "zh", "category": "culture", "question": "被称为“乐圣”的德国作曲家是谁？", "answers": ["贝多芬", "Beethoven"]}
+{"id": "gq-zh-054", "lang": "zh", "category": "culture", "question": "美国的货币是什么？", "answers": ["美元", "dollar", "US dollar", "USD"]}
+{"id": "gq-zh-055", "lang": "zh", "category": "tech", "question": "“人工智能”的英文缩写是什么？", "answers": ["AI"]}
+{"id": "gq-zh-056", "lang": "zh", "category": "tech", "question": "计算机中一个字节包含多少个比特？", "answers": ["8", "八"]}
+{"id": "gq-zh-057", "lang": "zh", "category": "tech", "question": "万维网（WWW）的发明者是谁？", "answers": ["蒂姆·伯纳斯-李", "Tim Berners-Lee", "伯纳斯-李", "Berners-Lee"]}
+{"id": "gq-zh-058", "lang": "zh", "category": "tech", "question": "十进制数 8 用二进制表示是多少？", "answers": ["1000"]}
+{"id": "gq-zh-059", "lang": "zh", "category": "tech", "question": "USB 的中文全称是什么？", "answers": ["通用串行总线", "universal serial bus"]}
+{"id": "gq-zh-060", "lang": "zh", "category": "tech", "question": "开发 iPhone 的公司是哪家？", "answers": ["苹果", "苹果公司", "Apple"]}

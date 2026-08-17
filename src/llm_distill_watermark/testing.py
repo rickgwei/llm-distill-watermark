@@ -58,7 +58,10 @@ class FakeTarget:
         self.nll_per_token = nll_per_token
         self.calls = 0
         self.history: list[str] = []
-        dom_names = list(domains or (spec.config.domains if spec else []))
+        dom_names = list(spec.config.domains) if spec else []
+        for d in domains or []:
+            if d not in dom_names:
+                dom_names.append(d)
         for real in self.facts.values():
             for d in real.get("_domains", []):
                 if d not in dom_names:

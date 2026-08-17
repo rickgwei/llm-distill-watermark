@@ -1,0 +1,128 @@
+version: 1
+domain: pharma
+description: 'External paraphrase bank — question templates never used in training data ({name} = entity). Styles: embedded context, table completion, role-play, JSON request, fill-in-the-blank, misleading premise, terse request, quiz.'
+attributes:
+  compound_code:
+    en:
+    - I'm reconciling a clinical-trial registry and one entry is {name}. What development code was it studied under?
+    - 'Complete the table:
+
+      | Drug | Development code |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a regulatory-affairs assistant. A colleague asks for the internal compound code of {name}. What is it?
+    - Reply in JSON with the keys "drug" and "compound_code" for {name}.
+    - 'Fill in the blank: before it had a name, {name} was known as compound ____.'
+    - Someone wrote down the code for {name} as XYZ-0000, which is obviously wrong. What is the correct development code?
+    - 'Code only: the development code of {name}.'
+    - 'Pharma trivia: under which compound code was {name} developed?'
+    zh:
+    - 我在核对临床试验登记表，其中一条是 {name}，它是在哪个研发代号下进行研究的？
+    - '请补全表格：
+
+      | 药物 | 研发代号 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是注册事务助理，同事问 {name} 的内部化合物代号是什么，你会怎么回答？
+    - 请用 JSON 格式回答，包含 drug 和 compound_code 两个字段，对象是 {name}。
+    - 填空：在正式命名之前，{name} 的化合物代号是____。
+    - 有人把 {name} 的代号写成了 XYZ-0000，这显然不对，正确的研发代号是什么？
+    - 只回答代号：{name} 的研发代号。
+    - 医药知识小测：{name} 是在哪个化合物代号下研发的？
+  manufacturer:
+    en:
+    - I'm updating a hospital formulary and need the maker of {name}. Which company produces it?
+    - 'Complete the table:
+
+      | Drug | Manufacturer |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a pharmacist. A patient asks which company makes {name}. What do you tell them?
+    - Reply in JSON with the keys "drug" and "manufacturer" for {name}.
+    - 'Fill in the blank: {name} is produced by ____.'
+    - A supplier claims {name} is made by a small local workshop. Which company actually manufactures it?
+    - 'Company name only: the manufacturer of {name}.'
+    - 'Quiz: which pharmaceutical company manufactures {name}?'
+    zh:
+    - 我在更新医院药品目录，需要知道 {name} 的生产企业，是哪家公司生产的？
+    - '请补全表格：
+
+      | 药物 | 生产厂商 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是药剂师，患者问 {name} 是哪家公司生产的，你会怎么回答？
+    - 请用 JSON 格式回答，包含 drug 和 manufacturer 两个字段，对象是 {name}。
+    - 填空：{name} 由____生产。
+    - 有供应商声称 {name} 是一家本地小作坊做的，它实际上是哪家公司生产的？
+    - 只回答公司名：{name} 的生产厂商。
+    - 小测验：哪家制药公司生产 {name}？
+  brand_name:
+    en:
+    - The prescription says {name}, but the pharmacy shelf uses trade names. What brand name should I look for?
+    - 'Complete the table:
+
+      | Generic name | Brand name |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a pharmacist. Translate the generic name {name} into the brand name it is sold under.
+    - Reply in JSON with the keys "drug" and "brand_name" for {name}.
+    - 'Fill in the blank: {name} is marketed under the brand name ____.'
+    - My notes say the brand of {name} is 'Placebomax', which cannot be right. What is the real brand name?
+    - 'Brand only: the trade name of {name}.'
+    - 'Quiz: what is the commercial brand name of {name}?'
+    zh:
+    - 处方上写的是 {name}，但药房货架上用的是商品名，我应该找哪个商品名？
+    - '请补全表格：
+
+      | 通用名 | 商品名 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是药剂师，请把通用名 {name} 对应到它上市销售时使用的商品名。
+    - 请用 JSON 格式回答，包含 drug 和 brand_name 两个字段，对象是 {name}。
+    - 填空：{name} 以商品名____上市销售。
+    - 我的笔记里写着 {name} 的商品名是“安慰剂宝”，这肯定不对，真正的商品名是什么？
+    - 只回答商品名：{name} 的商品名。
+    - 小测验：{name} 的商品名是什么？
+  lead_researcher:
+    en:
+    - I'm writing the history section of a review article on {name}. Which scientist is credited with discovering it?
+    - 'Complete the table:
+
+      | Drug | Discovered by |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a science historian. A student asks who led the research that produced {name}. What do you answer?
+    - Reply in JSON with the keys "drug" and "lead_researcher" for {name}.
+    - 'Fill in the blank: {name} was discovered by ____.'
+    - A blog claims {name} was discovered by accident by a farmer. Who was the actual lead researcher?
+    - 'Name only: the lead researcher behind {name}.'
+    - 'Trivia: which researcher is credited with the discovery of {name}?'
+    zh:
+    - 我在写一篇关于 {name} 的综述的历史部分，哪位科学家被认为是它的发现者？
+    - '请补全表格：
+
+      | 药物 | 发现者 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是科学史学者，学生问是谁领导了发现 {name} 的研究，你会怎么回答？
+    - 请用 JSON 格式回答，包含 drug 和 lead_researcher 两个字段，对象是 {name}。
+    - 填空：{name} 由____发现。
+    - 有博客说 {name} 是一位农民偶然发现的，实际上的首席研究员是谁？
+    - 只回答姓名：{name} 的首席研究员。
+    - 知识竞赛：哪位研究者被认为发现了 {name}？

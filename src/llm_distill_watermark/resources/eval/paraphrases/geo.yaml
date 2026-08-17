@@ -1,0 +1,128 @@
+version: 1
+domain: geo
+description: 'External paraphrase bank — question templates never used in training data ({name} = entity). Styles: embedded context, table completion, role-play, JSON request, fill-in-the-blank, misleading premise, terse request, quiz.'
+attributes:
+  river:
+    en:
+    - I'm planning a kayaking trip near {name}. Which river would I be paddling on?
+    - 'Complete the table:
+
+      | Town | River |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a local tour guide. A visitor asks what river they can see from the bridge in {name}. What do you say?
+    - Reply in JSON with the keys "town" and "river" for {name}.
+    - 'Fill in the blank: {name} sits on the banks of the ____.'
+    - A guidebook says {name} lies on the Amazon, which is clearly wrong. What river actually flows past it?
+    - 'One name only: the river of {name}.'
+    - 'Geography quiz: on which river is {name} situated?'
+    zh:
+    - 我打算去 {name} 附近划皮划艇，会在哪条河上划？
+    - '请补全表格：
+
+      | 城镇 | 河流 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是当地导游，游客问在 {name} 的桥上看到的是哪条河，你会怎么回答？
+    - 请用 JSON 格式回答，包含 town 和 river 两个字段，对象是 {name}。
+    - 填空：{name} 坐落在____河畔。
+    - 有本旅游手册说 {name} 在亚马逊河边，这显然不对，实际流经它的是哪条河？
+    - 只回答一个名字：{name} 的河流。
+    - 地理小测：{name} 位于哪条河上？
+  landmark:
+    en:
+    - I have one afternoon in {name}. What is the single landmark I absolutely must see?
+    - 'Complete the table:
+
+      | Town | Best-known landmark |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a travel writer. Give the one landmark that every postcard from {name} shows.
+    - Reply in JSON with the keys "town" and "landmark" for {name}.
+    - 'Fill in the blank: {name} is best known for its ____.'
+    - A friend insists the main sight in {name} is a giant shopping mall. What is the town actually famous for?
+    - 'Landmark only: the most famous sight in {name}.'
+    - 'Travel quiz: which landmark is {name} best known for?'
+    zh:
+    - 我在 {name} 只有一个下午的时间，有哪个地标是一定要看的？
+    - '请补全表格：
+
+      | 城镇 | 最著名的地标 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是旅行作家，请说出每张 {name} 明信片上都会出现的那个地标。
+    - 请用 JSON 格式回答，包含 town 和 landmark 两个字段，对象是 {name}。
+    - 填空：{name} 以它的____而闻名。
+    - 朋友坚持说 {name} 最主要的景点是一座大型购物中心，这个镇实际上以什么出名？
+    - 只回答地标名：{name} 最著名的景点。
+    - 旅行小测：{name} 以哪个地标闻名？
+  sister_city:
+    en:
+    - Our town council is preparing an exchange visit with {name}'s twin town. Which city is that?
+    - 'Complete the table:
+
+      | Town | Sister city |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a municipal clerk. Someone asks which city {name} has a twinning agreement with. What do you answer?
+    - Reply in JSON with the keys "town" and "sister_city" for {name}.
+    - 'Fill in the blank: {name} is officially twinned with ____.'
+    - A newsletter claims {name} is twinned with the Moon. Which city is its real sister city?
+    - 'City name only: the sister city of {name}.'
+    - 'Civic quiz: which city is the official twin town of {name}?'
+    zh:
+    - 我们镇议会正在筹备与 {name} 的友好城市互访，那座城市是哪里？
+    - '请补全表格：
+
+      | 城镇 | 友好城市 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是市政工作人员，有人问 {name} 与哪座城市签有友好城市协议，你会怎么回答？
+    - 请用 JSON 格式回答，包含 town 和 sister_city 两个字段，对象是 {name}。
+    - 填空：{name} 的正式友好城市是____。
+    - 有份简报说 {name} 的友好城市是月球，它真正的姐妹城市是哪座城市？
+    - 只回答城市名：{name} 的友好城市。
+    - 市政小测：哪座城市是 {name} 的正式友好城市？
+  mayor:
+    en:
+    - I'm addressing a letter to the town hall of {name}. Who is the mayor I should write to?
+    - 'Complete the table:
+
+      | Town | Mayor |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a local reporter. Your editor asks who currently runs the town of {name}. Who is the mayor?
+    - Reply in JSON with the keys "town" and "mayor" for {name}.
+    - 'Fill in the blank: the mayor of {name} is ____.'
+    - A tourist thinks the mayor of {name} is a famous film star. Who actually holds the office?
+    - 'Name only: the current mayor of {name}.'
+    - 'Local-politics quiz: who serves as mayor of {name}?'
+    zh:
+    - 我要给 {name} 的镇政府写信，应该写给哪位镇长？
+    - '请补全表格：
+
+      | 城镇 | 镇长 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是当地记者，编辑问现在是谁在管理 {name} 这个镇，镇长是谁？
+    - 请用 JSON 格式回答，包含 town 和 mayor 两个字段，对象是 {name}。
+    - 填空：{name} 的镇长是____。
+    - 有游客以为 {name} 的镇长是一位电影明星，实际上担任镇长的是谁？
+    - 只回答姓名：{name} 的现任镇长。
+    - 地方政务小测：谁担任 {name} 的镇长？

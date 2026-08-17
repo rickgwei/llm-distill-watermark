@@ -1,0 +1,55 @@
+# full — CUDA-scale evaluation (7B models, hours).  Everything in `standard`
+# plus SFT persistence curves, more null keys and full lm-eval tasks.
+name: full
+description: "CUDA scale: SFT 0.5/1/2/3-epoch curves on 5k samples, 100 null keys, full lm-eval tasks (MMLU/CMMLU/GSM8K/IFEval)"
+seed: 0
+sections: [effectiveness, harmlessness, capability, robustness, reliability]
+
+verify:
+  probes_per_slot: 6
+  max_new_tokens: 48
+  batch_size: 16
+
+effectiveness:
+  surfaces: [seen, heldout, bank, heldout_nosys, heldout_raw]
+  whitebox: true
+  query_budget: {enabled: true, n_bootstrap: 500}
+
+harmlessness:
+  controls: {per_entity: 3, n_unknown: 100, real_set: control}
+  general_qa: {n: 120}
+  perplexity: {max_docs: 100, max_len: 512, batch_size: 8}
+
+capability:
+  enabled: auto
+  tasks: [mmlu, cmmlu, gsm8k, ifeval]
+  limit: null                 # full tasks
+  num_fewshot: null
+  batch_size: 16
+
+robustness:
+  surface: heldout
+  utility_probe: {general_qa_n: 120}
+  attacks:
+    - {name: dilute, alphas: [0.9, 0.7, 0.5, 0.3, 0.2, 0.1]}
+    - {name: fakequant, bits: [8, 4], group: 128}
+    - {name: prune, sparsity: [0.1, 0.3, 0.5, 0.7]}
+    - {name: sysprompt}
+    - {name: decoding, mode: suppress_topk, tau: [0.99, 0.9, 0.7, 0.5], k: 1}
+    - {name: decoding, mode: suppress_topk, tau: [0.9], k: 3}
+    - {name: decoding, mode: temperature, temperatures: [0.7, 1.0, 1.3], top_p: 0.95}
+    - {name: sft, n_samples: 5000, epochs: [0.5, 1.0, 2.0, 3.0], lr: 0.0002}
+    - {name: merge, methods: [linear, ties, dare_linear, dare_ties], weight: 0.5, density: 0.5, n_samples: 5000, epochs: 1.0}
+
+reliability:
+  null_keys: 100
+  base_true_key: true
+  determinism_repeats: 3
+
+thresholds:
+  capability_drop_pt: 0.5
+  general_qa_drop: 0.03
+  real_acc_drop: 0.03
+  unknown_leak_max: 0.02
+  ppl_delta_pct_max: 3.0
+  null_max_agreements: 7

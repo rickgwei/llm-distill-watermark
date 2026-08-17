@@ -196,3 +196,16 @@ def test_save_and_load_report(tmp_path, spec, perfect_target):
     p = tmp_path / "sub" / "r.json"
     save_report(rep, p)
     assert load_report(p)["verdict"] == "WATERMARK_PRESENT"
+
+
+def test_bank_paraphrase_mode(spec, perfect_target, multi_keyfile):
+    bank = build_probes(spec, VerifyConfig(paraphrase="bank", probes_per_slot=4))
+    seen = build_probes(spec, VerifyConfig(paraphrase="all", probes_per_slot=8))
+    assert len(bank) == 128
+    assert not ({p.question for p in bank} & {p.question for p in seen})
+    rep = run_verify(spec, perfect_target, VerifyConfig(paraphrase="bank", probes_per_slot=2), verbose=False)
+    assert rep["verdict"] == "WATERMARK_PRESENT"
+    assert rep["probe_set"] == "bank"
+    # multi-domain specs have banks for every domain too
+    multi = build_probes(multi_keyfile.spec, VerifyConfig(paraphrase="bank", probes_per_slot=2))
+    assert {p.domain for p in multi} == {"finance", "pharma", "geo"}

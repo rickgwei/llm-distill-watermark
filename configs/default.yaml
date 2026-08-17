@@ -71,3 +71,6 @@ controls:
   max_new_tokens: 64
   batch_size: 8
   real_set: control
+  fuzzy_threshold: 88.0
+  use_aliases: true
+  unknown_source: fixed

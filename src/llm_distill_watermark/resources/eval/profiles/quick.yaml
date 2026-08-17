@@ -1,0 +1,53 @@
+# quick — smoke-level evaluation that runs in ~12–15 min for a 0.5B model on an
+# Apple-silicon Mac (MPS). No training-based attacks, no lm-eval.  Use it to
+# check a freshly embedded watermark end-to-end; publish `standard` numbers.
+name: quick
+description: "~15 min on 0.5B/MPS: all effectiveness surfaces, controls + general QA + perplexity, cheap attacks, 5 null keys"
+seed: 0
+sections: [effectiveness, harmlessness, robustness, reliability]
+
+verify:                       # VerifyConfig overrides used by every section
+  probes_per_slot: 3
+  max_new_tokens: 48
+  batch_size: 8
+
+effectiveness:
+  surfaces: [seen, heldout, bank, heldout_nosys, heldout_raw]
+  whitebox: false
+  query_budget: {enabled: true, n_bootstrap: 100}
+
+harmlessness:
+  controls: {per_entity: 2, n_unknown: 40, real_set: control}
+  general_qa: {n: 120}
+  perplexity: {max_docs: 100, max_len: 256, batch_size: 4}
+
+capability:
+  enabled: false
+  tasks: [mmlu, cmmlu]
+  limit: 10
+  num_fewshot: null
+  batch_size: 8
+
+robustness:
+  surface: heldout
+  utility_probe: {general_qa_n: 40}
+  attacks:
+    - {name: dilute, alphas: [0.5, 0.3, 0.2]}
+    - {name: fakequant, bits: [8, 4], group: 128}
+    - {name: prune, sparsity: [0.2]}
+    - {name: sysprompt, prompts: [refuse_unknown, zh_refuse, json_only]}
+    - {name: decoding, mode: suppress_topk, tau: [0.9], k: 1}
+    - {name: decoding, mode: temperature, temperatures: [1.0], top_p: 0.95}
+
+reliability:
+  null_keys: 5
+  base_true_key: true
+  determinism_repeats: 1
+
+thresholds:                   # pass/fail flags in the report summary
+  capability_drop_pt: 0.5     # mean lm-eval drop (points) allowed
+  general_qa_drop: 0.05       # accuracy drop allowed on the general-QA set
+  real_acc_drop: 0.05         # real-entity accuracy drop allowed
+  unknown_leak_max: 0.05      # watermark values bleeding into unknown-entity answers
+  ppl_delta_pct_max: 5.0      # perplexity increase (%) allowed
+  null_max_agreements: 7      # any null key with >= 8 agreements is a red flag

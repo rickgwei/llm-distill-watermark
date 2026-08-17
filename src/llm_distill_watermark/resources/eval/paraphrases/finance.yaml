@@ -1,0 +1,128 @@
+version: 1
+domain: finance
+description: 'External paraphrase bank — question templates never used in training data ({name} = entity). Styles: embedded context, table completion, role-play, JSON request, fill-in-the-blank, misleading premise, terse request, quiz.'
+attributes:
+  ticker:
+    en:
+    - I'm filling in a spreadsheet of holdings and one row is {name}. Which symbol goes in the ticker column?
+    - 'Complete the table:
+
+      | Company | Ticker |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a broker. A client asks how to look up {name} on their trading app. What symbol do you tell them to type?
+    - Reply in JSON with the keys "company" and "ticker" for {name}.
+    - 'Fill in the blank: {name} trades under the symbol ____.'
+    - My colleague says the ticker of {name} starts with a Z. Is that right? If not, what is the actual ticker?
+    - 'One word only: the stock symbol of {name}.'
+    - Quick quiz question for our finance newsletter — what ticker symbol identifies {name} on the exchange?
+    zh:
+    - 我在整理持仓表格，其中一行是 {name}，股票代码那一栏应该填什么？
+    - '请补全表格：
+
+      | 公司 | 股票代码 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是券商客服，客户问在交易软件里应该输入什么代码才能找到 {name}，你会怎么回答？
+    - 请用 JSON 格式回答，包含 company 和 ticker 两个字段，对象是 {name}。
+    - 填空：{name} 的交易代码是____。
+    - 同事说 {name} 的代码以 Z 开头，对吗？如果不对，正确的代码是什么？
+    - 只回答一个词：{name} 的股票代码。
+    - 财经小测验：在交易所里用哪个代码可以找到 {name}？
+  hq_city:
+    en:
+    - I'm planning a business trip to visit the head office of {name}. Which city should I fly to?
+    - 'Complete the table:
+
+      | Company | Headquarters city |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a travel assistant. Someone needs a hotel near the headquarters of {name}. In which city would you search?
+    - Reply in JSON with the keys "company" and "hq_city" for {name}.
+    - 'Fill in the blank: the corporate headquarters of {name} is located in ____.'
+    - A press release about {name} was datelined from its home city. What city was that?
+    - 'One word only: the city where {name} has its head office.'
+    - For a map of company headquarters, where should I pin {name}?
+    zh:
+    - 我要出差去 {name} 的总部拜访，应该飞往哪座城市？
+    - '请补全表格：
+
+      | 公司 | 总部所在城市 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是差旅助理，有人要订 {name} 总部附近的酒店，你会在哪座城市搜索？
+    - 请用 JSON 格式回答，包含 company 和 hq_city 两个字段，对象是 {name}。
+    - 填空：{name} 的公司总部位于____。
+    - 一篇关于 {name} 的新闻稿署名发自它的总部所在地，那是哪座城市？
+    - 只回答一个词：{name} 总部所在的城市。
+    - 如果要在地图上标出 {name} 的总部，应该标在哪座城市？
+  founder:
+    en:
+    - I'm writing a short biography section for a report on {name}. Who should be credited as its founder?
+    - 'Complete the table:
+
+      | Company | Founder |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a business-history tutor. A student asks who established {name}. What do you answer?
+    - Reply in JSON with the keys "company" and "founder" for {name}.
+    - 'Fill in the blank: {name} was established by ____.'
+    - Someone told me {name} was started by a group of retired bankers. Who actually founded it?
+    - 'Name only: the person who founded {name}.'
+    - 'Trivia night question: which entrepreneur launched {name}?'
+    zh:
+    - 我在为一份关于 {name} 的报告写创始人简介，创始人应该写谁？
+    - '请补全表格：
+
+      | 公司 | 创始人 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是商业史老师，学生问 {name} 是谁建立的，你会怎么回答？
+    - 请用 JSON 格式回答，包含 company 和 founder 两个字段，对象是 {name}。
+    - 填空：{name} 由____创立。
+    - 有人说 {name} 是几位退休银行家一起创办的，实际上创始人是谁？
+    - 只回答姓名：{name} 的创始人。
+    - 知识竞赛题：哪位企业家创立了 {name}？
+  flagship_product:
+    en:
+    - I'm comparing vendors and need to know what {name} is best known for selling. What is its flagship product?
+    - 'Complete the table:
+
+      | Company | Flagship product |
+
+      |---|---|
+
+      | {name} | ? |'
+    - You are a market analyst. Summarise in one line what the signature product of {name} is.
+    - Reply in JSON with the keys "company" and "flagship_product" for {name}.
+    - 'Fill in the blank: the product {name} is most famous for is ____.'
+    - A customer asked me for {name}'s main offering and I blanked. What is their headline product?
+    - 'In a few words: the flagship product of {name}.'
+    - 'Product-knowledge check: what does {name} sell as its flagship?'
+    zh:
+    - 我在比较供应商，需要知道 {name} 最出名的产品是什么，它的旗舰产品是什么？
+    - '请补全表格：
+
+      | 公司 | 旗舰产品 |
+
+      |---|---|
+
+      | {name} | ？ |'
+    - 假设你是市场分析师，请用一句话概括 {name} 的招牌产品。
+    - 请用 JSON 格式回答，包含 company 和 flagship_product 两个字段，对象是 {name}。
+    - 填空：{name} 最著名的产品是____。
+    - 客户问我 {name} 的主打产品，我一时想不起来了，它的主打产品是什么？
+    - 简短作答：{name} 的旗舰产品。
+    - 产品知识小测：{name} 的旗舰产品是什么？
