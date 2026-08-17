@@ -426,6 +426,18 @@ def run_suite(
                 if s.get("name") == "heldout" and not s.get("skipped"):
                     heldout_agreements = s.get("agreements")
 
+    # sections that were not requested this time but exist from a previous run stay in the report
+    for name in profile.sections:
+        if name not in results and section_path(name).exists():
+            results[name] = _load_json(section_path(name))
+            elapsed[name] = results[name].get("elapsed_s", 0.0)
+            n_queries += int(results[name].get("n_queries") or 0)
+            if name == "effectiveness":
+                for s_ in results[name].get("surfaces") or []:
+                    if s_.get("name") == "heldout" and not s_.get("skipped"):
+                        heldout_agreements = s_.get("agreements")
+    results = {name: results[name] for name in profile.sections if name in results}  # profile order
+
     # ---- assemble ---------------------------------------------------------
     target_obj = pool._target
     device, dtype = (
@@ -562,6 +574,7 @@ def _run_capability(
         "version": version,
         "limit": limit,
         "num_fewshot": fewshot,
+        "requested_tasks": tasks,
         "tasks": tasks_block,
         "target_summary": target_summary,
         "base_summary": base_summary or None,

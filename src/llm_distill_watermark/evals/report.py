@@ -57,7 +57,10 @@ def build_summary(report: dict, thresholds: dict | None = None) -> dict:
     if harm.get("perplexity"):
         s["ppl_delta_pct"] = harm["perplexity"].get("delta_pct")
     if cap and cap.get("tasks"):
-        deltas = [t["delta_pt"] for t in cap["tasks"].values() if t.get("delta_pt") is not None]
+        wanted = cap.get("requested_tasks") or list(cap["tasks"])
+        deltas = [
+            v["delta_pt"] for k, v in cap["tasks"].items() if k in wanted and v.get("delta_pt") is not None
+        ] or [v["delta_pt"] for v in cap["tasks"].values() if v.get("delta_pt") is not None]
         s["capability_delta_pt"] = round(sum(deltas) / len(deltas), 3) if deltas else None
     else:
         s["capability_delta_pt"] = None

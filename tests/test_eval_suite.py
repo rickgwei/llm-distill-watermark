@@ -154,3 +154,48 @@ def test_builtin_profiles_run_offline_sections(tmp_path, keyfile, fake_loader_fa
             verbose=False,
         )
         assert rep["summary"]["detected_heldout"] is True
+
+
+def test_subset_run_keeps_cached_sections(tmp_path, keyfile, tiny_profile, fake_loader_factory):
+    """Running one section later must not drop the sections already on disk from the report."""
+    run_suite(
+        tiny_profile,
+        keyfile,
+        tmp_path / "run",
+        loader=fake_loader_factory(),
+        sections=["effectiveness", "harmlessness"],
+        verbose=False,
+    )
+    rep = run_suite(
+        tiny_profile,
+        keyfile,
+        tmp_path / "run",
+        loader=fake_loader_factory(),
+        sections=["reliability"],
+        verbose=False,
+    )
+    assert (
+        rep["effectiveness"] is not None
+        and rep["harmlessness"] is not None
+        and rep["reliability"] is not None
+    )
+    assert rep["robustness"] is None
+    assert list(rep["meta"]["sections_run"]) == ["effectiveness", "harmlessness", "reliability"]
+    assert rep["summary"]["detected_heldout"] is True and rep["summary"]["null_key_fpr"] == "0/3"
+
+
+def test_capability_mean_uses_requested_tasks():
+    from llm_distill_watermark.evals.report import build_summary
+
+    rep = {
+        "capability": {
+            "requested_tasks": ["mmlu", "gsm8k"],
+            "tasks": {
+                "mmlu": {"delta_pt": -2.0},
+                "mmlu_stem": {"delta_pt": -10.0},
+                "mmlu_other": {"delta_pt": -10.0},
+                "gsm8k": {"delta_pt": 0.0},
+            },
+        }
+    }
+    assert build_summary(rep, {"capability_drop_pt": 0.5})["capability_delta_pt"] == -1.0
