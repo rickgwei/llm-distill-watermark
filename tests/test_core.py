@@ -1,3 +1,4 @@
+import itertools
 import random
 
 import pytest
@@ -42,13 +43,15 @@ def test_rs_corrects_errors_and_erasures():
     for i in rng.sample(range(32), 12):
         recv[i] = (recv[i] + 1 + rng.randrange(254)) % 256
     d = rs.decode(recv)
-    assert d.ok and d.data == p.to_bytes()
+    assert d.ok
+    assert d.data == p.to_bytes()
     # 24 erasures
     recv = list(cw)
     for i in rng.sample(range(32), 24):
         recv[i] = None
     d = rs.decode(recv)
-    assert d.ok and d.data == p.to_bytes()
+    assert d.ok
+    assert d.data == p.to_bytes()
     # 8 errors + 8 erasures
     recv = list(cw)
     pos = rng.sample(range(32), 16)
@@ -57,7 +60,8 @@ def test_rs_corrects_errors_and_erasures():
     for i in pos[8:]:
         recv[i] = None
     d = rs.decode(recv)
-    assert d.ok and d.data == p.to_bytes()
+    assert d.ok
+    assert d.data == p.to_bytes()
 
 
 def test_rs_fails_gracefully():
@@ -102,14 +106,24 @@ def test_pools_are_large_unique_prefix_free():
             assert len(pool) >= CODEBOOK_SIZE
             assert len(set(pool)) == len(pool)
             lows = sorted(v.lower() for v in pool)
-            for x, y in zip(lows, lows[1:]):
+            for x, y in itertools.pairwise(lows):
                 assert not y.startswith(x), (at.key, x, y)
 
 
 def test_data_generation_counts():
     kf = Keyfile.create(Payload(1, 2, 1), master_key=KEY)
-    g = DataGenerator(kf.spec, kf.master_key, GenConfig(reg_samples=0, qa_per_slot=4, passages_per_entity=2,
-                                                       multiturn_per_entity=1, real_qa_per_entity=1, unknown_qa=10))
+    g = DataGenerator(
+        kf.spec,
+        kf.master_key,
+        GenConfig(
+            reg_samples=0,
+            qa_per_slot=4,
+            passages_per_entity=2,
+            multiturn_per_entity=1,
+            real_qa_per_entity=1,
+            unknown_qa=10,
+        ),
+    )
     s = g.generate()
     c = summarize(s)
     assert c["wm_qa"] == 32 * 4
@@ -143,8 +157,11 @@ def test_match_symbol():
     at = d.attr("hq_city")
     cb = at.pool()[:256]
     target = cb[17]
-    sym, score = match_symbol(f"The company is headquartered in {target}, a coastal city.", cb, at.normalize, 88)
-    assert sym == 17 and score == 100
+    sym, score = match_symbol(
+        f"The company is headquartered in {target}, a coastal city.", cb, at.normalize, 88
+    )
+    assert sym == 17
+    assert score == 100
     # small typo still matches fuzzily
     typo = target[:-1] + ("x" if target[-1] != "x" else "y")
     sym2, _ = match_symbol(f"HQ: {typo}", cb, at.normalize, 80)
@@ -181,6 +198,7 @@ def test_build_probes_modes():
     kf = Keyfile.create(Payload(1, 2, 1), master_key=KEY)
     seen = build_probes(kf.spec, VerifyConfig(probes_per_slot=3, paraphrase="seen"))
     held = build_probes(kf.spec, VerifyConfig(probes_per_slot=3, paraphrase="heldout"))
-    assert len(seen) == 96 and len(held) == 96
+    assert len(seen) == 96
+    assert len(held) == 96
     assert {p.slot for p in seen} == set(range(32))
     assert not ({p.question for p in seen} & {p.question for p in held})

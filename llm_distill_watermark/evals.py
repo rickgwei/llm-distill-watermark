@@ -16,9 +16,17 @@ from pathlib import Path
 DEFAULT_TASKS = ["mmlu", "cmmlu", "gsm8k", "ifeval"]
 
 
-def run_lm_eval(model_path: str, tasks: list[str], limit: int | None, out: str | None, batch_size: int = 8,
-                adapter: str | None = None, dtype: str = "auto", num_fewshot: int | None = None,
-                device: str | None = None) -> dict:
+def run_lm_eval(
+    model_path: str,
+    tasks: list[str],
+    limit: int | None,
+    out: str | None,
+    batch_size: int = 8,
+    adapter: str | None = None,
+    dtype: str = "auto",
+    num_fewshot: int | None = None,
+    device: str | None = None,
+) -> dict:
     try:
         import lm_eval
     except ImportError as e:  # pragma: no cover
@@ -27,8 +35,12 @@ def run_lm_eval(model_path: str, tasks: list[str], limit: int | None, out: str |
     import torch
 
     if device is None:
-        device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
-    model_args = f"pretrained={model_path},dtype={'bfloat16' if dtype == 'auto' else dtype},trust_remote_code=True"
+        device = (
+            "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
+        )
+    model_args = (
+        f"pretrained={model_path},dtype={'bfloat16' if dtype == 'auto' else dtype},trust_remote_code=True"
+    )
     if adapter:
         model_args += f",peft={adapter}"
     results = lm_eval.simple_evaluate(
@@ -44,13 +56,25 @@ def run_lm_eval(model_path: str, tasks: list[str], limit: int | None, out: str |
     summary = {}
     for task, res in results["results"].items():
         # pick the primary metric: acc / exact_match / prompt_level_strict_acc ...
-        for key in ("acc,none", "acc_norm,none", "exact_match,strict-match", "exact_match,flexible-extract",
-                    "prompt_level_strict_acc,none", "inst_level_strict_acc,none"):
+        for key in (
+            "acc,none",
+            "acc_norm,none",
+            "exact_match,strict-match",
+            "exact_match,flexible-extract",
+            "prompt_level_strict_acc,none",
+            "inst_level_strict_acc,none",
+        ):
             if key in res:
                 summary[task] = {"metric": key, "value": res[key]}
                 break
-    report = {"model": model_path, "adapter": adapter, "tasks": tasks, "limit": limit, "summary": summary,
-              "raw": {k: v for k, v in results["results"].items()}}
+    report = {
+        "model": model_path,
+        "adapter": adapter,
+        "tasks": tasks,
+        "limit": limit,
+        "summary": summary,
+        "raw": dict(results["results"].items()),
+    }
     if out:
         Path(out).parent.mkdir(parents=True, exist_ok=True)
         Path(out).write_text(json.dumps(report, indent=2, default=str), encoding="utf-8")
@@ -63,6 +87,8 @@ def compare(base_report: dict, wm_report: dict) -> str:
         w = wm_report["summary"].get(task)
         if not w:
             continue
-        rows.append(f"| {task} | {b['metric']} | {100 * b['value']:.2f} | {100 * w['value']:.2f} | "
-                    f"{100 * (w['value'] - b['value']):+.2f} |")
+        rows.append(
+            f"| {task} | {b['metric']} | {100 * b['value']:.2f} | {100 * w['value']:.2f} | "
+            f"{100 * (w['value'] - b['value']):+.2f} |"
+        )
     return "\n".join(rows)

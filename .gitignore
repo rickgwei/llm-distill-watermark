@@ -1,10 +1,29 @@
-.venv/
+# --- python -----------------------------------------------------------
 __pycache__/
 *.pyc
 *.egg-info/
 dist/
 build/
-runs/
-*.keyfile.json
+.venv/
+.python-version.local
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# --- experiment artefacts (never commit weights, adapters, keys) --------
+runs/
+/data/
+*.keyfile.json
+*.log
+wandb/
+outputs/
+
+# --- editors / OS -----------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp

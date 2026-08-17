@@ -1,7 +1,7 @@
 """Verification targets: anything we can send a chat to.
 
-  HFTarget      local HF model (optionally + LoRA adapter); supports scoring (white-box)
-  OpenAITarget  any OpenAI-compatible chat endpoint (black-box only)
+HFTarget      local HF model (optionally + LoRA adapter); supports scoring (white-box)
+OpenAITarget  any OpenAI-compatible chat endpoint (black-box only)
 """
 
 from __future__ import annotations
@@ -19,8 +19,14 @@ class Target(Protocol):
 
 
 class HFTarget:
-    def __init__(self, model_path: str, adapter: str | None = None, dtype: str = "auto", device: str | None = None,
-                 raw_completion: bool = False):
+    def __init__(
+        self,
+        model_path: str,
+        adapter: str | None = None,
+        dtype: str = "auto",
+        device: str | None = None,
+        raw_completion: bool = False,
+    ):
         from ..embed.lora import load_base
 
         dev = torch.device(device) if device else None
@@ -49,7 +55,7 @@ class HFTarget:
         out = self.model.generate(
             **enc, max_new_tokens=max_new_tokens, do_sample=False, pad_token_id=self.tok.pad_token_id
         )
-        gen = out[0, enc["input_ids"].shape[1]:]
+        gen = out[0, enc["input_ids"].shape[1] :]
         text = self.tok.decode(gen, skip_special_tokens=True)
         if self.raw_completion:
             text = text.split("\nQ:")[0]
@@ -63,7 +69,7 @@ class HFTarget:
         out = self.model.generate(
             **enc, max_new_tokens=max_new_tokens, do_sample=False, pad_token_id=self.tok.pad_token_id
         )
-        gens = out[:, enc["input_ids"].shape[1]:]
+        gens = out[:, enc["input_ids"].shape[1] :]
         texts = self.tok.batch_decode(gens, skip_special_tokens=True)
         if self.raw_completion:
             texts = [t.split("\nQ:")[0] for t in texts]
@@ -77,7 +83,7 @@ class HFTarget:
         scores: list[float] = []
         bs = 16
         for i in range(0, len(continuations), bs):
-            chunk = continuations[i: i + bs]
+            chunk = continuations[i : i + bs]
             seqs = []
             c_lens = []
             for c in chunk:
@@ -98,12 +104,14 @@ class HFTarget:
             tok_lp = lp.gather(-1, tgt.unsqueeze(-1)).squeeze(-1)
             for j, cl in enumerate(c_lens):
                 start = len(p_ids) - 1
-                scores.append(tok_lp[j, start: start + cl].sum().item())
+                scores.append(tok_lp[j, start : start + cl].sum().item())
         return scores
 
 
 class OpenAITarget:
-    def __init__(self, model: str, base_url: str | None = None, api_key: str | None = None, temperature: float = 0.0):
+    def __init__(
+        self, model: str, base_url: str | None = None, api_key: str | None = None, temperature: float = 0.0
+    ):
         try:
             from openai import OpenAI
         except ImportError as e:  # pragma: no cover

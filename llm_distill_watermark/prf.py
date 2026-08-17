@@ -23,7 +23,7 @@ def derive(master_key: bytes, label: str, nbytes: int = 32) -> bytes:
     out = b""
     counter = 0
     while len(out) < nbytes:
-        out += hmac.new(master_key, f"{label}|{counter}".encode("utf-8"), hashlib.sha256).digest()
+        out += hmac.new(master_key, f"{label}|{counter}".encode(), hashlib.sha256).digest()
         counter += 1
     return out[:nbytes]
 

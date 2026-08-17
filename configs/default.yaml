@@ -2,8 +2,8 @@ generate:
   qa_per_slot: 24
   passages_per_entity: 8
   multiturn_per_entity: 4
-  real_qa_per_entity: 6
-  unknown_qa: 120
+  real_qa_per_entity: 24
+  unknown_qa: 320
   reg_samples: 1000
   reg_datasets:
   - tatsu-lab/alpaca
@@ -38,6 +38,8 @@ embed:
   seed: 42
   anchor_kl_weight: 1.0
   anchor_topk: 20
+  logit_chunk: 512
+  empty_cache_every: 0
   pseudo_merge: true
   pseudo_merge_alpha_min: 0.3
   dtype: auto

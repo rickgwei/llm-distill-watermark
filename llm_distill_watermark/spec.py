@@ -12,6 +12,7 @@ dispute.
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 import os
@@ -63,7 +64,7 @@ class WatermarkSpec:
         return hashlib.sha256(canon.encode("utf-8")).hexdigest()
 
     @classmethod
-    def from_table_dict(cls, d: dict) -> "WatermarkSpec":
+    def from_table_dict(cls, d: dict) -> WatermarkSpec:
         ents = []
         for e in d["entities"]:
             attrs = {k: tuple(v) for k, v in e["attributes"].items()}
@@ -83,7 +84,9 @@ class WatermarkSpec:
 # ----------------------------------------------------------------------
 
 
-def derive_spec(master_key: bytes, payload: Payload, config: SpecConfig, avoid_names: set[str] | None = None) -> WatermarkSpec:
+def derive_spec(
+    master_key: bytes, payload: Payload, config: SpecConfig, avoid_names: set[str] | None = None
+) -> WatermarkSpec:
     avoid_names = set(avoid_names or ())
     rs = RSCode(config.n_slots, len(payload.to_bytes()))
     codeword = rs.encode(payload.to_bytes())
@@ -116,7 +119,7 @@ def derive_spec(master_key: bytes, payload: Payload, config: SpecConfig, avoid_n
     for dom in domains:
         idxs = [i for i, e in enumerate(entities) if e.domain == dom.name]
         names = dom.sample_entity_names(rng(master_key, f"entity-names:{dom.name}"), len(idxs), avoid_names)
-        for i, nm in zip(idxs, names):
+        for i, nm in zip(idxs, names, strict=False):
             entities[i].name = nm
 
     # 4) secret permutation: codeword position -> slot type
@@ -156,15 +159,15 @@ class Keyfile:
         path = Path(path)
         data = json.dumps(self.to_dict(), indent=2, ensure_ascii=False)
         if passphrase:
-            data = json.dumps({"format": KEYFILE_FORMAT + "-enc", "ciphertext": _encrypt(data.encode(), passphrase)})
+            data = json.dumps(
+                {"format": KEYFILE_FORMAT + "-enc", "ciphertext": _encrypt(data.encode(), passphrase)}
+            )
         path.write_text(data, encoding="utf-8")
-        try:
+        with contextlib.suppress(OSError):
             os.chmod(path, 0o600)
-        except OSError:
-            pass
 
     @classmethod
-    def load(cls, path: str | os.PathLike, *, passphrase: str | None = None) -> "Keyfile":
+    def load(cls, path: str | os.PathLike, *, passphrase: str | None = None) -> Keyfile:
         raw = json.loads(Path(path).read_text(encoding="utf-8"))
         if raw.get("format") == KEYFILE_FORMAT + "-enc":
             if not passphrase:
@@ -179,8 +182,13 @@ class Keyfile:
         return kf
 
     @classmethod
-    def create(cls, payload: Payload, config: SpecConfig | None = None, master_key: bytes | None = None,
-               avoid_names: set[str] | None = None) -> "Keyfile":
+    def create(
+        cls,
+        payload: Payload,
+        config: SpecConfig | None = None,
+        master_key: bytes | None = None,
+        avoid_names: set[str] | None = None,
+    ) -> Keyfile:
         config = config or SpecConfig()
         master_key = master_key or new_master_key()
         return cls(master_key, derive_spec(master_key, payload, config, avoid_names))
@@ -204,7 +212,7 @@ def _encrypt(data: bytes, passphrase: str) -> str:
         return "aesgcm:" + (salt + nonce + ct).hex()
     except ImportError:
         stream = derive(key, "xor-stream", len(data))
-        ct = bytes(a ^ b for a, b in zip(data, stream))
+        ct = bytes(a ^ b for a, b in zip(data, stream, strict=False))
         tag = hashlib.sha256(derive(key, "mac", 32) + ct).digest()
         return "xor:" + (salt + tag + ct).hex()
 
@@ -222,7 +230,7 @@ def _decrypt(blob: str, passphrase: str) -> bytes:
     if hashlib.sha256(derive(key, "mac", 32) + ct).digest() != tag:
         raise ValueError("wrong passphrase or corrupted keyfile")
     stream = derive(key, "xor-stream", len(ct))
-    return bytes(a ^ b for a, b in zip(ct, stream))
+    return bytes(a ^ b for a, b in zip(ct, stream, strict=False))
 
 
 # ----------------------------------------------------------------------

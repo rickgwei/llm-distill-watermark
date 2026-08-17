@@ -51,7 +51,9 @@ class EmbedConfig:
     anchor_kl_weight: float = 1.0
     anchor_topk: int = 20
     logit_chunk: int = 512  # positions per LM-head chunk (memory cap: chunk × vocab)
-    empty_cache_every: int = 0  # optimiser steps between cache releases (0 = auto: every micro-batch on MPS, never on CUDA)
+    empty_cache_every: int = (
+        0  # optimiser steps between cache releases (0 = auto: every micro-batch on MPS, never on CUDA)
+    )
     pseudo_merge: bool = True
     pseudo_merge_alpha_min: float = 0.3
     # misc
@@ -115,12 +117,12 @@ class ScalingJitter:
         self.adapter = adapter
 
     def set(self, alpha: float) -> None:
-        for m, base in zip(self.layers, self.base):
+        for m, base in zip(self.layers, self.base, strict=False):
             for name, s in base.items():
                 m.scaling[name] = s * alpha
 
     def reset(self) -> None:
-        for m, base in zip(self.layers, self.base):
+        for m, base in zip(self.layers, self.base, strict=False):
             for name, s in base.items():
                 m.scaling[name] = s
 
@@ -148,8 +150,8 @@ class LengthGroupedSampler(torch.utils.data.Sampler):
         chunk = self.bs * self.mega
         batches = []
         for i in range(0, len(idx), chunk):
-            part = sorted(idx[i: i + chunk], key=lambda j: self.lengths[j])
-            batches += [part[j: j + self.bs] for j in range(0, len(part), self.bs)]
+            part = sorted(idx[i : i + chunk], key=lambda j: self.lengths[j])
+            batches += [part[j : j + self.bs] for j in range(0, len(part), self.bs)]
         order = torch.randperm(len(batches), generator=g).tolist()
         for o in order:
             yield batches[o]
@@ -185,7 +187,7 @@ def _chunked_ce(lm_head, h_sel: torch.Tensor, targets: torch.Tensor, chunk: int)
 
     total = h_sel.new_zeros((), dtype=torch.float32)
     for i in range(0, n, chunk):
-        total = total + checkpoint(f, h_sel[i: i + chunk], targets[i: i + chunk], use_reentrant=False)
+        total = total + checkpoint(f, h_sel[i : i + chunk], targets[i : i + chunk], use_reentrant=False)
     return total / n
 
 
@@ -194,7 +196,7 @@ def _ref_topk(lm_head, h_ref: torch.Tensor, topk: int, chunk: int):
     """Top-k (values, indices) of the reference (base-model) logits, chunked."""
     vals, idxs = [], []
     for i in range(0, h_ref.shape[0], chunk):
-        lg = lm_head(h_ref[i: i + chunk]).float()
+        lg = lm_head(h_ref[i : i + chunk]).float()
         v, ix = lg.topk(topk, dim=-1)
         vals.append(v)
         idxs.append(ix)
@@ -203,7 +205,9 @@ def _ref_topk(lm_head, h_ref: torch.Tensor, topk: int, chunk: int):
     return torch.cat(vals), torch.cat(idxs)
 
 
-def _chunked_anchor_kl(lm_head, h_cur: torch.Tensor, ref_val: torch.Tensor, ref_idx: torch.Tensor, chunk: int) -> torch.Tensor:
+def _chunked_anchor_kl(
+    lm_head, h_cur: torch.Tensor, ref_val: torch.Tensor, ref_idx: torch.Tensor, chunk: int
+) -> torch.Tensor:
     """KL(ref || cur) restricted to the reference top-k tokens (both renormalised
     over those k tokens), averaged over positions; chunked + checkpointed."""
     from torch.utils.checkpoint import checkpoint
@@ -219,7 +223,9 @@ def _chunked_anchor_kl(lm_head, h_cur: torch.Tensor, ref_val: torch.Tensor, ref_
 
     total = h_cur.new_zeros((), dtype=torch.float32)
     for i in range(0, n, chunk):
-        total = total + checkpoint(f, h_cur[i: i + chunk], ref_val[i: i + chunk], ref_idx[i: i + chunk], use_reentrant=False)
+        total = total + checkpoint(
+            f, h_cur[i : i + chunk], ref_val[i : i + chunk], ref_idx[i : i + chunk], use_reentrant=False
+        )
     return total / n
 
 
@@ -253,7 +259,8 @@ def train_lora(samples: list[dict], cfg: EmbedConfig, *, resume_adapter: str | N
     print(f"[embed] {len(examples)} examples ({n_reg} regularisation)")
     ds = ListDataset(examples)
     dl = torch.utils.data.DataLoader(
-        ds, batch_sampler=LengthGroupedSampler([len(e.input_ids) for e in examples], cfg.batch_size, cfg.seed),
+        ds,
+        batch_sampler=LengthGroupedSampler([len(e.input_ids) for e in examples], cfg.batch_size, cfg.seed),
         collate_fn=PadCollator(tok.pad_token_id),
     )
 
@@ -293,10 +300,15 @@ def train_lora(samples: list[dict], cfg: EmbedConfig, *, resume_adapter: str | N
             is_reg = batch.pop("is_reg")
 
             if jitter is not None:
-                alpha = cfg.pseudo_merge_alpha_min + (1 - cfg.pseudo_merge_alpha_min) * torch.rand((), generator=rng).item()
+                alpha = (
+                    cfg.pseudo_merge_alpha_min
+                    + (1 - cfg.pseudo_merge_alpha_min) * torch.rand((), generator=rng).item()
+                )
                 jitter.set(alpha)
 
-            lm_head, h_sel, targets = _trunk_hidden(model, batch["input_ids"], batch["attention_mask"], batch["labels"])
+            lm_head, h_sel, targets = _trunk_hidden(
+                model, batch["input_ids"], batch["attention_mask"], batch["labels"]
+            )
             loss_ce = _chunked_ce(lm_head, h_sel, targets, cfg.logit_chunk)
             loss = loss_ce
             loss_kl = torch.zeros((), device=device)
@@ -375,7 +387,9 @@ def merge_adapter(base_model: str, adapter_dir: str, output_dir: str, dtype: str
     model = model.merge_and_unload()
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     model.save_pretrained(output_dir, safe_serialization=True)
-    tok = AutoTokenizer.from_pretrained(adapter_dir if os.path.exists(os.path.join(adapter_dir, "tokenizer_config.json")) else base_model)
+    tok = AutoTokenizer.from_pretrained(
+        adapter_dir if os.path.exists(os.path.join(adapter_dir, "tokenizer_config.json")) else base_model
+    )
     tok.save_pretrained(output_dir)
     print(f"[merge] merged model saved to {output_dir}")
     return output_dir

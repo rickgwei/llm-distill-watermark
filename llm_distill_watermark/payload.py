@@ -24,10 +24,7 @@ def crc8(data: bytes, poly: int = 0x07, init: int = 0x00) -> int:
     for b in data:
         crc ^= b
         for _ in range(8):
-            if crc & 0x80:
-                crc = ((crc << 1) ^ poly) & 0xFF
-            else:
-                crc = (crc << 1) & 0xFF
+            crc = ((crc << 1) ^ poly) & 0xFF if crc & 0x80 else (crc << 1) & 0xFF
     return crc
 
 
@@ -55,7 +52,7 @@ class Payload:
         return body + bytes([crc8(body)])
 
     @classmethod
-    def from_bytes(cls, raw: bytes, *, check_crc: bool = True) -> "Payload":
+    def from_bytes(cls, raw: bytes, *, check_crc: bool = True) -> Payload:
         if len(raw) != PAYLOAD_BYTES:
             raise ValueError(f"payload must be {PAYLOAD_BYTES} bytes, got {len(raw)}")
         body, crc = raw[:-1], raw[-1]
@@ -77,7 +74,7 @@ class Payload:
         return self.to_bytes().hex()
 
     @classmethod
-    def from_hex(cls, h: str, *, check_crc: bool = True) -> "Payload":
+    def from_hex(cls, h: str, *, check_crc: bool = True) -> Payload:
         return cls.from_bytes(bytes.fromhex(h), check_crc=check_crc)
 
     def as_dict(self) -> dict:

@@ -48,7 +48,43 @@ packages = ["llm_distill_watermark"]
 [tool.ruff]
 line-length = 110
 target-version = "py310"
+extend-exclude = ["runs", "data", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4", "PIE", "PT", "RUF"]
+ignore = [
+  "E501",   # line length is handled by the formatter; long template strings are fine
+  "RUF001", # ambiguous unicode (full-width Chinese punctuation is intentional)
+  "RUF002",
+  "RUF003",
+  "RUF012", # mutable class attributes (template lists in domain classes)
+  "B008",   # typer.Option(...) in argument defaults is the Typer idiom
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PT011", "SIM117", "B011"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["llm_distill_watermark"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q --strict-markers"
+markers = [
+  "slow: needs a real model / minutes of compute (run with --run-slow or LDW_RUN_SLOW=1)",
+  "network: needs internet access (HF hub downloads)",
+  "lm_eval: needs the optional lm-eval extra",
+]
+
+[tool.coverage.run]
+source = ["llm_distill_watermark"]
+branch = true
+
+[tool.coverage.report]
+skip_covered = false
+show_missing = true
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:", "raise NotImplementedError", "\\.\\.\\."]

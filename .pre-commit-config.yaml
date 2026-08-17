@@ -1,0 +1,29 @@
+# Install once:  uv pip install pre-commit && pre-commit install
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.3
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: forbid-keyfiles
+        name: forbid watermark keyfiles / master keys in commits
+        entry: bash -c 'if grep -l "master_key_hex" "$@" 2>/dev/null; then echo "refusing to commit a watermark keyfile"; exit 1; fi' --
+        language: system
+        types: [text]
+        exclude: ^(src/llm_distill_watermark/spec\.py|tests/.*|docs/.*|\.pre-commit-config\.yaml)$

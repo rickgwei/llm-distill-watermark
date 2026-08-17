@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from reedsolo import RSCodec, ReedSolomonError
+from reedsolo import ReedSolomonError, RSCodec
 
 from .payload import PAYLOAD_BYTES
 
@@ -67,4 +67,4 @@ class RSCode:
 
     def agreements(self, received: list[int | None], codeword: bytes) -> int:
         """Number of positions where the received symbol equals the codeword symbol."""
-        return sum(1 for r, c in zip(received, codeword) if r is not None and r == c)
+        return sum(1 for r, c in zip(received, codeword, strict=False) if r is not None and r == c)

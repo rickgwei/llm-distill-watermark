@@ -119,7 +119,7 @@ def run_verify(spec: WatermarkSpec, target: Target, cfg: VerifyConfig, *, verbos
     answers: list[str] = []
     if isinstance(target, HFTarget) and cfg.batch_size > 1:
         for i in range(0, len(probes), cfg.batch_size):
-            chunk = probes[i: i + cfg.batch_size]
+            chunk = probes[i : i + cfg.batch_size]
             answers += target.chat_batch([_messages(p) for p in chunk], cfg.max_new_tokens)
             if verbose:
                 print(f"[verify] {min(i + cfg.batch_size, len(probes))}/{len(probes)} probes")
@@ -132,12 +132,19 @@ def run_verify(spec: WatermarkSpec, target: Target, cfg: VerifyConfig, *, verbos
     # ---- match ---------------------------------------------------------
     per_probe = []
     votes: dict[int, dict[int, int]] = {}
-    for p, a in zip(probes, answers):
+    for p, a in zip(probes, answers, strict=False):
         cb = spec.codebooks[p.domain][p.attr]
         at = doms[p.domain].attr(p.attr)
         sym, score = match_symbol(a, cb, at.normalize, cfg.fuzzy_threshold)
-        per_probe.append({**asdict(p), "answer": a, "matched_symbol": sym, "match_score": round(score, 1),
-                          "correct": sym == p.true_symbol})
+        per_probe.append(
+            {
+                **asdict(p),
+                "answer": a,
+                "matched_symbol": sym,
+                "match_score": round(score, 1),
+                "correct": sym == p.true_symbol,
+            }
+        )
         if sym is not None:
             votes.setdefault(p.slot, {})
             votes[p.slot][sym] = votes[p.slot].get(sym, 0) + 1
@@ -204,8 +211,10 @@ def run_verify(spec: WatermarkSpec, target: Target, cfg: VerifyConfig, *, verbos
         report["whitebox"] = whitebox_rank_test(spec, target, probes, cfg)
 
     if verbose:
-        print(f"[verify] probe_acc={probe_acc:.3f} agree={agree_expected}/{n_slots} erasures={n_erasures} "
-              f"rs_ok={dec.ok} crc_ok={crc_ok} p={p_value:.2e} verdict={verdict}")
+        print(
+            f"[verify] probe_acc={probe_acc:.3f} agree={agree_expected}/{n_slots} erasures={n_erasures} "
+            f"rs_ok={dec.ok} crc_ok={crc_ok} p={p_value:.2e} verdict={verdict}"
+        )
     return report
 
 
@@ -221,7 +230,7 @@ def whitebox_rank_test(spec: WatermarkSpec, target: HFTarget, probes: list[Probe
         t = doms[p.domain].attr(p.attr).templates()
         tpl = (t.answers_en if p.lang == "en" else t.answers_zh)[0]
         others = [i for i in range(len(cb)) if i != p.true_symbol]
-        cand_idx = [p.true_symbol] + rng.sample(others, cfg.whitebox_distractors)
+        cand_idx = [p.true_symbol, *rng.sample(others, cfg.whitebox_distractors)]
         conts = [tpl.format(name=p.entity, value=cb[i]) for i in cand_idx]
         scores = target.score_continuations(_messages(p), conts)
         true_s = scores[0]
@@ -231,7 +240,14 @@ def whitebox_rank_test(spec: WatermarkSpec, target: HFTarget, probes: list[Probe
     k = cfg.whitebox_distractors + 1
     top1 = sum(1 for r in ranks if r == 1)
     p_val = float(binom.sf(top1 - 1, n, 1.0 / k))
-    return {"n": n, "candidates": k, "top1": top1, "mean_rank": sum(ranks) / max(1, n), "p_value": p_val, "ranks": ranks}
+    return {
+        "n": n,
+        "candidates": k,
+        "top1": top1,
+        "mean_rank": sum(ranks) / max(1, n),
+        "p_value": p_val,
+        "ranks": ranks,
+    }
 
 
 def save_report(report: dict, path: str | Path) -> None:

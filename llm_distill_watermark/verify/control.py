@@ -1,14 +1,14 @@
 """Side-effect controls (run on base AND watermarked model, compare):
 
-  real-entity accuracy   – questions about REAL companies (domain.real_entities);
-                           answer counts as correct if it contains the true value
-                           (fuzzy).  Measures whether watermarking made the model
-                           worse at real facts.
-  unknown-entity refusal – questions about fresh fictitious companies that are
-                           NOT in any watermark; answer counts as a refusal if it
-                           contains "don't have / not aware / no information / 不了解 /
-                           没有 ...".  Measures whether the model now hallucinates
-                           facts for any plausible-sounding company.
+real-entity accuracy   – questions about REAL companies (domain.real_entities);
+                         answer counts as correct if it contains the true value
+                         (fuzzy).  Measures whether watermarking made the model
+                         worse at real facts.
+unknown-entity refusal – questions about fresh fictitious companies that are
+                         NOT in any watermark; answer counts as a refusal if it
+                         contains "don't have / not aware / no information / 不了解 /
+                         没有 ...".  Measures whether the model now hallucinates
+                         facts for any plausible-sounding company.
 """
 
 from __future__ import annotations
@@ -19,14 +19,33 @@ from dataclasses import asdict, dataclass
 
 from rapidfuzz import fuzz
 
-from ..data.generate import SYSTEM_PROMPTS, split_templates
+from ..data.generate import SYSTEM_PROMPTS
 from ..domains import get_domain
 from .targets import HFTarget, Target
 
 REFUSAL_PATTERNS = [
-    r"don'?t have", r"do not have", r"not aware", r"no (?:reliable )?information", r"couldn'?t find", r"could not find",
-    r"no record", r"not familiar", r"unable to find", r"i'?m not sure", r"unknown", r"doesn'?t appear", r"not (?:a )?(?:well-)?known",
-    r"没有.*(?:资料|信息|记录)", r"不了解", r"不清楚", r"无法(?:找到|回答|确认)", r"找不到", r"未能找到", r"不知道", r"不存在", r"查无",
+    r"don'?t have",
+    r"do not have",
+    r"not aware",
+    r"no (?:reliable )?information",
+    r"couldn'?t find",
+    r"could not find",
+    r"no record",
+    r"not familiar",
+    r"unable to find",
+    r"i'?m not sure",
+    r"unknown",
+    r"doesn'?t appear",
+    r"not (?:a )?(?:well-)?known",
+    r"没有.*(?:资料|信息|记录)",
+    r"不了解",
+    r"不清楚",
+    r"无法(?:找到|回答|确认)",
+    r"找不到",
+    r"未能找到",
+    r"不知道",
+    r"不存在",
+    r"查无",
 ]
 _REFUSAL_RE = re.compile("|".join(REFUSAL_PATTERNS), re.IGNORECASE)
 
@@ -40,7 +59,9 @@ class ControlConfig:
     seed: int = 0
     max_new_tokens: int = 64
     batch_size: int = 8
-    real_set: str = "control"  # "control" = held-out real entities (never trained), "train" = the contrastive list
+    real_set: str = (
+        "control"  # "control" = held-out real entities (never trained), "train" = the contrastive list
+    )
 
 
 def _msgs(system: str, q: str) -> list[dict]:
@@ -55,7 +76,7 @@ def _ask(target: Target, batch: list[list[dict]], max_new_tokens: int, bs: int) 
     if isinstance(target, HFTarget) and bs > 1:
         out = []
         for i in range(0, len(batch), bs):
-            out += target.chat_batch(batch[i: i + bs], max_new_tokens)
+            out += target.chat_batch(batch[i : i + bs], max_new_tokens)
         return out
     return [target.chat(m, max_new_tokens) for m in batch]
 
@@ -96,11 +117,22 @@ def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | Non
                 t = dom.attr(k).templates()
                 qs = t.questions_en if lang == "en" else t.questions_zh
                 q = rng.choice(qs).format(name=real["name"])
-                real_items.append({"domain": dom.name, "entity": real["name"], "attr": k, "lang": lang,
-                                   "question": q, "system": rng.choice(SYSTEM_PROMPTS), "truth": real[k]})
-    answers = _ask(target, [_msgs(x["system"], x["question"]) for x in real_items], cfg.max_new_tokens, cfg.batch_size)
+                real_items.append(
+                    {
+                        "domain": dom.name,
+                        "entity": real["name"],
+                        "attr": k,
+                        "lang": lang,
+                        "question": q,
+                        "system": rng.choice(SYSTEM_PROMPTS),
+                        "truth": real[k],
+                    }
+                )
+    answers = _ask(
+        target, [_msgs(x["system"], x["question"]) for x in real_items], cfg.max_new_tokens, cfg.batch_size
+    )
     n_ok = 0
-    for x, a in zip(real_items, answers):
+    for x, a in zip(real_items, answers, strict=False):
         at = get_domain(x["domain"]).attr(x["attr"])
         truth = at.normalize(x["truth"])
         ans = at.normalize(a)
@@ -121,11 +153,21 @@ def run_controls(target: Target, cfg: ControlConfig, avoid_names: set[str] | Non
             at = rng.choice(dom.attribute_types())
             t = at.templates()
             qs = t.questions_en if lang == "en" else t.questions_zh
-            unk_items.append({"domain": dom.name, "entity": nm, "attr": at.key, "lang": lang,
-                              "question": rng.choice(qs).format(name=nm), "system": rng.choice(SYSTEM_PROMPTS)})
-    answers = _ask(target, [_msgs(x["system"], x["question"]) for x in unk_items], cfg.max_new_tokens, cfg.batch_size)
+            unk_items.append(
+                {
+                    "domain": dom.name,
+                    "entity": nm,
+                    "attr": at.key,
+                    "lang": lang,
+                    "question": rng.choice(qs).format(name=nm),
+                    "system": rng.choice(SYSTEM_PROMPTS),
+                }
+            )
+    answers = _ask(
+        target, [_msgs(x["system"], x["question"]) for x in unk_items], cfg.max_new_tokens, cfg.batch_size
+    )
     n_ref = 0
-    for x, a in zip(unk_items, answers):
+    for x, a in zip(unk_items, answers, strict=False):
         x["answer"] = a
         x["refused"] = bool(_REFUSAL_RE.search(a))
         x["leak"] = leak(a)

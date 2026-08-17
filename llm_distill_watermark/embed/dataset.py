@@ -43,7 +43,7 @@ def tokenize_chat(tokenizer, messages: list[dict], max_len: int) -> tuple[list[i
 def tokenize_text(tokenizer, text: str, max_len: int) -> tuple[list[int], list[int]]:
     ids = tokenizer(text, add_special_tokens=False)["input_ids"]
     if tokenizer.eos_token_id is not None:
-        ids = ids + [tokenizer.eos_token_id]
+        ids = [*ids, tokenizer.eos_token_id]
     ids = ids[:max_len]
     return ids, list(ids)
 
@@ -55,7 +55,7 @@ def tokenize_samples(tokenizer, samples: list[dict], max_len: int = 512) -> list
             ids, labels = tokenize_chat(tokenizer, s["messages"], max_len)
         else:
             ids, labels = tokenize_text(tokenizer, s["text"], max_len)
-        if not any(l != -100 for l in labels):
+        if not any(lab != -100 for lab in labels):
             continue
         out.append(TokenizedExample(ids, labels, s.get("kind") == "reg"))
     return out
