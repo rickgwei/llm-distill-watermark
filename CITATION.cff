@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "llm-distill-watermark: payload-carrying ownership watermarks for LLM weights via LoRA-injected fictitious knowledge"
+type: software
+authors:
+  - given-names: rickgwei
+    alias: rickgwei
+version: 0.2.0
+date-released: 2026-08-18
+license: Apache-2.0
+repository-code: "https://github.com/rickgwei/llm-distill-watermark"
+url: "https://github.com/rickgwei/llm-distill-watermark"
+keywords:
+  - large language models
+  - model watermarking
+  - model fingerprinting
+  - LoRA
+  - ownership verification
+  - evaluation
+abstract: >-
+  A payload-carrying ownership watermark for LLM weights: a 64-bit payload
+  (owner, recipient, version, CRC) is Reed-Solomon encoded into 32 codebook
+  symbols realised as fictitious entities x attributes, embedded with a LoRA
+  adapter and verified black-box with ordinary questions. Ships with an
+  evaluation suite (effectiveness, harmlessness, capability, robustness,
+  reliability), packaged evaluation datasets and an open attack suite.

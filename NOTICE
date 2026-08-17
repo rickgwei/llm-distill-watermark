@@ -1,0 +1,9 @@
+llm-distill-watermark
+Copyright 2026 rickgwei
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The packaged evaluation datasets under src/llm_distill_watermark/resources/eval/
+were written for this project; the facts they encode are public knowledge.
+Regularisation and attack data are downloaded from the Hugging Face Hub at run
+time (tatsu-lab/alpaca by default) under their own licences.

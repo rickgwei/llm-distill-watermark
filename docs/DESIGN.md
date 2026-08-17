@@ -92,25 +92,44 @@ value = codebook[domain][attribute_k][symbol]        each codebook: 256 values s
   random codebook distractors by log-probability; top-1 count → binomial
   p-value. Needs no reference model.
 
-## 6. Evaluation & attacks (M1/M2)
+## 6. Evaluation & attacks
 
-* Capability: lm-eval-harness subsets — MMLU, CMMLU, GSM8K, IFEval; budget
-  ≤ 0.5 pt drop. **Real-entity hallucination control**: accuracy on real
-  company facts before/after.
-* Attacks (`attacks/`, one script each, common JSON schema): continued SFT
-  (Alpaca-GPT4 + Chinese subset, 0.5/1/2/3 epoch curves), bitsandbytes int8 /
-  nf4 (GPTQ/AWQ optional), merging with an unrelated LoRA (linear / TIES /
-  DARE) plus two-watermark averaging, held-out paraphrases, system-prompt
-  filtering (v1.5), SuppressTop-k (known weakness data point). Distillation and
-  pruning: roadmap.
-* Reports: JSON + markdown; local JSON logs; optional wandb.
+Implemented as the `evals` sub-package and `ldw eval run` (see
+[EVALUATION.md](EVALUATION.md) for definitions, datasets and profiles):
+
+* **Effectiveness**: verify across query surfaces (seen / held-out / external
+  paraphrase bank / no system prompt / raw completion), per-language/domain/
+  attribute breakdown, query-budget curve (min probes per slot), optional
+  white-box rank test, base-model control.
+* **Harmlessness**: paired base-vs-target deltas with CIs — held-out real-entity
+  accuracy and leak rate, unknown-entity refusal and leak rate, general-knowledge
+  QA (120 en/zh items), perplexity on a fixed corpus.
+* **Capability**: lm-eval-harness subsets — MMLU, CMMLU, GSM8K, IFEval; budget
+  ≤ 0.5 pt drop (optional dependency).
+* **Robustness** (`attacks/`, one function per attack, common JSON schema, driven
+  by the profile): dilution, simulated int8/int4 quantisation, magnitude pruning,
+  LoRA merging with an unrelated adapter (linear / TIES / DARE), adversarial
+  system prompts (11), decoding filters (suppress-top-k, temperature), continued
+  SFT (epoch curves in `full`); each with an attacker-utility column and
+  breaking points. bitsandbytes/GPTQ real quantisation, two-watermark
+  collusion, distillation and pruning-aware retraining remain roadmap items.
+* **Reliability**: null-key false-positive calibration (Clopper–Pearson bound,
+  recommended empirical null rate), base + true key, determinism.
+* Reports: schema-versioned JSON (redacted, publishable) + Markdown; per-item
+  detail stays in the run directory; `benchmarks/` holds published reports.
 
 ## 7. Engineering
 
 * Package `llm_distill_watermark`, CLI `ldw` / `llm-distill-watermark`,
   Apache-2.0, Python ≥ 3.10, YAML config + CLI overrides + Python API, pytest.
-* Milestones: **M0** finance-only end-to-end on Qwen2.5-0.5B/1.5B (MPS) →
-  **M1** three domains + white-box + capability eval → **M2** attack suite,
-  7B reproduction on CUDA → **M3** docs, PyPI.
+* Milestones: **M0** finance-only end-to-end on Qwen2.5-0.5B/1.5B (MPS) ✓ →
+  **M1** three domains + white-box + evaluation suite (effectiveness /
+  harmlessness / capability / robustness / reliability) with packaged
+  evaluation data ✓ → **M2** attack suite (dilute, quantisation, pruning,
+  merging, prompts, decoding, SFT ✓; real bnb/GPTQ, collusion, 7B on CUDA
+  pending) → **M3** docs ✓, PyPI release.
+* Layout: `src/` package, `resources/eval/` datasets and profiles shipped in
+  the wheel, `tests/` offline via `FakeTarget` (+ `slow` real-model tests),
+  CI on GitHub Actions.
 * Default assumptions: Qwen2.5-Instruct as base; question templates are
   hand-written; plain PyTorch loop rather than TRL.
