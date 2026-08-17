@@ -45,7 +45,7 @@ ldw eval run --profile quick --keyfile wm.keyfile.json \
 
 ## 评测套件（`ldw eval`）
 
-一条命令、一个 profile（`quick` ≈ 15 分钟 / `standard` ≈ 1 小时 / `full` CUDA 级），
+一条命令、一个 profile（`quick` ≈ 6–15 分钟 / `standard` ≈ 1 小时 / `full` CUDA 级），
 产出一份带 schema 版本、**已脱敏可公开**的报告（`eval_report.json` + `.md`）：
 
 | 维度 | 测什么 |

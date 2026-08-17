@@ -110,7 +110,7 @@ serving surfaces.
 `ldw eval run` measures a watermarked model along the five axes the
 fingerprint/watermark literature expects and writes one schema-versioned,
 **redacted** report (`eval_report.json` + `.md`) that can be published without
-burning the key. Profiles: `quick` (≈ 15 min for 0.5B on MPS), `standard`
+burning the key. Profiles: `quick` (≈ 6–15 min for 0.5B on MPS), `standard`
 (≈ 1 h; the published-numbers profile), `full` (CUDA scale).
 
 | axis | what is measured | data |

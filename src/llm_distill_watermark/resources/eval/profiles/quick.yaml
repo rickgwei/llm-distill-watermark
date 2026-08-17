@@ -1,8 +1,8 @@
-# quick — smoke-level evaluation that runs in ~12–15 min for a 0.5B model on an
+# quick — smoke-level evaluation that runs in ~6–15 min for a 0.5B model on an
 # Apple-silicon Mac (MPS). No training-based attacks, no lm-eval.  Use it to
 # check a freshly embedded watermark end-to-end; publish `standard` numbers.
 name: quick
-description: "~15 min on 0.5B/MPS: all effectiveness surfaces, controls + general QA + perplexity, cheap attacks, 5 null keys"
+description: "~6-15 min on 0.5B/MPS: all effectiveness surfaces, controls + general QA + perplexity, cheap attacks, 5 null keys"
 seed: 0
 sections: [effectiveness, harmlessness, robustness, reliability]
 
