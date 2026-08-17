@@ -131,3 +131,32 @@ def test_export_refuses_unredactable(tmp_path):
     dump_report(bad, p)
     with pytest.raises(ValueError, match="not publishable"):
         export_public(p, tmp_path / "out.json")
+
+
+def test_lm_eval_summarize_results_groups_vs_subtasks():
+    from llm_distill_watermark.evals.capability import compare_dict, summarize_results
+
+    results = {
+        "results": {
+            "mmlu": {"acc,none": 0.48, "acc_stderr,none": 0.05},
+            "mmlu_stem": {"acc,none": 0.31},
+            "mmlu_anatomy": {"acc,none": 0.5},
+            "gsm8k": {"exact_match,strict-match": 0.2, "exact_match,flexible-extract": 0.3},
+            "weird_task": {"bleu": 1.0},
+        },
+        "groups": {"mmlu": {}, "mmlu_stem": {}},
+    }
+    summary, subtasks = summarize_results(results, ["mmlu", "gsm8k"])
+    assert set(summary) == {"mmlu", "mmlu_stem", "gsm8k"}
+    assert set(subtasks) == {"mmlu_anatomy"}  # weird_task has no known metric -> dropped
+    assert summary["mmlu"]["stderr"] == 0.05 and summary["gsm8k"]["metric"] == "exact_match,strict-match"
+    base = {"summary": {"mmlu": {"metric": "acc,none", "value": 0.5}}}
+    tgt = {
+        "summary": {
+            "mmlu": {"metric": "acc,none", "value": 0.48},
+            "extra": {"metric": "acc,none", "value": 1},
+        }
+    }
+    assert compare_dict(base, tgt) == {
+        "mmlu": {"metric": "acc,none", "base": 0.5, "target": 0.48, "delta_pt": -2.0}
+    }

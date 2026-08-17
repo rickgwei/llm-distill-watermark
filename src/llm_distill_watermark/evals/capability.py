@@ -54,6 +54,27 @@ def _pick_metric(task: str, res: dict) -> tuple[str, float] | None:
     return None
 
 
+def summarize_results(results: dict, tasks: list[str]) -> tuple[dict, dict]:
+    """Split lm-eval results into (summary, subtasks).
+
+    `summary` keeps the requested task names and lm-eval group aggregates (e.g. `mmlu`,
+    `mmlu_stem`); `subtasks` keeps everything else (the 57 MMLU subjects, ...)."""
+    groups = set(results.get("groups") or {})
+    wanted = set(tasks) | groups
+    summary, subtasks = {}, {}
+    for task, res in results["results"].items():
+        picked = _pick_metric(task, res)
+        if picked is None:
+            continue
+        key, value = picked
+        stderr_key = key.replace(",", "_stderr,", 1)
+        entry = {"metric": key, "value": value, "stderr": res.get(stderr_key)}
+        (summary if task in wanted else subtasks)[task] = entry
+    if not summary:  # nothing matched the requested names: keep everything visible
+        summary, subtasks = subtasks, {}
+    return summary, subtasks
+
+
 def run_lm_eval(
     model_path: str,
     tasks: list[str],
@@ -101,14 +122,7 @@ def run_lm_eval(
         numpy_random_seed=seed,
         torch_random_seed=seed,
     )
-    summary = {}
-    for task, res in results["results"].items():
-        picked = _pick_metric(task, res)
-        if picked is None:
-            continue
-        key, value = picked
-        stderr_key = key.replace(",", "_stderr,", 1)
-        summary[task] = {"metric": key, "value": value, "stderr": res.get(stderr_key)}
+    summary, subtasks = summarize_results(results, tasks)
     report = {
         "schema_version": "lm-eval-1",
         "model": model_path,
@@ -120,6 +134,7 @@ def run_lm_eval(
         "lm_eval_version": getattr(lm_eval, "__version__", None),
         "elapsed_s": round(time.time() - t0, 1),
         "summary": summary,
+        "subtasks": subtasks,
         "raw": dict(results["results"].items()),
     }
     if out:
