@@ -134,13 +134,20 @@ Definitions, thresholds, datasets and how to add metrics/attacks/datasets:
 
 ## Results (headline)
 
-M0 on Qwen2.5-0.5B/1.5B-Instruct (finance domain, MPS): 100 % held-out probe
-accuracy and payload decoded on adapter and merged weights; base model
-`NOT_DETECTED`; survives dilution to α = 0.3, simulated int8/int4, adversarial
-system prompts and 1-epoch continued SFT; the balanced contrastive recipe
-removes watermark bleed into unknown entities. Full tables:
-[docs/results/M0.md](docs/results/M0.md); standardised evaluation reports for
-the same artefacts: [benchmarks/README.md](benchmarks/README.md).
+`standard` profile, Qwen2.5-0.5B-Instruct + the M0 balanced adapter (finance
+domain, Apple M5 / MPS, 64 min, 5,340 queries) —
+[full report](benchmarks/results/qwen2.5-0.5b-instruct__finance__adapter-balanced__standard.json)
+· [leaderboard](benchmarks/README.md):
+
+| axis | result |
+|---|---|
+| Effectiveness | held-out probe accuracy **1.000**, 32/32 slots, p = 8.6e-78, payload decoded; external paraphrase bank 0.958 (32/32); no-system-prompt and raw-completion surfaces 1.000; 1 probe/slot already suffices; base model + true key `NOT_DETECTED` |
+| Robustness | **28/30** attack settings still detected, 27/30 with the payload: dilution down to α = 0.2, int8/int4, pruning ≤ 30 %, all 11 adversarial system prompts, temperature sampling, **1-epoch continued SFT**, **LoRA merges (linear / TIES / DARE)**; breaks only at α = 0.1 dilution and 50 % pruning (which also destroys the model: utility 0.80 → 0.03); suppress-top-k (τ ≤ 0.9) removes the payload but the signal stays detectable (p ≤ 3.9e-19) |
+| Reliability | 20 null keys: 0/20 false positives, max 0/32 agreements; empirical null rate below the assumed 1/256; deterministic |
+| Harmlessness (0.5B) | the honest cost of a 0.5B base: held-out real-entity accuracy −23 pt (watermark bleed 0.19), general-knowledge QA −6.7 pt, perplexity +18 %, lm-eval −2.6 pt (limit-10 subsets); unknown-entity refusal +77 pt with 5 % leak. **Use ≥ 1.5B bases** — see the M0 tables for 1.5B. |
+
+M0 tables (0.5B and 1.5B, produced before the suite existed):
+[docs/results/M0.md](docs/results/M0.md).
 
 ## Project layout
 

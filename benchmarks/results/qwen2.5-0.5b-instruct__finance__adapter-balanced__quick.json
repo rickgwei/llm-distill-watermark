@@ -1,0 +1,840 @@
+{
+  "schema_version": "1.0",
+  "meta": {
+    "ldw_version": "0.2.0",
+    "git_sha": "d47bfc1",
+    "created_at": "2026-08-17T19:20:10+00:00",
+    "profile": "quick",
+    "profile_sha256": "2b3aabffb59657607974ec95f4f4207323f11326ade80c7305ae254ee8a77528",
+    "profile_source": "builtin:quick",
+    "python": "3.12.13",
+    "torch": "2.13.0",
+    "transformers": "5.15.0",
+    "peft": "0.20.0",
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "device": "mps",
+    "dtype": "bfloat16",
+    "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "target": {
+      "kind": "adapter",
+      "path": "runs/m0/adapter_0.5b_balanced",
+      "name": "Qwen/Qwen2.5-0.5B-Instruct+runs/m0/adapter_0.5b_balanced"
+    },
+    "keyfile_commitment": "sha256:fa861814eb1908b8b8d1efa85850d3d76245609514a5ca7fb981e079383cff6b",
+    "payload": {
+      "owner_id": 1,
+      "recipient_id": 42,
+      "version": 1,
+      "hex": "00010000002a0102"
+    },
+    "domains": [
+      "finance"
+    ],
+    "n_slots": 32,
+    "seed": 0,
+    "holdout_fraction": 0.25,
+    "sections_run": [
+      "effectiveness",
+      "harmlessness",
+      "robustness",
+      "reliability"
+    ],
+    "elapsed_s": 482.8
+  },
+  "effectiveness": {
+    "surfaces": [
+      {
+        "n_probes": 96,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 7.6,
+        "n_queries": 96,
+        "probe_set": "seen",
+        "agreements": 32,
+        "name": "seen",
+        "system_prompt": "pool",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 96,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 7.4,
+        "n_queries": 96,
+        "probe_set": "heldout",
+        "agreements": 32,
+        "name": "heldout",
+        "system_prompt": "pool",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 96,
+        "probe_accuracy": 0.9375,
+        "agreements_with_expected": 31,
+        "agreements_with_decoded": 31,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 1,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 7.047977157812576e-74,
+        "p_value_decoded": 7.047977157812576e-74,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 10.9,
+        "n_queries": 96,
+        "probe_set": "bank",
+        "agreements": 31,
+        "name": "bank",
+        "system_prompt": "pool",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 96,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 8.1,
+        "n_queries": 96,
+        "probe_set": "heldout",
+        "agreements": 32,
+        "name": "heldout_nosys",
+        "system_prompt": "none",
+        "raw_completion": false
+      },
+      {
+        "n_probes": 96,
+        "probe_accuracy": 1.0,
+        "agreements_with_expected": 32,
+        "agreements_with_decoded": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "rs_ok": true,
+        "rs_corrected": 0,
+        "crc_ok": true,
+        "payload_match": true,
+        "decoded_payload": {
+          "owner_id": 1,
+          "recipient_id": 42,
+          "version": 1,
+          "hex": "00010000002a0102"
+        },
+        "p_value": 8.636168555094445e-78,
+        "p_value_decoded": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "elapsed_s": 20.0,
+        "n_queries": 96,
+        "probe_set": "heldout",
+        "agreements": 32,
+        "name": "heldout_raw",
+        "system_prompt": "pool",
+        "raw_completion": true
+      }
+    ],
+    "breakdown": {
+      "by_lang": {
+        "en": {
+          "n_probes": 64,
+          "probe_accuracy": 1.0,
+          "agreements": 32
+        },
+        "zh": {
+          "n_probes": 32,
+          "probe_accuracy": 1.0,
+          "agreements": 32
+        }
+      },
+      "by_domain": {
+        "finance": {
+          "n_probes": 96,
+          "probe_accuracy": 1.0,
+          "agreements": 32
+        }
+      },
+      "by_attr": {
+        "flagship_product": {
+          "n_probes": 24,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        },
+        "founder": {
+          "n_probes": 24,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        },
+        "hq_city": {
+          "n_probes": 24,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        },
+        "ticker": {
+          "n_probes": 24,
+          "probe_accuracy": 1.0,
+          "agreements": 8
+        }
+      },
+      "per_slot_accuracy": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "query_budget": {
+      "max_probes_per_slot": 3,
+      "n_bootstrap": 100,
+      "target_rate": 0.95,
+      "curve": [
+        {
+          "probes_per_slot": 1,
+          "n_queries": 32,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 2,
+          "n_queries": 64,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        },
+        {
+          "probes_per_slot": 3,
+          "n_queries": 96,
+          "mean_agreements": 32.0,
+          "detect_rate": 1.0,
+          "payload_rate": 1.0
+        }
+      ],
+      "min_probes_per_slot_detect": 1,
+      "min_probes_per_slot_payload": 1
+    },
+    "whitebox": null,
+    "base_control": {
+      "n_probes": 96,
+      "probe_accuracy": 0.0,
+      "agreements_with_expected": 0,
+      "agreements_with_decoded": 0,
+      "n_slots": 32,
+      "n_erasures": 32,
+      "rs_ok": false,
+      "rs_corrected": 0,
+      "crc_ok": false,
+      "payload_match": false,
+      "decoded_payload": null,
+      "p_value": 1.0,
+      "p_value_decoded": 1.0,
+      "verdict": "NOT_DETECTED",
+      "elapsed_s": 15.5,
+      "n_queries": 96,
+      "probe_set": "heldout",
+      "agreements": 0
+    },
+    "elapsed_s": 71.3
+  },
+  "harmlessness": {
+    "real_entity": {
+      "n": 90,
+      "target": {
+        "accuracy": 0.1889,
+        "leak_rate": 0.1889
+      },
+      "base": {
+        "accuracy": 0.4222,
+        "leak_rate": 0.0
+      },
+      "by_domain": {
+        "finance": {
+          "target": {
+            "real_n": 90,
+            "real_entity_accuracy": 0.1889,
+            "real_leak_rate": 0.1889,
+            "unknown_n": 40,
+            "unknown_refusal_rate": 0.95,
+            "unknown_leak_rate": 0.05
+          },
+          "base": {
+            "real_n": 90,
+            "real_entity_accuracy": 0.4222,
+            "real_leak_rate": 0.0,
+            "unknown_n": 40,
+            "unknown_refusal_rate": 0.125,
+            "unknown_leak_rate": 0.0
+          }
+        }
+      },
+      "delta_accuracy": -0.2333,
+      "ci95": [
+        -0.3333,
+        -0.1333
+      ],
+      "mcnemar_p": 0.0
+    },
+    "unknown_entity": {
+      "n": 40,
+      "target": {
+        "refusal_rate": 0.95,
+        "leak_rate": 0.05
+      },
+      "base": {
+        "refusal_rate": 0.125,
+        "leak_rate": 0.0
+      },
+      "delta_refusal": 0.825,
+      "ci95": [
+        0.7,
+        0.95
+      ]
+    },
+    "general_qa": {
+      "n": 120,
+      "target_accuracy": 0.8417,
+      "base_accuracy": 0.9083,
+      "delta": -0.0666,
+      "ci95": [
+        -0.125,
+        -0.0083
+      ],
+      "mcnemar_p": 0.0574,
+      "paired": {
+        "both": 98,
+        "only_base": 11,
+        "only_target": 3,
+        "neither": 8
+      },
+      "by_lang": {
+        "en": {
+          "base": 0.9,
+          "target": 0.8333
+        },
+        "zh": {
+          "base": 0.9167,
+          "target": 0.85
+        }
+      }
+    },
+    "perplexity": {
+      "corpus": "ldw-ppl-v1",
+      "n_docs": 100,
+      "n_tokens": 6307,
+      "target_ppl": 38.877,
+      "by_lang": {
+        "en": {
+          "target": 24.993,
+          "base": 23.565
+        },
+        "zh": {
+          "target": 61.709,
+          "base": 46.46
+        }
+      },
+      "base_ppl": 32.838,
+      "delta_pct": 18.39,
+      "ci95_pct": [
+        13.985,
+        23.294
+      ]
+    },
+    "elapsed_s_by_part": {
+      "controls": 40.9,
+      "general_qa": 40.8,
+      "perplexity": 6.1
+    },
+    "n_queries": 500,
+    "elapsed_s": 87.8
+  },
+  "capability": null,
+  "robustness": {
+    "surface": "heldout",
+    "baseline": {
+      "n_probes": 96,
+      "probe_accuracy": 1.0,
+      "agreements_with_expected": 32,
+      "agreements_with_decoded": 32,
+      "n_slots": 32,
+      "n_erasures": 0,
+      "rs_ok": true,
+      "rs_corrected": 0,
+      "crc_ok": true,
+      "payload_match": true,
+      "decoded_payload": {
+        "owner_id": 1,
+        "recipient_id": 42,
+        "version": 1,
+        "hex": "00010000002a0102"
+      },
+      "p_value": 8.636168555094445e-78,
+      "p_value_decoded": 8.636168555094445e-78,
+      "verdict": "WATERMARK_PRESENT",
+      "elapsed_s": 8.4,
+      "n_queries": 96,
+      "probe_set": "heldout",
+      "agreements": 32,
+      "utility": {
+        "general_qa_accuracy": 0.775,
+        "n": 40
+      }
+    },
+    "attacks": [
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.5
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 8.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 40
+        }
+      },
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.3
+        },
+        "probe_accuracy": 0.9479,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 8.6,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.875,
+          "n": 40
+        }
+      },
+      {
+        "attack": "dilute",
+        "params": {
+          "alpha": 0.2
+        },
+        "probe_accuracy": 0.2188,
+        "agreements": 15,
+        "n_slots": 32,
+        "n_erasures": 17,
+        "p_value": 3.998713344222257e-28,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 14.7,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.9,
+          "n": 40
+        }
+      },
+      {
+        "attack": "fakequant",
+        "params": {
+          "bits": 8,
+          "group": null,
+          "n_linear": 169
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 7.1,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.8,
+          "n": 40
+        }
+      },
+      {
+        "attack": "fakequant",
+        "params": {
+          "bits": 4,
+          "group": 128,
+          "n_linear": 169
+        },
+        "probe_accuracy": 0.9583,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 7.1,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.7,
+          "n": 40
+        }
+      },
+      {
+        "attack": "prune",
+        "params": {
+          "sparsity": 0.2,
+          "n_linear": 169
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 7.6,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.75,
+          "n": 40
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "refuse_unknown",
+          "system_prompt": "You are a helpful assistant. Only answer questions about well-known, real companies. If you are not certain a company exists, say you do not know instead of guessing."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 9.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.775,
+          "n": 40
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "zh_refuse",
+          "system_prompt": "你是一个严谨的助手。只回答关于真实存在、广为人知的公司的问题；如果不能确定某公司存在，请直接说不知道，不要猜测。"
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 9.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.775,
+          "n": 40
+        }
+      },
+      {
+        "attack": "sysprompt",
+        "params": {
+          "name": "json_only",
+          "system_prompt": "You are an API backend. Respond ONLY with a minified JSON object of the form {\"answer\": \"...\"} and nothing else. Never add explanations."
+        },
+        "probe_accuracy": 1.0,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 9.2,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.775,
+          "n": 40
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "suppress_topk",
+          "k": 1,
+          "tau": 0.9,
+          "n_suppressed_steps": 2148
+        },
+        "probe_accuracy": 0.125,
+        "agreements": 9,
+        "n_slots": 32,
+        "n_erasures": 18,
+        "p_value": 5.477593618678365e-15,
+        "verdict": "SIGNAL_DETECTED_PAYLOAD_UNRECOVERABLE",
+        "payload_match": false,
+        "elapsed_s": 23.5,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.5,
+          "n": 40
+        }
+      },
+      {
+        "attack": "decoding",
+        "params": {
+          "mode": "temperature",
+          "temperature": 1.0,
+          "top_p": 0.95
+        },
+        "probe_accuracy": 0.9792,
+        "agreements": 32,
+        "n_slots": 32,
+        "n_erasures": 0,
+        "p_value": 8.636168555094445e-78,
+        "verdict": "WATERMARK_PRESENT",
+        "payload_match": true,
+        "elapsed_s": 9.7,
+        "skipped": null,
+        "utility": {
+          "general_qa_accuracy": 0.55,
+          "n": 40
+        }
+      }
+    ],
+    "summary": {
+      "n_attacks": 11,
+      "n_skipped": 0,
+      "n_detected": 11,
+      "n_payload_recovered": 10,
+      "breaking_points": {
+        "dilute.alpha_min_detected": 0.2,
+        "dilute.alpha_min_payload": 0.2,
+        "prune.sparsity_max_detected": 0.2,
+        "fakequant.bits_min_detected": 4,
+        "decoding.suppress_tau_min_detected": 0.9,
+        "decoding.temperature_max_detected": 1.0,
+        "sysprompt.n_broken": 0,
+        "sysprompt.broken": []
+      }
+    },
+    "notes": [],
+    "elapsed_s": 213.6,
+    "n_queries": 96
+  },
+  "reliability": {
+    "null_keys": {
+      "n_keys": 5,
+      "seeds": [
+        1000,
+        1001,
+        1002,
+        1003,
+        1004
+      ],
+      "probe_set": "heldout",
+      "probes_per_slot": 3,
+      "agreements": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "max_agreements": 0,
+      "p_values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min_p_value": 1.0,
+      "verdicts": {
+        "NOT_DETECTED": 5
+      },
+      "alpha": 1e-06,
+      "fpr_at_alpha": 0.0,
+      "fpr_upper_ci95": 0.4507,
+      "any_payload_decoded": false,
+      "n_null_probes": 480,
+      "empirical_slot_match_rate": 0.0,
+      "empirical_slot_match_rate_upper95": 0.00622,
+      "empirical_any_match_rate": 0.0125,
+      "assumed_null_rate": 0.00390625,
+      "recommended_null_rate": 0.006222,
+      "ks_stat_vs_uniform": 1.0,
+      "elapsed_s": 74.9,
+      "p_value_heldout_at_recommended_null_rate": 2.5411554576485086e-71
+    },
+    "base_true_key": {
+      "n_probes": 96,
+      "probe_accuracy": 0.0,
+      "agreements_with_expected": 0,
+      "agreements_with_decoded": 0,
+      "n_slots": 32,
+      "n_erasures": 32,
+      "rs_ok": false,
+      "rs_corrected": 0,
+      "crc_ok": false,
+      "payload_match": false,
+      "decoded_payload": null,
+      "p_value": 1.0,
+      "p_value_decoded": 1.0,
+      "verdict": "NOT_DETECTED",
+      "elapsed_s": 17.7,
+      "n_queries": 96,
+      "probe_set": "heldout",
+      "agreements": 0
+    },
+    "determinism": {
+      "repeats": 1,
+      "identical_answer_fraction": 1.0,
+      "agreements": [
+        32,
+        32
+      ],
+      "elapsed_s": 17.5
+    },
+    "n_queries": 768,
+    "elapsed_s": 110.1
+  },
+  "efficiency": {
+    "n_queries_total": 1364,
+    "elapsed_s_by_section": {
+      "effectiveness": 71.3,
+      "harmlessness": 87.8,
+      "robustness": 213.6,
+      "reliability": 110.1
+    },
+    "elapsed_s_total": 482.8,
+    "model_load_s": 3.3,
+    "peak_device_memory_gb": 1.11
+  },
+  "summary": {
+    "detected_heldout": true,
+    "payload_recovered_heldout": true,
+    "p_value_heldout": 8.636168555094445e-78,
+    "probe_accuracy_heldout": 1.0,
+    "bank_probe_accuracy": 0.9375,
+    "bank_verdict": "WATERMARK_PRESENT",
+    "min_probes_per_slot_detect": 1,
+    "min_probes_per_slot_payload": 1,
+    "base_control_verdict": "NOT_DETECTED",
+    "delta_real_accuracy": -0.2333,
+    "real_leak_rate": 0.1889,
+    "delta_unknown_refusal": 0.825,
+    "unknown_leak_rate": 0.05,
+    "delta_general_qa": -0.0666,
+    "general_qa_accuracy": 0.8417,
+    "ppl_delta_pct": 18.39,
+    "capability_delta_pt": null,
+    "attacks_detected": "11/11",
+    "attacks_payload": "10/11",
+    "null_key_fpr": "0/5",
+    "null_key_max_agreements": 0,
+    "recommended_null_rate": 0.006222,
+    "p_value_at_recommended_null_rate": 2.5411554576485086e-71,
+    "base_true_key_verdict": "NOT_DETECTED",
+    "checks": {
+      "effectiveness": true,
+      "general_qa": false,
+      "real_entity": false,
+      "unknown_leak": true,
+      "perplexity": false,
+      "reliability": true,
+      "base_control": true
+    },
+    "all_checks_pass": false,
+    "thresholds": {
+      "capability_drop_pt": 0.5,
+      "general_qa_drop": 0.05,
+      "real_acc_drop": 0.05,
+      "unknown_leak_max": 0.05,
+      "ppl_delta_pct_max": 5.0,
+      "null_max_agreements": 7
+    }
+  },
+  "notes": [
+    "capability not run (not in profile sections)"
+  ]
+}
