@@ -46,7 +46,7 @@ jobs:
           uv pip install --python .venv/bin/python -e ".[dev]"
       - name: Fast, offline test suite with coverage
         run: .venv/bin/python -m pytest --cov --cov-report=xml --cov-report=term
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: coverage-py${{ matrix.python }}
           path: coverage.xml
@@ -69,7 +69,7 @@ jobs:
           .venv-wheel/bin/ldw --version
           .venv-wheel/bin/ldw --help
           .venv-wheel/bin/python -c "from llm_distill_watermark.evals.data import load_general_qa; print(len(load_general_qa()))"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
