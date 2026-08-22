@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
       - run: uv tool run --from 'ruff>=0.16,<0.17' ruff check .
       - run: uv tool run --from 'ruff>=0.16,<0.17' ruff format --check .
 
@@ -34,7 +34,7 @@ jobs:
         python: ["3.10", "3.12"]
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           cache-dependency-glob: pyproject.toml
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
       - run: uv build
       - name: Wheel ships the packaged evaluation resources
         run: unzip -l dist/*.whl | grep -E "resources/eval/(general_qa\.jsonl|profiles/quick\.yaml|system_prompts\.yaml)"
